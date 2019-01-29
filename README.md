@@ -1,6 +1,6 @@
 # BugBounty Platform
 
-BugBounty platform is platform made under the suporvision of Mr.Ahmed Chabchoub, Mr.Mostfa Hamza for the purpose of Isetcom scurity event.
+BugBounty platform is platform made under the suporvision of Mr.Ahmed Chabchoub, Mr.Mostfa Hamza for the purpose of Isetcom security event.
 the platform is bug reporting interface for contesters to report vunerabilities and proof of concept 
 
 ## Getting Started
