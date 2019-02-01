@@ -27,6 +27,11 @@ Step1: cloning the repository in your machine.
 ```
 git clone https://github.com/HoussemCharf/BugBounty_Platform.git
 ```
+Step2: start bin
+```
+source env/bin/activate
+```
+
 
 
 ### Coding style
