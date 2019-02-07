@@ -14,7 +14,7 @@ What things you need to install the software and how to install them
 ```
 Python3
 Flask
-Postgres
+mongodb
 ```
 
 ### Installing
@@ -31,12 +31,20 @@ Step2: start bin
 ```
 source env/bin/activate
 ```
-Step3: start posgresql service
+Step3: start mongodb service
 
 ```
-service postgresql start
+service mongod start
 ```
+step4: create database
 
+```
+mongo
+
+use iset_bugbounty;
+
+db.inset({})
+```
 
 ### Coding style
 
