@@ -31,7 +31,11 @@ Step2: start bin
 ```
 source env/bin/activate
 ```
+Step3: start posgresql service
 
+```
+service postgresql start
+```
 
 
 ### Coding style
