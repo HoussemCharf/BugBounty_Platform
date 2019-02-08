@@ -1,12 +1,17 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 class BaseConfig:
-	"""global vars and base config"""
+	"""base config"""
 	SECRET_KEY = 'bugsbunny@bounty'
 	MONGO_URI='mongodb://localhost:27017/iset_bugbounty'
-	DEBUG= False
+	DEBUG= True
 	database_name= 'iset_bugbounty'
 
+
+class StaticVars:
+	""" global vars to be passed"""
+	SITE_NAME= 'IsetCom Bug Bounty Platform'
+	SITE_URL= 'https://isetcom.tn'
 class Development_Config(BaseConfig):
 	"""development config for me and souheil"""
 	DEBUG = True
