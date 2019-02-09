@@ -10,11 +10,13 @@
 }
 
 .Houssem-black1 {
-	width: 290px;
-	color: #ffffff;
+	width: 100%;
+	color: #000000;
+	bottom:0;
+	position: fixed;
 	text-align: center;
 	margin: 30px;
 	font-family: 'Biryani', sans-serif;
-	font-size: 20px;
+	font-size: 10px;
 	font-weight: bold;
 }
