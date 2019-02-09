@@ -10,7 +10,7 @@ class BaseConfig:
 
 class StaticVars:
 	""" global vars to be passed"""
-	SITE_NAME= 'IsetCom Bug Bounty Platform'
+	SITE_NAME= 'BugBounty Platform'
 	SITE_URL= 'https://isetcom.tn'
 class Development_Config(BaseConfig):
 	"""development config for me and souheil"""

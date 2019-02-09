@@ -4,18 +4,17 @@ from config import StaticVars as static_vars
 from utils.Database import Database as base
 from models.Usermodel import User
 from view.viewer import view
-
 import os
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 
 @app.before_first_request
 def initial():
 	base.initialize()
 @app.route('/')
 def index():
-    return render_template('home.html',session=session,static_vars=static_vars)
+    return view.render_template(view='home.html')
 @app.route('/auth')
 def auth():
     error=None
@@ -24,7 +23,7 @@ def auth():
             return redirect(url_for('index'))
         else:
             error="Wrong credentials"
-    return render_template('auth.html',session=session,static_vars=static_vars,error=error)
+    return view.render_template(view='auth.html',error=error)
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -41,7 +40,7 @@ def login():
 @app.route('/logout',methods=['POST','GET'])
 def logout():
 	User.logout()
-	return render_template('index.html',session=session,static_vars=static_vars)
+	return redirect(url_for('index'))
 
 @app.route('/register', methods=['POST','GET'])
 def register():
@@ -53,11 +52,11 @@ def register():
     	if user:
     		return redirect(url_for('index'))
     	return 'Account already exists!'
-    return render_template('register.html',session=session,static_vars=static_vars)
+    return view.render_template(view='register.html')
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('error.html'), 404
+    return view.render_template(view='error.html'), 404
 if __name__ == '__main__':
     app.secret_key = conf.SECRET_KEY
 app.run(debug=conf.DEBUG)
