@@ -4,9 +4,8 @@ class BaseConfig:
 	"""base config"""
 	SECRET_KEY = 'bugsbunny@bounty'
 	MONGO_URI='mongodb://localhost:27017/iset_bugbounty'
-	DEBUG= True
+	DEBUG= False
 	database_name= 'iset_bugbounty'
-
 
 class StaticVars:
 	""" global vars to be passed"""

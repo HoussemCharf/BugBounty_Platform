@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, session, redirect
-from config import BaseConfig as conf
+from config import Development_Config as conf
 from config import StaticVars as static_vars
 from utils.Database import Database as base
 from models.Usermodel import User
@@ -15,28 +15,26 @@ def initial():
 @app.route('/')
 def index():
     return view.render_template(view='home.html')
-@app.route('/auth')
+@app.route('/auth',methods=['GET'])
 def auth():
-    error=None
-    if 'log_in' in session:
-        if session['log_in']==True:
-            return redirect(url_for('index'))
-        else:
-            error="Wrong credentials"
-    return view.render_template(view='auth.html',error=error)
+    return view.render_template(view='auth.html') 
 
 @app.route('/login', methods=['POST'])
 def login():
+
+
     email= request.form['email']
     password = request.form['password']
     #TODO by Houssem 1- sanatize data passed from user
+    print(User.valid_login(email,password))
     if User.valid_login(email,password):
         # Hacky code here <.<
         uuid = User.get_id_by_email(email)
         User.login(uuid)
         return redirect(url_for('index'))
+    else:
+        return redirect(url_for('auth'))
 
-    return redirect(url_for('auth'))
 @app.route('/logout',methods=['POST','GET'])
 def logout():
 	User.logout()
@@ -45,13 +43,14 @@ def logout():
 @app.route('/register', methods=['POST','GET'])
 def register():
     if request.method == 'POST':
-    	email = request.form['email']
-    	password = request.form['password']
-#TODO by houssem 1- sanatize data passed from user
-    	user = User.register(email,password)
-    	if user:
-    		return redirect(url_for('index'))
-    	return 'Account already exists!'
+        email = request.form['email']
+        password = request.form['password']
+        username = request.form['name']
+        #TODO by houssem 1- sanatize data passed from user
+        user = User.register(username,email,password)
+        if user:
+            return redirect(url_for('index'))
+        return 'Account already exists!'
     return view.render_template(view='register.html')
 
 @app.errorhandler(404)

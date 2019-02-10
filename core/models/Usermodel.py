@@ -5,13 +5,13 @@ from utils.Database import Database
 import bcrypt
 
 class User(object):
-	def __init__(self,username,email,password,_id=None,admin=False):
+	def __init__(self,username,email,password,_id=None,registeredOn=None,admin=False):
 		self.username = username
-		self.email=email
-		self.registeredOn=datetime.now()
-		self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+		self.email = email
+		self.password = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
 		self._id = uuid.uuid4().hex if _id is None else _id
-
+		self.registeredOn=datetime.datetime.now()
+		self.admin = admin
 	@classmethod
 	def get_by_email(cls,email):
 		# get user by filling email
@@ -37,12 +37,11 @@ class User(object):
 		if user is not None:
 			return user.password == bcrypt.hashpw(password.encode('utf-8'))
 		return False
-
 	@classmethod
-	def register(cls,email,password,username):
+	def register(cls,username,email,passw):
 		user = cls.get_by_email(email)
 		if user is None:
-			guest = cls(username,email,password)
+			guest = cls(username,email,passw)
 			guest.savemongo()
 			dataSaved = cls.get_by_email(email)
 			session["uuid"] = dataSaved["_id"]
@@ -53,12 +52,10 @@ class User(object):
 	def login(_id):
 		session['log_in'] = True
 		session['uuid']=_id
-
 	@classmethod
 	def is_admin(cls,_id):
 		data = cls.get_by_id(_id)
 		return data["admin"]==True
-
 	@classmethod
 	def logout():
 		session["uuid"] = None
@@ -70,7 +67,7 @@ class User(object):
 		"_id":self._id,
 		"password":self.password,
 		"admin":self.admin,
-		"registered_on":self.registeredOn
+		"registeredOn":self.registeredOn
 		}
 	def savemongo(self):
 		Database.insert("users",self.json())
