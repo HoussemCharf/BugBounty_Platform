@@ -41,8 +41,6 @@ class User(object):
 	def register(cls,username,email,passw):
 		user = cls.get_by_email(email)
 		if user is None:
-			print(type(passw))
-			print(passw)
 			guest = cls(username,email,passw)
 			guest.savemongo()
 			dataSaved = cls.get_by_email(email)

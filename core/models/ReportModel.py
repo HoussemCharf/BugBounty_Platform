@@ -69,4 +69,3 @@ class Report(object):
 		}
 	def save_mongo(self):
 		base.insert("reports",self.json)
-
