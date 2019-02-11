@@ -33,7 +33,7 @@ class User(object):
 		return data["username"]
 	@classmethod
 	def valid_login(cls,email,password):
-		user = User.get_by_email(email)
+		user = cls.get_by_email(email)
 		if user is not None:
 			return user.password == bcrypt.hashpw(password.encode('utf-8'))
 		return False
@@ -41,10 +41,13 @@ class User(object):
 	def register(cls,username,email,passw):
 		user = cls.get_by_email(email)
 		if user is None:
+			print(type(passw))
+			print(passw)
 			guest = cls(username,email,passw)
 			guest.savemongo()
 			dataSaved = cls.get_by_email(email)
 			session["uuid"] = dataSaved["_id"]
+			print(True)
 			return True
 		else:
 			return False
