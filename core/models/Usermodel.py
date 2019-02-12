@@ -8,6 +8,7 @@ class User(object):
 	def __init__(self,username,email,password,_id=None,registeredOn=None,admin=False):
 		self.username = username
 		self.email = email
+		print('i hashed')
 		self.password = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
 		self._id = uuid.uuid4().hex if _id is None else _id
 		self.registeredOn=datetime.datetime.now()
@@ -17,7 +18,7 @@ class User(object):
 		# get user by filling email
 		data = Database.find_one("users",{"email":email})
 		if data is not None:
-			return cls(**data)
+			return data
 	@classmethod
 	def get_by_id(cls,_id):
 		data = Database.find_one("users",{"_id":_id})

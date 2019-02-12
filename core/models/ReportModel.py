@@ -4,7 +4,6 @@ from flask import session
 from utils.Database import base
 import bcrypt
 
-
 class Report(object):
 	def __init__ (self,reportId=None,reportName,reportType,reportDate=None,reportLevel,reportFile,reportContent,reportOwner,reportScore=0):
 		self.reportId = uuid.uuid4().hex if _id is None else _id
