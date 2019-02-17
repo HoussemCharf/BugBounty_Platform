@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block body %}
+<style type="text/css">
+.container.custom-container {
+      top:0px;
+        padding-top:20px;
+        margin:auto; position:relative;
+        width:950px;
+        height:100%;
+        margin-left:150px;
+     
+}
+
+.md-textarea {
+        width:400px;
+
+ 
+}
+.form-control-file {
+        margin-left:15px;
+}
+.btn {
+        margin-left: 676px;
+        margin-top:-38px;
+        height:30px;
+        width:100px;
+}
+#textdescription{
+        margin-top:4px;
+}
+#textarea1 {
+        margin-top : 10px;
+}
+
+</style>
+<h1 style="padding:0 465px;margin-top:70px;text-shadow:1px 1px" > Report Fields </h1>  
+<div class="custom-container container" > 
+          <form method=POST action="{{ url_for('report') }}" enctype='multipart/form-data'>
+            <div class="row" id=firstrow>
+                <div class="col-md-5 col-md-offset-1" >
+                    <label for="InputbugName">Bug name </label>
+                    <input type="text" class="form-control" name="reportName" placeholder="Bug name">
+                </div>
+            
+                <div class="col-md-2">
+                    <label for="InputbugType">Bug type </label>
+                    <select name="reportType" class="form-control">
+                        <option value="type_1" selected="selected"> T1 </option>
+                        <option value="type_2"> T2 </option>
+                    </select> 
+                </div>
+                <div class="col-md-2" id="reportLevel">
+                    <label for="InputthreatLevel">Threat level </label>
+                    <select name="reportLevel" class="form-control" >
+                        <option value="type_1" selected="selected"> Low </option>
+                        <option value="type_2"> Medium</option>
+                        <option value="type_3"> High </option> 
+                    </select> 
+                </div>               
+            </div>        
+            <div class="row" ><br>
+                <div id="textdescription" class="col-md-9 col-md-offset-1">
+                    <strong> Description</strong>
+                    <br>
+                    <textarea placeholder="Description field must contain information" name="reportDescription" class="form-control" id="textarea1" rows="11" cols="20" ></textarea>
+                </div>
+            </div>
+            <div class="row" id=reportContent>
+                <div class="cold-md-1 col-md-offset-1">
+                    <label for="InputFile"></label>
+                    <input type=file  name="reportContent" class=form-control-file>
+                </div>
+            
+            
+                    <button type="submit" class="btn btn-primary">report</button>
+                </div>
+            </div>
+        </form>
+</div>
+{% endblock %}
