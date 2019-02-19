@@ -31,7 +31,24 @@
 #textarea1 {
         margin-top : 10px;
 }
-
+progress[value]::-webkit-progress-value {
+  background-image:
+       -webkit-linear-gradient(-45deg, 
+                               transparent 33%, rgba(0, 0, 0, .1) 33%, 
+                               rgba(0,0, 0, .1) 66%, transparent 66%),
+       -webkit-linear-gradient(top, 
+                               rgba(255, 255, 255, .25), 
+                               rgba(0, 0, 0, .25)),
+       -webkit-linear-gradient(left,#09c, #f44);
+    border-radius: 1px; 
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+}
+progress[value]::-webkit-progress-bar {
+  background-color:transparent;}
+#progressBar {
+    margin-top :30px;
+    margin-left:-17px;
+}
 </style>
 <h1 style="padding:0 465px;margin-top:70px;text-shadow:1px 1px" > Report Fields </h1>  
 <div class="custom-container container" > 
@@ -45,19 +62,25 @@
                 <div class="col-md-2">
                     <label for="InputbugType">Bug type </label>
                     <select name="reportType" class="form-control">
-                        <option value="type_1" selected="selected"> T1 </option>
-                        <option value="type_2"> T2 </option>
+                        <option value=" " disabled selected>Type</option>
+                        <option id="option1" value="0" > T1 </option>
+                        <option id="option2" value="0"> T2 </option>
                     </select> 
                 </div>
                 <div class="col-md-2" id="reportLevel">
                     <label for="InputthreatLevel">Threat level </label>
-                    <select name="reportLevel" class="form-control" >
-                        <option value="type_1" selected="selected"> Low </option>
-                        <option value="type_2"> Medium</option>
-                        <option value="type_3"> High </option> 
-                    </select> 
-                </div>               
+                    <select  id='selectA' name="reportLevel" class="form-control">
+                        <option value="" disabled selected>Select a level</option>
+                        <option id="option1" value="25"> Low </option>
+                        <option id="option2" value="50"> Medium</option>
+                        <option id="option3" value="80"> High </option> 
+                    </select></div>
+                    <div class="col-md-2">
+                   <progress id='progressBar' max='100' value='0' style="width:100%;height:25px;background-color:transparent; border-radius: 2px;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;"></progress>
+                </div>
             </div>        
+            
             <div class="row" ><br>
                 <div id="textdescription" class="col-md-9 col-md-offset-1">
                     <strong> Description</strong>
