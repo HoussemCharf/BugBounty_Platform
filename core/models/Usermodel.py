@@ -3,7 +3,7 @@ import datetime
 from flask import session
 from utils.Database import Database
 import bcrypt
-
+from  ReportModel import Report
 class User(object):
 	def __init__(self,username,email,password,_id=None,registeredOn=None,admin=False):
 		self.username = username
@@ -27,7 +27,7 @@ class User(object):
 	def get_by_id(cls,_id):
 		data = Database.find_one("users",{"_id":_id})
 		if data is not None:
-			return cls(**data)
+			return data
 	@classmethod
 	def get_id_by_email(cls,email):
 		data = Database.find_one("users",{"email":email})
@@ -43,6 +43,10 @@ class User(object):
 			return data['email']
 		else:
 			return None
+	@classmethod
+	def get_email_by_id(cls,_id):
+		data = cls.get_by_id(_id)
+		return data["email"]
 	@classmethod
 	def valid_login(cls,email,password):
 		#context needed here!
@@ -76,6 +80,9 @@ class User(object):
 	def init_login(self,_id):
 		session['log_in'] = True
 		session['uuid']=_id
+	@classmethod
+	def get_reports(self):
+		return Report.find_reports_by_owner_id(self._id)
 	def json(self):
 		return {
 		"username":self.username,

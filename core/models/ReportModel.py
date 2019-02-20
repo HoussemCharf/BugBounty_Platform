@@ -41,6 +41,9 @@ class Report(object):
 		if data is not None:
 			return cls(**data)
 	@classmethod
+	def find_reports_by_owner_id(cls,owner_id):
+		return [post for post in base.find(collection="posts",query={"reportOwner":owner_id})]
+	@classmethod
 	def set_score(cls,reportId,score):
 		data = base.find_one("reports",{"reportId":reportId})
 		if data is not None:

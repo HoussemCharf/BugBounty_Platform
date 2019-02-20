@@ -14,10 +14,27 @@ def initial():
 	base.initialize()
 @app.route('/')
 def index():
-    return view.render_template(view='home.html')
+    # if user is logged in setting up vars to be used in rendering the index template
+    if session['log_in'] == True:
+        username = User.get_username(session["uuid"])
+        is_admin = User.is_admin(session["uuid"])
+        email = User.get_email_by_id(session["uuid"])
+        return view.render_template(view='home.html',username=username,admin=is_admin,email=email)
+    else:
+        return view.render_template(view='home.html')
 @app.route('/auth',methods=['GET'])
 def auth():
     return view.render_template(view='auth.html') 
+
+
+@app.route('/reports/<string:')
+@app.route('/reports',methodes=['GET'])
+def reports(user_id=None):
+    if session['log_in'] == True:
+        return view.render_template(view='reports.html')
+    else:
+        redirect(url_for('index'))
+
 
 @app.route('/login', methods=['POST'])
 def login():

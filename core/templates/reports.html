@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+<section id="content">
+<article>
+<div class="container">
+    <div class="page-header">
+  
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search for...">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Search</button>
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Sort by
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="#">Date</a></li>
+            <li><a href="#">Level</a></li>
+            <li><a href="#">Score</a></li>
+          </ul>
+        </div>
+    </div><!-- /.row -->
+    {% if posts|length > 0 %}
+        {% for post in posts %}
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.content }}</p>
+            <p>{{ post.author }}</p>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <h4>There aren't any post yet!</h4>
+    {% endif %}
+</div>
+</article>
+</section>
+{% endblock %}
