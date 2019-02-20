@@ -31,7 +31,8 @@ def auth():
 @app.route('/reports',methodes=['GET'])
 def reports(user_id=None):
     if session['log_in'] == True:
-        return view.render_template(view='reports.html')
+        reports = User.get_reports(session['uuid'])
+        return view.render_template(view='reports.html',reports=reports)
     else:
         redirect(url_for('index'))
 

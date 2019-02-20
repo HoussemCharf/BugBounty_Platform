@@ -81,8 +81,8 @@ class User(object):
 		session['log_in'] = True
 		session['uuid']=_id
 	@classmethod
-	def get_reports(self):
-		return Report.find_reports_by_owner_id(self._id)
+	def get_reports(self,_id):
+		return Report.find_reports_by_owner_id(_id)
 	def json(self):
 		return {
 		"username":self.username,
