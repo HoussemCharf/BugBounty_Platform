@@ -8,7 +8,6 @@ class User(object):
 	def __init__(self,username,email,password,_id=None,registeredOn=None,admin=False):
 		self.username = username
 		self.email = email
-		print('i hashed')
 		self.password = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
 		self._id = uuid.uuid4().hex if _id is None else _id
 		self.registeredOn=datetime.datetime.now()
@@ -20,48 +19,63 @@ class User(object):
 		if data is not None:
 			return data
 	@classmethod
+	def get_password_hash(cls,email):
+		data = Database.find_one("users",{"email":email})
+		if data is not None:
+			return data["password"]
+	@classmethod
 	def get_by_id(cls,_id):
 		data = Database.find_one("users",{"_id":_id})
 		if data is not None:
 			return cls(**data)
 	@classmethod
 	def get_id_by_email(cls,email):
-		data = cls.get_by_email(email)
+		data = Database.find_one("users",{"email":email})
 		return data["_id"]
-	@classmethod
+	@classmethod	
 	def get_username(cls,_id):
 		data = cls.get_by_id(_id)
 		return data["username"]
 	@classmethod
+	def get_only_email(self,email):
+		data =Database.find_one("users",{"email":email})
+		if data is not None:
+			return data['email']
+		else:
+			return None
+	@classmethod
 	def valid_login(cls,email,password):
+		#context needed here!
 		user = cls.get_by_email(email)
 		if user is not None:
-			return user.password == bcrypt.hashpw(password.encode('utf-8'))
+			return bcrypt.checkpw(password.encode("utf-8"),user["password"])
 		return False
 	@classmethod
 	def register(cls,username,email,passw):
-		user = cls.get_by_email(email)
+		user = cls.get_only_email(email)
 		if user is None:
 			guest = cls(username,email,passw)
 			guest.savemongo()
 			dataSaved = cls.get_by_email(email)
-			session["uuid"] = dataSaved["_id"]
-			print(True)
+			cls.init_login(dataSaved["_id"])
 			return True
 		else:
 			return False
 	@classmethod
-	def login(_id):
-		session['log_in'] = True
-		session['uuid']=_id
+	def login(cls,_id):
+		cls.init_login(_id)
 	@classmethod
 	def is_admin(cls,_id):
 		data = cls.get_by_id(_id)
 		return data["admin"]==True
 	@classmethod
-	def logout():
+	def logout(cls):
 		session["uuid"] = None
 		session['log_in'] =False
+	@classmethod
+	def init_login(self,_id):
+		session['log_in'] = True
+		session['uuid']=_id
 	def json(self):
 		return {
 		"username":self.username,

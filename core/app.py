@@ -21,8 +21,6 @@ def auth():
 
 @app.route('/login', methods=['POST'])
 def login():
-
-
     email= request.form['email']
     password = request.form['password']
     #TODO by Houssem 1- sanatize data passed from user
