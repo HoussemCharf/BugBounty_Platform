@@ -3,7 +3,7 @@ import datetime
 from flask import session
 from utils.Database import Database
 import bcrypt
-from  ReportModel import Report
+from  models.ReportModel import Report
 class User(object):
 	def __init__(self,username,email,password,_id=None,registeredOn=None,admin=False):
 		self.username = username

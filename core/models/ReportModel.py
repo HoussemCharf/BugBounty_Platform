@@ -1,11 +1,11 @@
 from datetime import datetime
 import uuid
 from flask import session
-from utils.Database import base
-import bcrypt
+from utils.Database import Database as base
+
 
 class Report(object):
-	def __init__ (self,reportId=None,reportName,reportType,reportDate=None,reportLevel,reportFile,reportContent,reportOwner,reportScore=0):
+	def __init__ (self,reportName,reportType,reportLevel,reportFile,reportContent,reportOwner,reportDate=None,reportId=None,reportScore=0):
 		self.reportId = uuid.uuid4().hex if _id is None else _id
 		self.reportName = reportName
 		self.reportType = reportType

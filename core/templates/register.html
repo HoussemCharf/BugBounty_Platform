@@ -6,10 +6,7 @@
             <form method=POST action="{{ url_for('register') }}">
                 <div class="form-group">
                     <label for="InputUsername">Username</label>
-                    <div class="input-group">
-                        <span class="input-group-addon" id="sizing-addon2">@</span>
-                        <input type="text" class="form-control" name="name" placeholder="Username" aria-describedby="sizing-addon2">
-                    </div>
+                    <input type="text" class="form-control" name="name" placeholder="Username">
                 </div>
                 <div class="form-group">
                     <label for="InputEmail">Email</label>
@@ -19,6 +16,7 @@
                     <label for="InputPassword">Password</label>
                     <input type="password" class="form-control" name="password" placeholder="Password">
                 </div>
+                <br>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
             </form>
             <br>

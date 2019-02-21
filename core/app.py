@@ -25,18 +25,6 @@ def index():
 @app.route('/auth',methods=['GET'])
 def auth():
     return view.render_template(view='auth.html') 
-
-
-@app.route('/reports/<string:')
-@app.route('/reports',methodes=['GET'])
-def reports(user_id=None):
-    if session['log_in'] == True:
-        reports = User.get_reports(session['uuid'])
-        return view.render_template(view='reports.html',reports=reports)
-    else:
-        redirect(url_for('index'))
-
-
 @app.route('/login', methods=['POST'])
 def login():
     email= request.form['email']
@@ -50,12 +38,33 @@ def login():
         return redirect(url_for('index'))
     else:
         return redirect(url_for('auth'))
-
+@app.route('/reports',methods=['GET'])
+def reports():
+    if session['log_in'] == True:
+        _id = session['uuid']
+        username = User.get_username(session["uuid"])
+        is_admin = User.is_admin(session["uuid"])
+        email = User.get_email_by_id(session["uuid"])
+        posts = User.get_reports(_id)
+        return view.render_template(view='reports.html',posts=posts,username=username,admin=is_admin,email=email)
+    else:
+        return redirect(url_for('index'))
 @app.route('/logout',methods=['POST','GET'])
 def logout():
 	User.logout()
 	return redirect(url_for('index'))
 
+@app.route('/addreport',methods=['GET','POST'])
+def new_report():
+    if session['log_in']== True:
+        _id = session['uuid']
+        username = User.get_username(session["uuid"])
+        is_admin = User.is_admin(session["uuid"])
+        email = User.get_email_by_id(session["uuid"])
+        posts = User.get_reports(_id)
+        return view.render_template(view='add.html',posts=posts,username=username,admin=is_admin,email=email)
+    else:
+        return redirect(url_for(index))
 @app.route('/register', methods=['POST','GET'])
 def register():
     if request.method == 'POST':
