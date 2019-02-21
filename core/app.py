@@ -53,7 +53,12 @@ def reports():
 def logout():
 	User.logout()
 	return redirect(url_for('index'))
-
+@app.route('/administration',methods=['GET','POST'])
+def administration():
+    if session['log_in']==True:
+        return view.render_template(view='admin/admin.html')
+    else:
+        return redirect(url_for('index'))
 @app.route('/addreport',methods=['GET','POST'])
 def new_report():
     if session['log_in']== True:
