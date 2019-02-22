@@ -72,7 +72,6 @@ def new_report():
         return redirect(url_for(index))
 @app.route('/register', methods=['POST','GET'])
 def register():
-    
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -83,7 +82,6 @@ def register():
             return redirect(url_for('index'))
         return 'Account already exists!'
     if request.method == 'GET' and session['log_in'] == True :
-        return 'you re already logged in please log out and try to register a new user'
         return redirect(url_for('index'))        
     return view.render_template(view='register.html')
 
