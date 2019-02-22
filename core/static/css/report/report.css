@@ -1,0 +1,48 @@
+.container.custom-container {
+      top:0px;
+        padding-top:20px;
+        margin:auto; position:relative;
+        width:950px;
+        height:100%;
+        margin-left:150px;
+     
+}
+
+.md-textarea {
+        width:400px;
+
+ 
+}
+.form-control-file {
+        margin-left:15px;
+}
+.btn {
+        margin-left: 676px;
+        margin-top:-38px;
+        height:30px;
+        width:100px;
+}
+#textdescription{
+        margin-top:4px;
+}
+#textarea1 {
+        margin-top : 10px;
+}
+progress[value]::-webkit-progress-value {
+  background-image:
+       -webkit-linear-gradient(-45deg, 
+                               transparent 33%, rgba(0, 0, 0, .1) 33%, 
+                               rgba(0,0, 0, .1) 66%, transparent 66%),
+       -webkit-linear-gradient(top, 
+                               rgba(255, 255, 255, .25), 
+                               rgba(0, 0, 0, .25)),
+       -webkit-linear-gradient(left,#09c, #f44);
+    border-radius: 1px; 
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+}
+progress[value]::-webkit-progress-bar {
+  background-color:transparent;}
+#progressBar {
+    margin-top :30px;
+    margin-left:-17px;
+}
