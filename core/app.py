@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, request, session, redirect
 from config import Development_Config as conf
 from config import StaticVars as static_vars
 from utils.Database import Database as base
+from utils.sanatize import check_email, ready_to_get_banned,check_password,check_username
 from models.Usermodel import User
 from view.viewer import view
 import os
@@ -77,13 +78,21 @@ def register():
         password = request.form['password']
         username = request.form['name']
         #TODO by houssem 1- sanatize data passed from user
-        user = User.register(username,email,password)
-        if user:
+        if  check_email(email) == True and check_password(password) == True  and check_username(username) == True :
+            user = User.register(username,email,password)
+            if user:
+                return redirect(url_for('index'))
+            return 'Account already exists!'
+        else:
             return redirect(url_for('index'))
-        return 'Account already exists!'
-    if request.method == 'GET' and session['log_in'] == True :
-        return redirect(url_for('index'))        
+    if session.get('log_in') != None :
+        if session['log_in'] == True and request.method== 'GET':
+            return redirect(url_for('index'))       
     return view.render_template(view='register.html')
+@app.route('/gotcha', methods=['GET'])
+def found_you():
+    #just a route to check if ip return func is running ===> returns 127.0.0.1 with no proxy
+    return(ready_to_get_banned())
 
 @app.errorhandler(404)
 def not_found(error):
