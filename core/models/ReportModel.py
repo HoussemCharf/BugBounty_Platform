@@ -5,7 +5,7 @@ from utils.Database import Database as base
 
 
 class Report(object):
-	def __init__ (self,reportName,reportType,reportLevel,reportFile,reportContent,reportOwner,reportDate=None,reportId=None,reportScore=0):
+	def __init__ (self,reportName,reportType,reportLevel,reportFile,reportContent,reportOwner,AttackVector,AttackComplexity,PrivilegesRequired,reportDate=None,reportId=None,reportScore=0):
 		self.reportId = uuid.uuid4().hex if _id is None else _id
 		self.reportName = reportName
 		self.reportType = reportType
@@ -15,6 +15,10 @@ class Report(object):
 		self.reportContent = reportContent
 		self.reportOwner = reportOwner
 		self.reportScore = reportScore
+		self.AttackVector = AttackVector
+		self.AttackComplexity = AttackComplexity
+		self.PrivilegesRequired = PrivilegesRequired
+		
 	@classmethod
 	def get_report_name(cls,reportId):
 		data = base.find_one("reports",{"reportId":reportId})
@@ -55,11 +59,27 @@ class Report(object):
 	def register_report(cls,reportName,reportType,reportLevel,reportFile,reportContent,reportOwner):
 		#TODO fix report file saving
 		try:
-			unsavedReport = cls(reportName,reportType,reportLevel,reportFile,reportContent,reportOwner)
+			unsavedReport = cls(reportName,reportType,reportLevel,reportFile,reportContent,reportOwner,AttackComplexity,AttackVector,PrivilegesRequired)
 			unsavedReport.save_mongo()
 			return True
 		except:
 			return False
+	@classmethod
+	def get_attack_vector(cls,reportId):
+		data = base.find_one("reports",{"reportID" : reportId})
+		if data is not None:
+			return data['AttackVector']
+
+	@classmethod
+	def get_attack_complexity(cls,reportId):
+		data = base.find_one("reports",{"reportId" : reportId})
+		if data is not None:
+			return data['AttackComplexity']
+	@classmethod
+	def get_priviliges(cls,reportId):
+		data = base.find_one("reports",{"reportId" : reportId})
+		if data is not None:
+			return data['PrivilegesRequired']
 	def json(self):
 		return{
 		"reportName":self.reportName,
@@ -67,7 +87,10 @@ class Report(object):
 		"reportLevel":self.reportLevel,
 		"reportFile":self.reportFile,
 		"reportContent":self.reportContent,
-		"reportOwner":self.reportOwner
+		"reportOwner":self.reportOwner,
+		"AttackVector":self.AttackVector,
+		"AttackComplexity":self.AttackComplexity,
+		"PrivilegesRequired":self.PrivilegesRequired
 		}
 	def save_mongo(self):
 		base.insert("reports",self.json)

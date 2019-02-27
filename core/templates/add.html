@@ -34,26 +34,52 @@
                         <option id="option3" value="80"> High </option> 
                     </select></div>
                     <div class="col-md-2">
-                   <progress id='progressBar' max='100' value='0' style="width:100%;height:25px;background-color:transparent; border-radius: 2px;
+                   <progress id='progressBar' max='100' value='0' style="width:60%;height:13px;background-color:transparent; border-radius: 2px;
                         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;"></progress>
-                </div>
+                    </div>
             </div>        
             
             <div class="row" ><br>
-                <div id="textdescription" class="col-md-9 col-md-offset-1">
+                <div id="textdescription" class="col-md-7 col-md-offset-1">
                     <strong> Description</strong>
                     <br>
-                    <textarea placeholder="Description field must contain information" name="reportDescription" class="form-control" id="textarea1" rows="11" cols="20" ></textarea>
+                    <textarea placeholder="Description field must contain information" name="reportDescription"
+                     class="form-control" id="textarea1" rows="11"  ></textarea>
+                </div>
+                 
+                   <div id="AttackVector" class="col-md-2" style="margin-top:5px">    
+                    <label for="AttackVector"> Attack Vector(AV)</label>
+                    <select name="AttackVector" class="form-control" style="margin-top:3px">
+                        <option id="option1" > Network(N) </option>
+                        <option id="option2" > Adjacent(N)</option>
+                        <option id="option3" > Local(L) </option>
+                        <option id="option4"  > Physical(P) </option></select>
                 </div>
             </div>
+            <div class="row">
+                <div id="AttackComplexity" class="col-md-2 col-md-offset-8" style="margin-top:-190px">
+                    <label id="AttackComplexity">  Attack Complexity(AC)</label>
+                    <select name="Attackcomplexity" class="form-control" style="margin-top:3px">
+                        <option id="option1" > Low(L) </option>
+                        <option id="option2" > High(H)</option></select> 
+                </div>
+            </div>
+            <div class="row">
+                 <div id="PrivilegesRequired" class="col-md-2 col-md-offset-8" style="margin-top:-120px" >
+                    <label id="PrivilegesRequired">PriviligesRequired(PR)</label>
+                    <select name="PrivilegesRequired" class="form-control" style="margin-top:3px">
+                        <option id="option1" > None(N) </option>
+                        <option id="option2" > Low(L) </option>
+                        <option id="option3" > High(H)</option></select> 
+                 </div> 
+            </div>             
+            
             <div class="row" id=reportContent>
                 <div class="cold-md-1 col-md-offset-1">
                     <label for="InputFile"></label>
                     <input type=file  name="reportContent" class=form-control-file>
                 </div>
-            
-            
-                    <button type="submit" class="btn btn-primary">report</button>
+                    <button type="submit" class="btn btn-primary" style="margin-left : 685px">report</button>
                 </div>
             </div>
         </form>
@@ -62,4 +88,5 @@
 </div>
 </article>
 </section>
+</div>
 {% endblock %}
