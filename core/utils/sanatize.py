@@ -26,4 +26,4 @@ def ready_to_get_banned():
 		#proxy involved
 	else:
 		return(request.environ['HTTP_X_FORWARDED_FOR'])
-	return ('you have no connected IPs')'''
+	return ('you have no connected IPs')
