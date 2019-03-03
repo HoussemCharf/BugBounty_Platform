@@ -4,8 +4,10 @@ from config import StaticVars as static_vars
 from utils.Database import Database as base
 from utils.sanatize import check_email, ready_to_get_banned,check_password,check_username
 from models.Usermodel import User
+from models.ReportModel import Report 
 from view.viewer import view
 import os
+
 
 
 app = Flask(__name__)
@@ -62,7 +64,23 @@ def administration():
         return redirect(url_for('index'))
 @app.route('/addreport',methods=['GET','POST'])
 def new_report():
-    if session['log_in']== True:
+    if session['log_in'] == True:
+        if request.method == 'POST':          
+            reportOwner = session['uuid']
+            reportName = request.form['reportName']
+            reportType = request.form['reportType']
+            reportLevel = request.form['reportLevel']      
+            AttackVector = request.form['AttackVector']
+            reportDescription = request.form['reportDescription']
+            getprivilege = request.form['getprivilege']
+            AttackComplexity = request.form['AttackComplexity']
+            if 'reportContent' in request.files :
+                reportContent = request.files['reportContent']
+                reportFile = reportContent.filename
+                report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportContent)     
+        return view.render_template(view='add.html')
+    return redirect(url_for('index'))
+    '''if session['log_in']== True: 
         _id = session['uuid']
         username = User.get_username(session["uuid"])
         is_admin = User.is_admin(session["uuid"])
@@ -70,7 +88,7 @@ def new_report():
         posts = User.get_reports(_id)
         return view.render_template(view='add.html',posts=posts,username=username,admin=is_admin,email=email)
     else:
-        return redirect(url_for(index))
+        return redirect(url_for(index))'''
 @app.route('/register', methods=['POST','GET'])
 def register():
     if request.method == 'POST':

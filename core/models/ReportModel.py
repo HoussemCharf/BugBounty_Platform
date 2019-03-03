@@ -3,22 +3,21 @@ import uuid
 from flask import session
 from utils.Database import Database as base
 
-
 class Report(object):
-	def __init__ (self,reportName,reportType,reportLevel,reportFile,reportContent,reportOwner,AttackVector,AttackComplexity,PrivilegesRequired,reportDate=None,reportId=None,reportScore=0):
-		self.reportId = uuid.uuid4().hex if _id is None else _id
+	def __init__ (self,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportContent,reportDate=None,reportId=None,reportScore=0):
+		self.reportId = uuid.uuid4().hex if reportId is None else reportId
 		self.reportName = reportName
 		self.reportType = reportType
 		self.reportDate = datetime.now()
 		self.reportLevel = reportLevel
-		self.reportFile = reportFile
-		self.reportContent = reportContent
 		self.reportOwner = reportOwner
 		self.reportScore = reportScore
 		self.AttackVector = AttackVector
 		self.AttackComplexity = AttackComplexity
-		self.PrivilegesRequired = PrivilegesRequired
-		
+		self.getprivilege = getprivilege
+		self.reportDescription = reportDescription
+		self.reportFile = reportFile
+		self.reportContent = reportContent.read()
 	@classmethod
 	def get_report_name(cls,reportId):
 		data = base.find_one("reports",{"reportId":reportId})
@@ -56,41 +55,51 @@ class Report(object):
 		else:
 			return False
 	@classmethod
-	def register_report(cls,reportName,reportType,reportLevel,reportFile,reportContent,reportOwner):
-		#TODO fix report file saving
-		try:
-			unsavedReport = cls(reportName,reportType,reportLevel,reportFile,reportContent,reportOwner,AttackComplexity,AttackVector,PrivilegesRequired)
+	def register_report(cls,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportContent):
+		#TODO fix report file saving	
+		unsavedReport = cls(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportContent)	
+		if unsavedReport is not None:
 			unsavedReport.save_mongo()
-			return True
-		except:
-			return False
-	@classmethod
-	def get_attack_vector(cls,reportId):
-		data = base.find_one("reports",{"reportID" : reportId})
-		if data is not None:
-			return data['AttackVector']
 
 	@classmethod
+	def get_attack_vector(cls,reportId):
+		data = base.find_one("reports",{"reportId":reportId})
+		if data is not None:
+			return data['AttackVector']
+	@classmethod
 	def get_attack_complexity(cls,reportId):
-		data = base.find_one("reports",{"reportId" : reportId})
+		data = base.find_one("reports",{"reportId":reportId})
 		if data is not None:
 			return data['AttackComplexity']
 	@classmethod
 	def get_priviliges(cls,reportId):
+		data = base.find_one("reports",{"reportId":reportId})
+		if data is not None:
+			return data['getprivilege']
+	@classmethod
+	def get_reportFile(cls,reportId):
 		data = base.find_one("reports",{"reportId" : reportId})
 		if data is not None:
-			return data['PrivilegesRequired']
+			return data['reportFile']
+	@classmethod
+	def get_reportContent(cls,reprotId):
+		data = base.find_one("reports",{"reportId": reportId})
+		if data is not None:
+			return data ['reportContent']
 	def json(self):
 		return{
 		"reportName":self.reportName,
 		"reportType":self.reportType,
 		"reportLevel":self.reportLevel,
-		"reportFile":self.reportFile,
-		"reportContent":self.reportContent,
 		"reportOwner":self.reportOwner,
 		"AttackVector":self.AttackVector,
 		"AttackComplexity":self.AttackComplexity,
-		"PrivilegesRequired":self.PrivilegesRequired
-		}
+		"getprivilege":self.getprivilege,
+		"reportId":self.reportId,
+		"reportDate" :self.reportDate,
+		"reportScore" : self.reportScore,
+		"reportFile" : self.reportFile,
+		"reportContent" : self.reportContent,
+		"reportDescription" : self.reportDescription}
 	def save_mongo(self):
-		base.insert("reports",self.json)
+		base.insert("reports",self.json())

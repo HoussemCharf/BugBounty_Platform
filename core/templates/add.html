@@ -10,8 +10,8 @@
   
     </div>
 <div class="row">
-          <form method=POST action="#" enctype='multipart/form-data'>
-            <div class="row" id=firstrow>
+          <form method=POST action="#" enctype="multipart/form-data">
+            <div class="row" id="firstrow">
                 <div class="col-md-5 col-md-offset-1" >
                     <label for="InputbugName">Bug name </label>
                     <input type="text" class="form-control" name="reportName" placeholder="Bug name">
@@ -21,8 +21,8 @@
                     <label for="InputbugType">Bug type </label>
                     <select name="reportType" class="form-control">
                         <option value=" " disabled selected>Type</option>
-                        <option id="option1" value="0" > T1 </option>
-                        <option id="option2" value="0"> T2 </option>
+                        <option id="option1"  > T1 </option>
+                        <option id="option2" > T2 </option>
                     </select> 
                 </div>
                 <div class="col-md-2" id="reportLevel">
@@ -47,8 +47,8 @@
                      class="form-control" id="textarea1" rows="11"  ></textarea>
                 </div>
                  
-                   <div id="AttackVector" class="col-md-2" style="margin-top:5px">    
-                    <label for="AttackVector"> Attack Vector(AV)</label>
+                   <div id="AttackVector1" class="col-md-2" style="margin-top:5px">    
+                    <label for="AttackVector2"> Attack Vector(AV)</label>
                     <select name="AttackVector" class="form-control" style="margin-top:3px">
                         <option id="option1" > Network(N) </option>
                         <option id="option2" > Adjacent(N)</option>
@@ -57,32 +57,31 @@
                 </div>
             </div>
             <div class="row">
-                <div id="AttackComplexity" class="col-md-2 col-md-offset-8" style="margin-top:-190px">
-                    <label id="AttackComplexity">  Attack Complexity(AC)</label>
-                    <select name="Attackcomplexity" class="form-control" style="margin-top:3px">
+                <div id="AttackComplexity1" class="col-md-2 col-md-offset-8" style="margin-top:-190px">
+                    <label id="AttackComplexity2">  Attack Complexity(AC)</label>
+                    <select name="AttackComplexity" class="form-control" style="margin-top:3px">
                         <option id="option1" > Low(L) </option>
                         <option id="option2" > High(H)</option></select> 
                 </div>
             </div>
             <div class="row">
-                 <div id="PrivilegesRequired" class="col-md-2 col-md-offset-8" style="margin-top:-120px" >
-                    <label id="PrivilegesRequired">PriviligesRequired(PR)</label>
-                    <select name="PrivilegesRequired" class="form-control" style="margin-top:3px">
+                 <div id="getprivilege1" class="col-md-2 col-md-offset-8" style="margin-top:-120px" >
+                    <label id="getprivilege2">PriviligesRequired(PR)</label>
+                    <select name="getprivilege" class="form-control" style="margin-top:3px">
                         <option id="option1" > None(N) </option>
                         <option id="option2" > Low(L) </option>
                         <option id="option3" > High(H)</option></select> 
                  </div> 
             </div>             
-            
             <div class="row" id=reportContent>
                 <div class="cold-md-1 col-md-offset-1">
-                    <label for="InputFile"></label>
-                    <input type=file  name="reportContent" class=form-control-file>
+                    <label for="reportContent"></label>
+                    <input type="file"  name="reportContent" class=form-control-file >
                 </div>
-                    <button type="submit" class="btn btn-primary" style="margin-left : 685px">report</button>
+                    <button type="submit" class="btn btn-primary" value="post" style="margin-left : 685px">report</button>
                 </div>
             </div>
-        </form>
+        </form></form>
 </div><br>
 <br>
 </div>
