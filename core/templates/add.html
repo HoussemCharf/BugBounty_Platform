@@ -14,7 +14,7 @@
             <div class="row" id="firstrow">
                 <div class="col-md-5 col-md-offset-1" >
                     <label for="InputbugName">Bug name </label>
-                    <input type="text" class="form-control" name="reportName" placeholder="Bug name">
+                    <input type="text" class="form-control" name="reportName" placeholder="Bug name" required="Please fill in report name!">
                 </div>
             
                 <div class="col-md-2">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-2" id="reportLevel">
                     <label for="InputthreatLevel">Threat level </label>
-                    <select  id='selectA' name="reportLevel" class="form-control">
+                    <select  id='selectA' name="reportLevel" class="form-control" required="please seclect a level!">
                         <option value="" disabled selected>Select a level</option>
                         <option id="option1" value="25"> Low </option>
                         <option id="option2" value="50"> Medium</option>
@@ -44,12 +44,12 @@
                     <strong> Description</strong>
                     <br>
                     <textarea placeholder="Description field must contain information" name="reportDescription"
-                     class="form-control" id="textarea1" rows="11"  ></textarea>
+                     class="form-control" id="textarea1" rows="11"  required="Fill out Description!"></textarea>
                 </div>
                  
                    <div id="AttackVector1" class="col-md-2" style="margin-top:5px">    
                     <label for="AttackVector2"> Attack Vector(AV)</label>
-                    <select name="AttackVector" class="form-control" style="margin-top:3px">
+                    <select name="AttackVector" class="form-control" style="margin-top:3px" required="Please choose attack vector!">
                         <option id="option1" > Network(N) </option>
                         <option id="option2" > Adjacent(N)</option>
                         <option id="option3" > Local(L) </option>
@@ -59,7 +59,7 @@
             <div class="row">
                 <div id="AttackComplexity1" class="col-md-2 col-md-offset-8" style="margin-top:-190px">
                     <label id="AttackComplexity2">  Attack Complexity(AC)</label>
-                    <select name="AttackComplexity" class="form-control" style="margin-top:3px">
+                    <select name="AttackComplexity" class="form-control" style="margin-top:3px" required="Please choose an attack Complexity!">
                         <option id="option1" > Low(L) </option>
                         <option id="option2" > High(H)</option></select> 
                 </div>
@@ -67,7 +67,7 @@
             <div class="row">
                  <div id="getprivilege1" class="col-md-2 col-md-offset-8" style="margin-top:-120px" >
                     <label id="getprivilege2">PriviligesRequired(PR)</label>
-                    <select name="getprivilege" class="form-control" style="margin-top:3px">
+                    <select name="getprivilege" class="form-control" style="margin-top:3px" required="Please choose a privlage required!"> 
                         <option id="option1" > None(N) </option>
                         <option id="option2" > Low(L) </option>
                         <option id="option3" > High(H)</option></select> 
@@ -78,8 +78,14 @@
                     <label for="reportContent"></label>
                     <input type="file"  name="reportContent" class=form-control-file >
                 </div>
-                    <button type="submit" class="btn btn-primary" value="post" style="margin-left : 685px">report</button>
+                    <button type="submit" class="btn btn-primary">report</button>
                 </div>
+                {% if error!=None %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                {% endif %}
+                {% if success!=None %}
+                    <div class="alert alert-success" role="alert">{{success}}</div>
+                {% endif %}
             </div>
         </form></form>
 </div><br>

@@ -4,7 +4,7 @@ from flask import session
 from utils.Database import Database as base
 
 class Report(object):
-	def __init__ (self,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportContent,reportDate=None,reportId=None,reportScore=0):
+	def __init__ (self,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportDate=None,reportId=None,reportScore=0):
 		self.reportId = uuid.uuid4().hex if reportId is None else reportId
 		self.reportName = reportName
 		self.reportType = reportType
@@ -17,7 +17,6 @@ class Report(object):
 		self.getprivilege = getprivilege
 		self.reportDescription = reportDescription
 		self.reportFile = reportFile
-		self.reportContent = reportContent.read()
 	@classmethod
 	def get_report_name(cls,reportId):
 		data = base.find_one("reports",{"reportId":reportId})
@@ -99,7 +98,6 @@ class Report(object):
 		"reportDate" :self.reportDate,
 		"reportScore" : self.reportScore,
 		"reportFile" : self.reportFile,
-		"reportContent" : self.reportContent,
 		"reportDescription" : self.reportDescription}
 	def save_mongo(self):
 		base.insert("reports",self.json())

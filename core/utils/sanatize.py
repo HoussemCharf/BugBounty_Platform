@@ -3,7 +3,17 @@ from flask import session
 from flask import request,redirect,url_for
 from models.Usermodel import User
 
-
+def check_form_empty(form):
+	values = form.values()
+	for x in values:
+		if len(x)==0:
+			return True
+	return False
+def secure_file_name(filename):
+	_id = session['uuid']
+	dotexploded=filename.split('.')
+	cyphered = dotexploded[0]+_id[:5]+dotexploded[len(dotexploded)-1]
+	return cyphered
 def check_email(email):
 	#regex is updatable to the needs"
 	if not re.match("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",email):

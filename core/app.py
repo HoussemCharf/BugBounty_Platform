@@ -2,13 +2,11 @@ from flask import Flask, render_template, url_for, request, session, redirect
 from config import Development_Config as conf
 from config import StaticVars as static_vars
 from utils.Database import Database as base
-from utils.sanatize import check_email, ready_to_get_banned,check_password,check_username
+from utils.sanatize import *
 from models.Usermodel import User
 from models.ReportModel import Report 
 from view.viewer import view
 import os
-
-
 
 app = Flask(__name__)
 
@@ -20,9 +18,10 @@ def index():
     # if user is logged in setting up vars to be used in rendering the index template
     if session.get('log_in') != None: 
         if session['log_in'] == True:
-            username = User.get_username(session["uuid"])
-            is_admin = User.is_admin(session["uuid"])
-            email = User.get_email_by_id(session["uuid"])
+            _id=session['uuid']
+            username = User.get_username(_id)
+            is_admin = User.is_admin(_id)
+            email = User.get_email_by_id(_id)
             return view.render_template(view='home.html',username=username,admin=is_admin,email=email)
     return view.render_template(view='home.html')
 @app.route('/auth',methods=['GET'])
@@ -33,7 +32,6 @@ def login():
     email= request.form['email']
     password = request.form['password']
     #TODO by Houssem 1- sanatize data passed from user
-    print(User.valid_login(email,password))
     if User.valid_login(email,password):
         # Hacky code here <.<
         uuid = User.get_id_by_email(email)
@@ -45,9 +43,9 @@ def login():
 def reports():
     if session['log_in'] == True:
         _id = session['uuid']
-        username = User.get_username(session["uuid"])
-        is_admin = User.is_admin(session["uuid"])
-        email = User.get_email_by_id(session["uuid"])
+        username = User.get_username(_id)
+        is_admin = User.is_admin(_id)
+        email = User.get_email_by_id(_id)
         reports = User.get_reports(_id)
         return view.render_template(view='reports.html',reports=reports,username=username,admin=is_admin,email=email)
     else:
@@ -65,30 +63,37 @@ def administration():
 @app.route('/addreport',methods=['GET','POST'])
 def new_report():
     if session['log_in'] == True:
-        if request.method == 'POST':          
-            reportOwner = session['uuid']
-            reportName = request.form['reportName']
-            reportType = request.form['reportType']
-            reportLevel = request.form['reportLevel']      
-            AttackVector = request.form['AttackVector']
-            reportDescription = request.form['reportDescription']
-            getprivilege = request.form['getprivilege']
-            AttackComplexity = request.form['AttackComplexity']
-            if 'reportContent' in request.files :
-                reportContent = request.files['reportContent']
-                reportFile = reportContent.filename
-                report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportContent)     
-        return view.render_template(view='add.html')
+        if request.method == 'POST':
+            if check_form_empty(request.form):
+                error='Please fill all the form before submiting'
+                return view.render_template(view='add.html',error=error)
+            else:
+            # an error that produces when you submit the form missing fields.          
+                reportOwner =session['uuid']
+                reportName = request.form['reportName']
+                reportType = request.form['reportType']
+                reportLevel = request.form['reportLevel']      
+                AttackVector = request.form['AttackVector']
+                reportDescription = request.form['reportDescription']
+                getprivilege = request.form['getprivilege']
+                AttackComplexity = request.form['AttackComplexity']
+                #handle file upload section
+                file = request.files['reportContent']
+                reportFile = None
+                if file:
+                    reportFile = secure_file_name(file.filename)
+                    file.save(os.path.join(conf.UPLOAD_FOLDER),reportFile)
+                report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
+                success = 'Reported submitted successfully!'
+                return view.render_template(view='add.html',username=username,admin=is_admin,email=email,success=success)
+        elif request.method == 'GET':
+            _id = session['uuid']
+            username = User.get_username(_id)
+            is_admin = User.is_admin(_id)
+            email = User.get_email_by_id(_id)
+            posts = User.get_reports(_id)
+            return view.render_template(view='add.html',username=username,admin=is_admin,email=email)
     return redirect(url_for('index'))
-    '''if session['log_in']== True: 
-        _id = session['uuid']
-        username = User.get_username(session["uuid"])
-        is_admin = User.is_admin(session["uuid"])
-        email = User.get_email_by_id(session["uuid"])
-        posts = User.get_reports(_id)
-        return view.render_template(view='add.html',posts=posts,username=username,admin=is_admin,email=email)
-    else:
-        return redirect(url_for(index))'''
 @app.route('/register', methods=['POST','GET'])
 def register():
     if request.method == 'POST':
@@ -117,4 +122,4 @@ def not_found(error):
     return view.render_template(view='error.html'), 404
 if __name__ == '__main__':
     app.secret_key = conf.SECRET_KEY
-app.run(debug=conf.DEBUG)
+app.run(ssl_context='adhoc',port=5000,debug=conf.DEBUG)

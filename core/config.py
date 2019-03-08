@@ -6,6 +6,7 @@ class BaseConfig:
 	MONGO_URI='mongodb://localhost:27017/iset_bugbounty'
 	DEBUG= False
 	database_name= 'iset_bugbounty'
+	UPLOAD_FOLDER='uprep1'
 
 class StaticVars:
 	""" global vars to be passed"""

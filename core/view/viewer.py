@@ -4,5 +4,5 @@ from config import BaseConfig as conf
 
 class view(object):
 	@staticmethod
-	def render_template(view,session=session,static_vars=static_vars,error=None,**kwargs):
-		return render_template(view,session=session,static_vars=static_vars,error=error,**kwargs)
+	def render_template(view,session=session,static_vars=static_vars,error=None,success=None,**kwargs):
+		return render_template(view,session=session,static_vars=static_vars,error=error,success=success,**kwargs)
