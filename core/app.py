@@ -57,7 +57,12 @@ def logout():
 @app.route('/administration',methods=['GET','POST'])
 def administration():
     if session['log_in']==True:
-        return view.render_template(view='admin/admin.html')
+        _id = session['uuid']
+        username = User.get_username(_id)
+        is_admin = User.is_admin(_id)
+        email = User.get_email_by_id(_id)
+        reports = User.get_reports(_id)
+        return view.render_template(view='admin/admin.html',username=username,admin=is_admin,email=email)
     else:
         return redirect(url_for('index'))
 @app.route('/addreport',methods=['GET','POST'])
@@ -65,20 +70,20 @@ def new_report():
     if session['log_in'] == True:
         if request.method == 'POST':
             if check_form_empty(request.form):
-                error='Please fill all the form before submiting'
+                error='Please fill all the form before submiting!'
                 return view.render_template(view='add.html',error=error)
             else:
             # an error that produces when you submit the form missing fields.          
                 reportOwner =session['uuid']
-                reportName = request.form['reportName']
-                reportType = request.form['reportType']
-                reportLevel = request.form['reportLevel']      
-                AttackVector = request.form['AttackVector']
-                reportDescription = request.form['reportDescription']
-                getprivilege = request.form['getprivilege']
-                AttackComplexity = request.form['AttackComplexity']
-                #handle file upload section
-                file = request.files['reportContent']
+                reportName =request.form['reportName']
+                reportType =request.form['reportType']
+                reportLevel =request.form['reportLevel']      
+                AttackVector =request.form['AttackVector']
+                reportDescription =request.form['reportDescription']
+                getprivilege =request.form['getprivilege']
+                AttackComplexity =request.form['AttackComplexity']
+            # handle file upload section
+                file =request.files['reportContent']
                 reportFile = None
                 if file:
                     reportFile = secure_file_name(file.filename)
