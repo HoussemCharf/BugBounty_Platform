@@ -1,0 +1,19 @@
+{% extends "layout.html"%}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <form method=POST action="{{ url_for('settings') }}">
+            	<p><font size="3">Change your account's credentials</font> </p>
+                <div class="form-group">
+                    <label for="InputUsername">New Username </label>
+                    <input type="text" class="form-control" name="username" placeholder="New Username">
+                </div>
+                <div class="form-group">
+                    <label for="InputNewPassword"> New Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="New password">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary btn-block">Update</button>
+            </form>                
+{% endblock %}

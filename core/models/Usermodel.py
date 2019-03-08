@@ -5,10 +5,12 @@ from utils.Database import Database
 import bcrypt
 from  models.ReportModel import Report
 class User(object):
-	def __init__(self,username,email,password,_id=None,registeredOn=None,admin=False):
+	def __init__(self,username,email,password,firstpartner,secondpartner,_id=None,registeredOn=None,admin=False):
 		self.username = username
 		self.email = email
 		self.password = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
+		self.firstpartner = firstpartner
+		self.secondpartner = secondpartner 
 		self._id = uuid.uuid4().hex if _id is None else _id
 		self.registeredOn=datetime.datetime.now()
 		self.admin = admin
@@ -55,10 +57,10 @@ class User(object):
 			return bcrypt.checkpw(password.encode("utf-8"),user["password"])
 		return False
 	@classmethod
-	def register(cls,username,email,passw):
+	def register(cls,username,email,password,firstpartner,secondpartner):
 		user = cls.get_only_email(email)
 		if user is None:
-			guest = cls(username,email,passw)
+			guest = cls (username,email,password,firstpartner,secondpartner)
 			guest.savemongo()
 			dataSaved = cls.get_by_email(email)
 			cls.init_login(dataSaved["_id"])
@@ -90,7 +92,9 @@ class User(object):
 		"_id":self._id,
 		"password":self.password,
 		"admin":self.admin,
-		"registeredOn":self.registeredOn
+		"registeredOn":self.registeredOn,
+		"firstpartner" : self.firstpartner,
+		"secondpartner" : self.secondpartner
 		}
 	def savemongo(self):
 		Database.insert("users",self.json())

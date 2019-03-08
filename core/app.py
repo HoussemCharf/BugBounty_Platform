@@ -65,6 +65,16 @@ def administration():
         return view.render_template(view='admin/admin.html',username=username,admin=is_admin,email=email)
     else:
         return redirect(url_for('index'))
+@app.route('/settings', methods=['GET','POST'])
+def settings():
+    if session['log_in']==True:
+        if request.method=='POST':
+            Newusername = request.form['username']
+            Newpassword = request.form['password']
+            User.update(Newpassword,Newusername)
+        return view.render_template(view='settings.html')
+    else:
+        return redirect(url_for('settings'))
 @app.route('/addreport',methods=['GET','POST'])
 def new_report():
     if session['log_in'] == True:
@@ -105,9 +115,11 @@ def register():
         email = request.form['email']
         password = request.form['password']
         username = request.form['name']
+        firstpartner = request.form['firstpartner']
+        secondpartner = request.form['secondpartner']
         #TODO by houssem 1- sanatize data passed from user
-        if  check_email(email) == True and check_password(password) == True  and check_username(username) == True :
-            user = User.register(username,email,password)
+        if  check_email(email) == True and check_password(password) == True  and check_username(username) == True:
+            user = User.register(username,email,password,firstpartner,secondpartner)
             if user:
                 return redirect(url_for('index'))
             return 'Account already exists!'
