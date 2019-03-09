@@ -68,10 +68,21 @@ def administration():
 @app.route('/settings', methods=['GET','POST'])
 def settings():
     if session['log_in']==True:
+        success=None
+        error=None
         if request.method=='POST':
+            _id = session['uuid']
             Newusername = request.form['username']
             Newpassword = request.form['password']
-            User.update(Newpassword,Newusername)
+            if check_username(Newusername) and Newusername!=None:
+                User.update(_id,"username",Newusername)
+                success = "Username changed succesfully!"
+            elif check_password(Newpassword) and Newpassword!=None:
+                User.update(_id,"password",Newpassword)
+                success = "Password changed successfully!"
+            else:
+                error = "Ops, Something wrong happened!"
+            return view.render_template(view='settings',success=success,error=error)
         return view.render_template(view='settings.html')
     else:
         return redirect(url_for('settings'))
@@ -97,6 +108,7 @@ def new_report():
                 reportFile = None
                 if file:
                     reportFile = secure_file_name(file.filename)
+                    print(os.path.join(conf.UPLOAD_FOLDER))
                     file.save(os.path.join(conf.UPLOAD_FOLDER),reportFile)
                 report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
                 success = 'Reported submitted successfully!'
