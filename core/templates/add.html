@@ -2,15 +2,23 @@
 {% block body %}
 <link href="{{ url_for('static', filename='css/report/report.css') }}" rel="stylesheet">
 <script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
-<h1 style="padding:0 465px;margin-top:70px;text-shadow:1px 1px" > Report Fields </h1>  
+
 <section id="content">
 <article>
 <div class="container">
     <div class="page-header">
-  
+  <h1 > Report Fields </h1>  
     </div>
+    <div class="row">
+                {% if error!=None %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                {% endif %}
+                {% if success!=None %}
+                    <div class="alert alert-success" role="alert">{{success}}</div>
+                {% endif %}
+</div>
 <div class="row">
-          <form method=POST action="#" enctype="multipart/form-data">
+          <form method=POST action="{{ url_for('new_report') }}" enctype="multipart/form-data">
             <div class="row" id="firstrow">
                 <div class="col-md-5 col-md-offset-1" >
                     <label for="InputbugName">Bug name </label>
@@ -50,27 +58,30 @@
                    <div id="AttackVector1" class="col-md-2" style="margin-top:5px">    
                     <label for="AttackVector2"> Attack Vector(AV)</label>
                     <select name="AttackVector" class="form-control" style="margin-top:3px" required="Please choose attack vector!">
-                        <option id="option1" > Network(N) </option>
-                        <option id="option2" > Adjacent(N)</option>
-                        <option id="option3" > Local(L) </option>
-                        <option id="option4"  > Physical(P) </option></select>
+                        <option value="" disabled selected>Select an AV</option>
+                        <option id="option1" > Network </option>
+                        <option id="option2" > Adjacent</option>
+                        <option id="option3"> Web </option>
+                        <option id="option4" > Local </option>
+                        <option id="option5"  > Physical </option></select>
                 </div>
             </div>
             <div class="row">
                 <div id="AttackComplexity1" class="col-md-2 col-md-offset-8" style="margin-top:-190px">
                     <label id="AttackComplexity2">  Attack Complexity(AC)</label>
                     <select name="AttackComplexity" class="form-control" style="margin-top:3px" required="Please choose an attack Complexity!">
-                        <option id="option1" > Low(L) </option>
-                        <option id="option2" > High(H)</option></select> 
+                        <option value="" disabled selected>Select an AC</option>
+                        <option id="option1" > Low</option>
+                        <option id="option2" > High</option></select> 
                 </div>
             </div>
             <div class="row">
                  <div id="getprivilege1" class="col-md-2 col-md-offset-8" style="margin-top:-120px" >
                     <label id="getprivilege2">PriviligesRequired(PR)</label>
-                    <select name="getprivilege" class="form-control" style="margin-top:3px" required="Please choose a privlage required!"> 
-                        <option id="option1" > None(N) </option>
-                        <option id="option2" > Low(L) </option>
-                        <option id="option3" > High(H)</option></select> 
+                    <select name="getprivilege" class="form-control" style="margin-top:3px" required="Please choose the privlage required!"> 
+                        <option value="" disabled selected>None</option>
+                        <option id="option2" >Low</option>
+                        <option id="option3" >High</option></select> 
                  </div> 
             </div>             
             <div class="row" id=reportContent>
@@ -80,14 +91,8 @@
                 </div>
                     <button type="submit" class="btn btn-primary">report</button>
                 </div>
-                {% if error!=None %}
-                    <div class="alert alert-danger" role="alert">{{error}}</div>
-                {% endif %}
-                {% if success!=None %}
-                    <div class="alert alert-success" role="alert">{{success}}</div>
-                {% endif %}
             </div>
-        </form></form>
+        </form>
 </div><br>
 <br>
 </div>

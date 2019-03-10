@@ -33,21 +33,44 @@
     </div>
       <!--add report sections-->
     </div><!-- /.row -->
-    {% if posts|length > 0 %}
+    {% if reports|length > 0 %}
     <table class="table table-striped">
         <thead>
           <tr>
             <th>Report name</th>
-            <th>Report level</th>
-            <th>Date</th>
+            <th>Report Description</th>
+            <th>Vector</th>
+            <th>Type</th>
+            <th>Attachment</th>
+            <th>Submission time</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
-        {% for post in posts %}
+        {% for post in reports %}
+
             <tr>
-                <td>{{ post.title }}</td>
-                <td>{{ post.content }}</td>
-                <td>{{ post.author }}</td>
+                <td>{{ post['reportName'] }}</td>
+                <td>{{ post['reportDescription'] }}</td>
+                <td>{{post['AttackVector']}}</td>
+                <td>{{post['reportType']}}</td>
+                {% if post['reportFile'] == None %}
+                    <td>No File Attached</td>
+                  {% else %}
+                    <td> {{post['reportFile']}}</td>
+                {% endif %}
+
+
+                <td>{{post['reportDate'].strftime("%H:%M:%S")}}</td>
+                  {% if post['report_status']==0 %}
+                    <td><span class="label label-warning">Pending</span></td>
+                  {% elif post['report_status']==1 %}
+                    <td><span class="label label-success">Accepted</span></td>
+                  {% elif post['report_status']==-1%}
+                    <td><span class="label label-danger">Rejected</span></td>
+                  {% else %}
+                    <td><span class="label label-default">Error</span></td>
+                  {% endif %}
             </tr>
         {% endfor %}
         </tbody>

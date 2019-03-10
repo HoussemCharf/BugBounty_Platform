@@ -47,7 +47,8 @@ def reports():
         is_admin = User.is_admin(_id)
         email = User.get_email_by_id(_id)
         reports = User.get_reports(_id)
-        return view.render_template(view='reports.html',reports=reports,username=username,admin=is_admin,email=email)
+        length = len(reports)
+        return view.render_template(view='reports.html',reports=reports,username=username,admin=is_admin,email=email,length=length)
     else:
         return redirect(url_for('index'))
 @app.route('/logout',methods=['POST','GET'])
@@ -62,7 +63,7 @@ def administration():
         is_admin = User.is_admin(_id)
         email = User.get_email_by_id(_id)
         reports = User.get_reports(_id)
-        return view.render_template(view='admin/admin.html',username=username,admin=is_admin,email=email)
+        return view.render_template(view='admin/admin.html',username=username,admin=is_admin,email=email,reports=reports)
     else:
         return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])
@@ -89,13 +90,17 @@ def settings():
 @app.route('/addreport',methods=['GET','POST'])
 def new_report():
     if session['log_in'] == True:
+        _id = session['uuid']
+        username = User.get_username(_id)
+        is_admin = User.is_admin(_id)
+        email = User.get_email_by_id(_id)
         if request.method == 'POST':
             if check_form_empty(request.form):
                 error='Please fill all the form before submiting!'
                 return view.render_template(view='add.html',error=error)
             else:
-            # an error that produces when you submit the form missing fields.          
-                reportOwner =session['uuid']
+                      
+                reportOwner =_id
                 reportName =request.form['reportName']
                 reportType =request.form['reportType']
                 reportLevel =request.form['reportLevel']      
@@ -104,22 +109,20 @@ def new_report():
                 getprivilege =request.form['getprivilege']
                 AttackComplexity =request.form['AttackComplexity']
             # handle file upload section
-                file =request.files['reportContent']
+                if 'reportContent' in request.files:
+                    file =request.files['reportContent']
+                else:
+                    file = False
                 reportFile = None
                 if file:
                     reportFile = secure_file_name(file.filename)
-                    print(os.path.join(conf.UPLOAD_FOLDER))
-                    file.save(os.path.join(conf.UPLOAD_FOLDER),reportFile)
+                    file.save(os.path.join(os.getcwd()+conf.UPLOAD_FOLDER,reportFile))
                 report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
                 success = 'Reported submitted successfully!'
                 return view.render_template(view='add.html',username=username,admin=is_admin,email=email,success=success)
         elif request.method == 'GET':
-            _id = session['uuid']
-            username = User.get_username(_id)
-            is_admin = User.is_admin(_id)
-            email = User.get_email_by_id(_id)
-            posts = User.get_reports(_id)
-            return view.render_template(view='add.html',username=username,admin=is_admin,email=email)
+            reports = User.get_reports(_id)
+            return view.render_template(view='add.html',username=username,admin=is_admin,email=email,reports=reports)
     return redirect(url_for('index'))
 @app.route('/register', methods=['POST','GET'])
 def register():
