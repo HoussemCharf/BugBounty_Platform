@@ -5,14 +5,17 @@ from models.Usermodel import User
 from werkzeug.utils import secure_filename
 import random
 import string
-def check_form_empty(form):
+def check_form_empty(form,filter=None):
 	values = form.values()
+	if filter is not None:
+		values.remove(filter)
 	for x in values:
 		if len(x)==0:
 			return True
 	return False
-#trying out lambda expression
+#Lambda expression MAN I AM in love <3
 secure_string = lambda n: ''.join([random.choice(string.ascii_lowercase) for i in xrange(n)])
+
 def secure_file_name(filename):
 	_id = session['uuid']
 	dotexploded=filename.split('.')

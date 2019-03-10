@@ -8,7 +8,7 @@ class BaseConfig:
 	database_name= 'iset_bugbounty'
 	UPLOAD_FOLDER='/core/uprep1'
 	ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
+	REPORT_LIMIT=5
 
 class StaticVars:
 	""" global vars to be passed"""

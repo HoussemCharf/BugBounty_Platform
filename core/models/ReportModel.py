@@ -89,6 +89,12 @@ class Report(object):
 		data = base.find_one("reports",{"reportId": reportId})
 		if data is not None:
 			return data ['reportContent']
+	@staticmethod
+	def get_reports_queue(reportOwner):
+		data = base.find("reports",{{"reportOwner":reportOwner},{"status":0}})
+		if data is not None:
+			return len(data)
+
 	def json(self):
 		return{
 		"reportName":self.reportName,
@@ -102,6 +108,8 @@ class Report(object):
 		"reportDate" :self.reportDate,
 		"reportScore" : self.reportScore,
 		"reportFile" : self.reportFile,
-		"reportDescription" : self.reportDescription}
+		"reportDescription" : self.reportDescription,
+		"status":self.report_status,
+		"locked":self.locked}
 	def save_mongo(self):
 		base.insert("reports",self.json())

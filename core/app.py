@@ -19,10 +19,7 @@ def index():
     if session.get('log_in') != None: 
         if session['log_in'] == True:
             _id=session['uuid']
-            username = User.get_username(_id)
-            is_admin = User.is_admin(_id)
-            email = User.get_email_by_id(_id)
-            return view.render_template(view='home.html',username=username,admin=is_admin,email=email)
+            return view.render_template(view='home.html')
     return view.render_template(view='home.html')
 @app.route('/auth',methods=['GET'])
 def auth():
@@ -43,12 +40,9 @@ def login():
 def reports():
     if session['log_in'] == True:
         _id = session['uuid']
-        username = User.get_username(_id)
-        is_admin = User.is_admin(_id)
-        email = User.get_email_by_id(_id)
         reports = User.get_reports(_id)
         length = len(reports)
-        return view.render_template(view='reports.html',reports=reports,username=username,admin=is_admin,email=email,length=length)
+        return view.render_template(view='reports.html',reports=reports,length=length)
     else:
         return redirect(url_for('index'))
 @app.route('/logout',methods=['POST','GET'])
@@ -59,11 +53,8 @@ def logout():
 def administration():
     if session['log_in']==True:
         _id = session['uuid']
-        username = User.get_username(_id)
-        is_admin = User.is_admin(_id)
-        email = User.get_email_by_id(_id)
         reports = User.get_reports(_id)
-        return view.render_template(view='admin/admin.html',username=username,admin=is_admin,email=email,reports=reports)
+        return view.render_template(view='admin/admin.html',reports=reports)
     else:
         return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])
@@ -91,15 +82,11 @@ def settings():
 def new_report():
     if session['log_in'] == True:
         _id = session['uuid']
-        username = User.get_username(_id)
-        is_admin = User.is_admin(_id)
-        email = User.get_email_by_id(_id)
         if request.method == 'POST':
-            if check_form_empty(request.form):
+            if check_form_empty(request.form,filter='reportContent'):
                 error='Please fill all the form before submiting!'
                 return view.render_template(view='add.html',error=error)
             else:
-                      
                 reportOwner =_id
                 reportName =request.form['reportName']
                 reportType =request.form['reportType']
@@ -117,12 +104,16 @@ def new_report():
                 if file:
                     reportFile = secure_file_name(file.filename)
                     file.save(os.path.join(os.getcwd()+conf.UPLOAD_FOLDER,reportFile))
-                report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
-                success = 'Reported submitted successfully!'
-                return view.render_template(view='add.html',username=username,admin=is_admin,email=email,success=success)
+                if Report.get_reports_queue(_id)<conf.REPORT_LIMIT:
+                    report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
+                    success = 'Reported submitted successfully!'
+                    return view.render_template(view='add.html',success=success)
+                else:
+                    error='Due to flooding threat every user is limited to only '+conf.REPORT_LIMIT+' reports in pending queue, Sorry for inconvenience'
+                    return view.render_template(view='add.html',error=error)
         elif request.method == 'GET':
             reports = User.get_reports(_id)
-            return view.render_template(view='add.html',username=username,admin=is_admin,email=email,reports=reports)
+            return view.render_template(view='add.html',reports=reports)
     return redirect(url_for('index'))
 @app.route('/register', methods=['POST','GET'])
 def register():
