@@ -7,17 +7,15 @@ import random
 import string
 def check_form_empty(form,ignore=None):
 	values = form.keys()
-	print(form[ignore])
-	if form[ignore] is not None:
+	if form.get(ignore) is not None:
 		values=list(values)
-		print(values)
 		values.remove(ignore)
 	for x in values:
 		if len(form[x])==0:
 			return True
 	return False
 #Lambda expression MAN I AM in love <3
-secure_string = lambda n: ''.join([random.choice(string.ascii_lowercase) for i in xrange(n)])
+secure_string = lambda n: ''.join([random.choice(string.ascii_lowercase) for i in range(n)])
 
 def secure_file_name(filename):
 	_id = session['uuid']

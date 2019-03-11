@@ -108,10 +108,10 @@ def new_report():
                 else:
                     file = False
                 reportFile = None
-                if file:
-                    reportFile = secure_file_name(file.filename)
-                    file.save(os.path.join(os.getcwd()+conf.UPLOAD_FOLDER,reportFile))
                 if Report.get_reports_queue(_id)<=conf.REPORT_LIMIT:
+                    if file:
+                        reportFile = secure_file_name(file.filename)
+                        file.save(os.path.join(os.getcwd()+conf.UPLOAD_FOLDER,reportFile))
                     report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
                     success = 'Reported submitted successfully!'
                     return view.render_template(view='add.html',success=success)
