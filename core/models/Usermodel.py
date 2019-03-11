@@ -85,6 +85,11 @@ class User(object):
 	@classmethod
 	def get_reports(self,_id):
 		return Report.find_reports_by_owner_id(_id)
+	@staticmethod
+	def count_users():
+		data = Database.find("users",{})
+		if data is not None:
+			return data.count()
 	@classmethod
 	def update(self,_id,field,value):
 		self.updatemongo(self.update_json(_id,field,vlaue))

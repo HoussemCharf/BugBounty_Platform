@@ -53,8 +53,15 @@ def logout():
 def administration():
     if session['log_in']==True:
         _id = session['uuid']
-        reports = User.get_reports(_id)
-        return view.render_template(view='admin/admin.html',reports=reports)
+        # counting reports and users
+        countReports = Report.get_all_reports_count()
+        countUsers = User.count_users()
+        # count waiting submissions
+        pendingReportsCount = Report.get_pending_reports_count()
+        acceptedReportsCount = Report.get_accepted_reports_count()
+        rejectedReportsCount = Report.get_rejected_reports_count()
+        acceptedReportsRatio = round(acceptedReportsCount * 100 / countReports)
+        return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio)
     else:
         return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])

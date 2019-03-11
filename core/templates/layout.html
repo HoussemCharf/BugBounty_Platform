@@ -10,6 +10,7 @@
     <title>{{ static_vars.SITE_NAME}}</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css')  }}" rel="stylesheet">
+    <link href="{{url_for('static',filename='css/font-awesome.min.css')}}" rel="stylesheet">
 </head>
 
 <body>
@@ -27,14 +28,19 @@
             <div id="navbar" class="navbar-collapse collapse ">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
+                    <li><a href="#">Leaderboard</a></li>
                     <li><a href="/aboutus">About Us</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                   {% if session['log_in'] == True %}
+                  <li><a class="notification">
+                        <i class="fa fa-bell"></i>
+                        <span class="badge">#</span>
+                  </a></li>
                      <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>{{username}}</b><span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                {% if admin == False %}
+                                {% if admin == True %}
                                 <li><a href="/administration">Admin area</a></li>
                                 {% endif%}
                                 <li><a href="/reports">Reports</a></li>

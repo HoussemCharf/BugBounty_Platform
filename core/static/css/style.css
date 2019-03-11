@@ -24,3 +24,25 @@
 	font-size: 10px;
 	font-weight: bold;
 }
+.notification {
+  color: white;
+  text-decoration: none;
+  padding: 15px 26px;
+  position: relative;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.notification:hover {
+  background: red;
+}
+
+.notification .badge {
+  position: absolute;
+  top: 5px;
+  right: 2px;
+  padding: 3px 6px;
+  border-radius: 60%;
+  background: red;
+  color: white;
+}

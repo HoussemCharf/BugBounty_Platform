@@ -84,17 +84,31 @@ class Report(object):
 		data = base.find_one("reports",{"reportId" : reportId})
 		if data is not None:
 			return data['reportFile']
-	@classmethod
-	def get_reportContent(cls,reprotId):
-		data = base.find_one("reports",{"reportId": reportId})
-		if data is not None:
-			return data ['reportContent']
 	@staticmethod
 	def get_reports_queue(reportOwner):
 		data = base.find("reports",{"reportOwner":{"$eq":reportOwner},"status":{"$eq":0}})
 		if data is not None:
 			return data.count()+1
-
+	@staticmethod
+	def get_all_reports_count():
+		data = base.find("reports",{})
+		if data is not None:
+			return data.count()
+	@staticmethod
+	def get_pending_reports_count():
+		data = base.find("reports",{"status":{"$eq":0}})
+		if data is not None:
+			return data.count()
+	@staticmethod
+	def get_accepted_reports_count():
+		data = base.find("reports",{"status":{"$eq":1}})
+		if data is not None:
+			return data.count()
+	@staticmethod
+	def get_rejected_reports_count():
+		data = base.find("reports",{"status":{"$eq":-1}})
+		if data is not None:
+			return data.count()
 	def json(self):
 		return{
 		"reportName":self.reportName,

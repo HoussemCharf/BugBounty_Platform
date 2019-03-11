@@ -4,12 +4,12 @@
 <link href="{{ url_for('static', filename='css/admin.css')  }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/bootstrap-theme.css')  }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/skin.css')  }}" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
       Dashboard 
-      <small>Control panel</small>
+      <small>PenParty Control panel</small>
   </h1>
 </section>
 
@@ -20,8 +20,8 @@
       <!-- small box -->
       <div class="small-box bg-aqua">
         <div class="inner">
-          <h3>150</h3>
-          <p>New reports</p>
+          <h3>{{pendingReportsCount}}</h3>
+          <p>Pending reports</p>
       </div>
       <div class="icon">
           <i class="ion ion-bag"></i>
@@ -34,9 +34,9 @@
   <!-- small box -->
   <div class="small-box bg-green">
     <div class="inner">
-      <h3>53<sup style="font-size: 20px">%</sup></h3>
+      <h3>{{ratio}}<sup style="font-size: 20px">%</sup></h3>
 
-      <p>Rate</p>
+      <p>Reports Ratio</p>
   </div>
   <div class="icon">
       <i class="ion ion-stats-bars"></i>
@@ -49,7 +49,7 @@
   <!-- small box -->
   <div class="small-box bg-yellow">
     <div class="inner">
-      <h3>44</h3>
+      <h3>{{countUsers}}</h3>
 
       <p>User Registrations</p>
   </div>
@@ -64,9 +64,9 @@
   <!-- small box -->
   <div class="small-box bg-red">
     <div class="inner">
-      <h3>65</h3>
+      <h3>{{countReports}}</h3>
 
-      <p>Unique Submissions</p>
+      <p>Total Submissions</p>
   </div>
   <div class="icon">
       <i class="ion ion-pie-graph"></i>

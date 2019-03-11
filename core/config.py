@@ -12,8 +12,8 @@ class BaseConfig:
 
 class StaticVars:
 	""" global vars to be passed"""
-	SITE_NAME= 'BugBounty Platform'
-	SITE_URL= 'https://isetcom.tn'
+	SITE_NAME= 'PenParty!'
+	SITE_URL= 'https://127.0.0.1:5000'
 class Development_Config(BaseConfig):
 	"""development config for me and souheil"""
 	DEBUG = True

@@ -8,9 +8,10 @@ class view(object):
 		username=None
 		is_admin=False
 		email=None
-		if session['log_in'] == True:
-			_id=session['uuid']
-			username = User.get_username(_id)
-			is_admin = User.is_admin(_id)
-			email = User.get_email_by_id(_id)
+		if session.get('log_in') != None: 
+			if session['log_in'] == True:
+				_id=session['uuid']
+				username = User.get_username(_id)
+				is_admin = User.is_admin(_id)
+				email = User.get_email_by_id(_id)
 		return render_template(view,session=session,static_vars=static_vars,username=username,admin=is_admin,email=email,error=error,success=success,**kwargs)
