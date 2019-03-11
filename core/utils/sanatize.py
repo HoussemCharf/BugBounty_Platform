@@ -5,12 +5,15 @@ from models.Usermodel import User
 from werkzeug.utils import secure_filename
 import random
 import string
-def check_form_empty(form,filter=None):
-	values = form.values()
-	if filter is not None:
-		values.remove(filter)
+def check_form_empty(form,ignore=None):
+	values = form.keys()
+	print(form[ignore])
+	if form[ignore] is not None:
+		values=list(values)
+		print(values)
+		values.remove(ignore)
 	for x in values:
-		if len(x)==0:
+		if len(form[x])==0:
 			return True
 	return False
 #Lambda expression MAN I AM in love <3

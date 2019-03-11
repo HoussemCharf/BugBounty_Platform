@@ -83,7 +83,7 @@ def new_report():
     if session['log_in'] == True:
         _id = session['uuid']
         if request.method == 'POST':
-            if check_form_empty(request.form,filter='reportContent'):
+            if check_form_empty(request.form,ignore='reportContent'):
                 error='Please fill all the form before submiting!'
                 return view.render_template(view='add.html',error=error)
             else:
@@ -104,12 +104,12 @@ def new_report():
                 if file:
                     reportFile = secure_file_name(file.filename)
                     file.save(os.path.join(os.getcwd()+conf.UPLOAD_FOLDER,reportFile))
-                if Report.get_reports_queue(_id)<conf.REPORT_LIMIT:
+                if Report.get_reports_queue(_id)<=conf.REPORT_LIMIT:
                     report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
                     success = 'Reported submitted successfully!'
                     return view.render_template(view='add.html',success=success)
                 else:
-                    error='Due to flooding threat every user is limited to only '+conf.REPORT_LIMIT+' reports in pending queue, Sorry for inconvenience'
+                    error='Due to flooding threat every user is limited to only '+str(conf.REPORT_LIMIT)+' reports in pending queue, Sorry for inconvenience.'
                     return view.render_template(view='add.html',error=error)
         elif request.method == 'GET':
             reports = User.get_reports(_id)

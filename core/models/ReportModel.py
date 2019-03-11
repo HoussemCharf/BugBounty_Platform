@@ -91,9 +91,9 @@ class Report(object):
 			return data ['reportContent']
 	@staticmethod
 	def get_reports_queue(reportOwner):
-		data = base.find("reports",{{"reportOwner":reportOwner},{"status":0}})
+		data = base.find("reports",{"reportOwner":{"$eq":reportOwner},"status":{"$eq":0}})
 		if data is not None:
-			return len(data)
+			return data.count()+1
 
 	def json(self):
 		return{
