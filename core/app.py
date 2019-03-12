@@ -141,9 +141,10 @@ def register():
         username = request.form['name']
         firstpartner = request.form['firstpartner']
         secondpartner = request.form['secondpartner']
+        thirdpartner = request.form['thirdpartner']
         #TODO by houssem 1- sanatize data passed from user
         if  check_email(email) == True and check_password(password) == True  and check_username(username) == True:
-            user = User.register(username,email,password,firstpartner,secondpartner)
+            user = User.register(username,email,password,firstpartner,secondpartner,thirdpartner)
             if user:
                 return redirect(url_for('index'))
             return 'Account already exists!'

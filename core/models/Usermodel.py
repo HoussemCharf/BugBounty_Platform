@@ -5,12 +5,13 @@ from utils.Database import Database
 import bcrypt
 from  models.ReportModel import Report
 class User(object):
-	def __init__(self,username,email,password,firstpartner,secondpartner,_id=None,registeredOn=None,admin=False,banned=False):
+	def __init__(self,username,email,password,firstpartner,secondpartner,thirdpartner,_id=None,registeredOn=None,admin=False,banned=False):
 		self.username = username
 		self.email = email
 		self.password = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
 		self.firstpartner = firstpartner
-		self.secondpartner = secondpartner 
+		self.secondpartner = secondpartner
+		self.thirdpartner = thirdpartner
 		self._id = uuid.uuid4().hex if _id is None else _id
 		self.registeredOn=datetime.datetime.now()
 		self.banned=banned
@@ -58,10 +59,10 @@ class User(object):
 			return bcrypt.checkpw(password.encode("utf-8"),user["password"])
 		return False
 	@classmethod
-	def register(cls,username,email,password,firstpartner,secondpartner):
+	def register(cls,username,email,password,firstpartner,secondpartner,thirdpartner):
 		user = cls.get_only_email(email)
 		if user is None:
-			guest = cls (username,email,password,firstpartner,secondpartner)
+			guest = cls (username,email,password,firstpartner,secondpartner,thirdpartner)
 			guest.savemongo()
 			dataSaved = cls.get_by_email(email)
 			cls.init_login(dataSaved["_id"])
@@ -109,7 +110,8 @@ class User(object):
 		"banned":self.banned,
 		"registeredOn":self.registeredOn,
 		"firstpartner" : self.firstpartner,
-		"secondpartner" : self.secondpartner
+		"secondpartner" : self.secondpartner,
+		"thirdpartner" : self.thirdpartner
 		}
 	def update_json(self,_id,field,value):
 		return {"_id":_id},{
