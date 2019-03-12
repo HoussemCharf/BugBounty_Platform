@@ -109,6 +109,26 @@ class Report(object):
 		data = base.find("reports",{"status":{"$eq":-1}})
 		if data is not None:
 			return data.count()
+	@staticmethod
+	def get_all_reports():
+		data = base.find("reports",{})
+		if data is not None:
+			return list(data)
+	@staticmethod
+	def get_all_pending_reports():
+		data = base.find("reports",{"status":{"$eq":0}})
+		if data is not None:
+			return list(data)
+	@staticmethod
+	def get_all_accepted_reports():
+		data= base.find("reports",{"status":{"$eq":1}})
+		if data is not None:
+			return list(data)
+	@staticmethod
+	def get_all_rejected_reports():
+		data = base.find("reports",{"status":{"$eq":-1}})
+		if data is not None:
+			return list(data)
 	def json(self):
 		return{
 		"reportName":self.reportName,

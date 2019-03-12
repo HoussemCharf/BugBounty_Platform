@@ -5,7 +5,7 @@ from utils.Database import Database
 import bcrypt
 from  models.ReportModel import Report
 class User(object):
-	def __init__(self,username,email,password,firstpartner,secondpartner,_id=None,registeredOn=None,admin=False):
+	def __init__(self,username,email,password,firstpartner,secondpartner,_id=None,registeredOn=None,admin=False,banned=False):
 		self.username = username
 		self.email = email
 		self.password = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
@@ -13,6 +13,7 @@ class User(object):
 		self.secondpartner = secondpartner 
 		self._id = uuid.uuid4().hex if _id is None else _id
 		self.registeredOn=datetime.datetime.now()
+		self.banned=banned
 		self.admin = admin
 	@classmethod
 	def get_by_email(cls,email):
@@ -90,6 +91,11 @@ class User(object):
 		data = Database.find("users",{})
 		if data is not None:
 			return data.count()
+	@staticmethod
+	def get_all_users():
+		data= Database.find("users",{})
+		if data is not None:
+			return list(data)
 	@classmethod
 	def update(self,_id,field,value):
 		self.updatemongo(self.update_json(_id,field,vlaue))
@@ -100,6 +106,7 @@ class User(object):
 		"_id":self._id,
 		"password":self.password,
 		"admin":self.admin,
+		"banned":self.banned,
 		"registeredOn":self.registeredOn,
 		"firstpartner" : self.firstpartner,
 		"secondpartner" : self.secondpartner

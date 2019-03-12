@@ -7,6 +7,7 @@ from models.Usermodel import User
 from models.ReportModel import Report 
 from view.viewer import view
 import os
+import datetime
 
 app = Flask(__name__)
 
@@ -61,7 +62,17 @@ def administration():
         acceptedReportsCount = Report.get_accepted_reports_count()
         rejectedReportsCount = Report.get_rejected_reports_count()
         acceptedReportsRatio = round(acceptedReportsCount * 100 / countReports)
-        return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio)
+        currentDate=datetime.datetime.now()
+        # this section gonna deal with the users management view in the admin dashboard
+        allUsers=User.get_all_users()
+
+        # this section gonna deal with the reports management view in the admin dashboard
+        allReports = Report.get_all_reports()
+        allPending = Report.get_all_pending_reports()
+        allAccepted = Report.get_all_accepted_reports()
+        allRejected = Report.get_all_rejected_reports()
+        return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
+            allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate)
     else:
         return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])
