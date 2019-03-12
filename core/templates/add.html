@@ -1,13 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
-<link href="{{ url_for('static', filename='css/report/report.css') }}" rel="stylesheet">
 <script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
-
+<link href="{{ url_for('static', filename='css/report/report.css') }}" rel="stylesheet">
 <section id="content">
 <article>
 <div class="container">
     <div class="page-header">
-  <h1 > New Report </h1>  
+  <h1 align="center"> New Report </h1>  
     </div>
     <div class="row">
                 {% if error!=None %}
@@ -42,8 +41,7 @@
                         <option id="option3" value="80"> High </option> 
                     </select></div>
                     <div class="col-md-2">
-                   <progress id='progressBar' max='100' value='0' style="width:60%;height:13px;background-color:transparent; border-radius: 2px;
-                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;"></progress>
+                   <progress id='progressBar' max='100' value='0'></progress>
                     </div>
             </div>        
             
@@ -57,7 +55,7 @@
                  
                    <div id="AttackVector1" class="col-md-2" style="margin-top:5px">    
                     <label for="AttackVector2"> Attack Vector(AV)</label>
-                    <select name="AttackVector" class="form-control" style="margin-top:3px" required="Please choose attack vector!">
+                    <select name="AttackVector" class="form-control"  required="Please choose attack vector!">
                         <option value="" disabled selected>Select an AV</option>
                         <option id="option1" > Network </option>
                         <option id="option2" > Adjacent</option>
@@ -67,16 +65,16 @@
                 </div>
             </div>
             <div class="row">
-                <div id="AttackComplexity1" class="col-md-2 col-md-offset-8" style="margin-top:-190px">
+                <div id="AttackComplexity1" class="col-md-2 col-md-offset-8">
                     <label id="AttackComplexity2">  Attack Complexity(AC)</label>
-                    <select name="AttackComplexity" class="form-control" style="margin-top:3px" required="Please choose an attack Complexity!">
+                    <select name="AttackComplexity" class="form-control" id="attack1" required="Please choose an attack Complexity!">
                         <option value="" disabled selected>Select an AC</option>
                         <option id="option1" > Low</option>
                         <option id="option2" > High</option></select> 
                 </div>
             </div>
             <div class="row">
-                 <div id="getprivilege1" class="col-md-2 col-md-offset-8" style="margin-top:-120px" >
+                 <div id="getprivilege1" class="col-md-2 col-md-offset-8">
                     <label id="getprivilege2">PriviligesRequired(PR)</label>
                     <select name="getprivilege" class="form-control" style="margin-top:3px" required="Please choose the privlage required!"> 
                         <option value="" disabled selected>None</option>

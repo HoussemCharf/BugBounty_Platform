@@ -1,0 +1,45 @@
+#img {
+	margin-left:230px;
+    margin-bottom:-90px;
+    width:50px;
+}
+#penparty{
+	text-shadow:1px 1px;
+}
+#leaderboardtable {
+	border: 1px solid gray;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 10px;
+	margin-left: auto;
+    margin-right: auto;
+    box-shadow: 10px 10px 5px #888888;
+    width: 300px;
+	text-align: left;
+	overflow: hidden;
+	width: 60%;
+	margin: 0 auto;
+  	display: table;
+  	padding: 0 0 8em 0;
+}
+#leader {
+	position:relative;
+	top:15px;
+	left:100px;
+	text-shadow:1px 1px
+}
+#leaderboardtable thead {
+    background-color:gray
+}
+#leaderboardtable td:hover {
+  background-color: #217f72;
+  color: black;
+  font-weight: bold;
+  box-shadow:	#217f72 -1px 1px, #217f72 -2px 2px, #217f72 -3px 3px, #217f72 -4px 4px, #217f72 -5px 5px, #217f72 -6px 6px;
+  transform: translate3d(6px, -6px, 0);
+  transition-delay: 0s;
+  transition-duration: 0.4s;
+	transition-property: all;
+  transition-timing-function: line;
+}
+#leaderboardtable td:first-child 
+{ color: black; }
