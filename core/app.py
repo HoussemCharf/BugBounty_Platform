@@ -158,7 +158,10 @@ def register():
 def found_you():
     #just a route to check if ip return func is running ===> returns 127.0.0.1 with no proxy
     return(ready_to_get_banned())
-
+@app.route('/leaderboard')
+def leaderboard():
+    if session['log_in'] == True:
+        return view.render_template(view='leaderboard.html')
 @app.errorhandler(404)
 def not_found(error):
     return view.render_template(view='error.html'), 404

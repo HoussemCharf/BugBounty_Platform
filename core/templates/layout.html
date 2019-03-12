@@ -28,7 +28,7 @@
             <div id="navbar" class="navbar-collapse collapse ">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
-                    <li><a href="#">Leaderboard</a></li>
+                    <li><a href="leaderboard">Leaderboard</a></li>
                     <li><a href="/aboutus">About Us</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -40,7 +40,7 @@
                      <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>{{username}}</b><span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                {% if admin == True %}
+                                {% if admin == False %}
                                 <li><a href="/administration">Admin area</a></li>
                                 {% endif%}
                                 <li><a href="/reports">Reports</a></li>
