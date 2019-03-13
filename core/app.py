@@ -27,16 +27,19 @@ def auth():
     return view.render_template(view='auth.html') 
 @app.route('/login', methods=['POST'])
 def login():
-    email= request.form['email']
-    password = request.form['password']
-    #TODO by Houssem 1- sanatize data passed from user
-    if User.valid_login(email,password):
+    if request.method == 'POST':
+        error = None
+        email= request.form['email']
+        password = request.form['password']
+        #TODO by Houssem 1- sanatize data passed from user
+        if User.valid_login(email,password):
         # Hacky code here <.<
-        uuid = User.get_id_by_email(email)
-        User.login(uuid)
-        return redirect(url_for('index'))
-    else:
-        return redirect(url_for('auth'))
+            uuid = User.get_id_by_email(email)
+            User.login(uuid)
+            return redirect(url_for('index'))
+        else:
+            error ='Wrong credentials please verify your informations'
+    return view.render_template(view='auth.html',error=error)
 @app.route('/reports',methods=['GET'])
 def reports():
     if session['log_in'] == True:
@@ -131,11 +134,7 @@ def settings():
         error=None
         if request.method=='POST':
             _id = session['uuid']
-            Newusername = request.form['username']
             Newpassword = request.form['password']
-            if check_username(Newusername) and Newusername!=None:
-                User.update(_id,"username",Newusername)
-                success = "Username changed succesfully!"
             elif check_password(Newpassword) and Newpassword!=None:
                 User.update(_id,"password",Newpassword)
                 success = "Password changed successfully!"
@@ -176,7 +175,7 @@ def new_report():
                     success = 'Reported submitted successfully!'
                     return view.render_template(view='add.html',success=success)
                 else:
-                    error='Due to flooding threat every user is limited to only '+str(conf.REPORT_LIMIT)+' reports in pending queue, Sorry for inconvenience.'
+                    error='Due to flooding threat every user is limited to only '+str(conf.REPORT_LIMIT)+' reports in pending queue, Sorry for the inconvenience.'
                     return view.render_template(view='add.html',error=error)
         elif request.method == 'GET':
             reports = User.get_reports(_id)
@@ -184,6 +183,7 @@ def new_report():
     return redirect(url_for('index'))
 @app.route('/register', methods=['POST','GET'])
 def register():
+    error = None
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -192,17 +192,17 @@ def register():
         secondpartner = request.form['secondpartner']
         thirdpartner = request.form['thirdpartner']
         #TODO by houssem 1- sanatize data passed from user
-        if  check_email(email) == True and check_password(password) == True  and check_username(username) == True:
+        if  check_email(email) == True and check_password(password) == True  and check_username(username) == True and check_firstpartner(firstpartner) == True and check_secondpartner(secondpartner) == True and check_thirdpartner(thirdpartner) == True:            
             user = User.register(username,email,password,firstpartner,secondpartner,thirdpartner)
             if user:
                 return redirect(url_for('index'))
             return 'Account already exists!'
         else:
-            return redirect(url_for('index'))
+            error = 'Invalid input, please verify again'
     if session.get('log_in') != None :
         if session['log_in'] == True and request.method== 'GET':
             return redirect(url_for('index'))       
-    return view.render_template(view='register.html')
+    return view.render_template(view='register.html',error=error)
 @app.route('/gotcha', methods=['GET'])
 def found_you():
     #just a route to check if ip return func is running ===> returns 127.0.0.1 with no proxy

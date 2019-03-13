@@ -32,19 +32,30 @@ def secure_file_name(filename):
 	return secure_filename(cyphered)
 def check_email(email):
 	#regex is updatable to the needs"
-	if not re.match("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",email):
+	if not re.match("^\w+[.|\w]\w+@\w+[.]\w+[.|\w+]\w+$",email):
 		return False
 	return True
 def check_password(password):
 	  #regex is updatable to the needs"
-	if not re.match("^\w{7,15}$",password):
+	if not re.match("^[\w]{7,20}$",password):
 		return False
 	return True
 def check_username(username):
-	if not re.match("^[\w]{6,15}$",username):
+	if not re.match("^[\w]{4,20}$",username):
 		return False
 	return True
-
+def check_firstpartner(firstpartner):
+	if not re.match("^[\w]{4,20}$",firstpartner):
+		return False
+	return True
+def check_secondpartner(secondpartner):
+	if not re.match("^[\w]{0,20}$",secondpartner):
+		return False
+	return True
+def check_thirdpartner(thirdpartner):
+	if not re.match("^[\w]{0,20}$",thirdpartner):
+		return False
+	return True
 def ready_to_get_banned():
 		#no proxy involved
 	if request.environ.get('HTTP_X_FORWARDED_FOR') is None:

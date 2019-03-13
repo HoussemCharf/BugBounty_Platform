@@ -16,7 +16,10 @@
                 <div class="form-group">
                     <label for="InputPassword">Password</label>
                     <input type="password" class="form-control" name="password" placeholder="Password">
-                </div><br \>
+                    {% if error!=None %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                    {% endif %}
+                </div><br>
                 <center><button type="submit" class="btn btn-primary btn-block">Log In</button></center>
             </form>
             <br>
