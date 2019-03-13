@@ -50,31 +50,52 @@ def reports():
 def logout():
 	User.logout()
 	return redirect(url_for('index'))
+@app.route('/administration/ban',methods=['GET'])
+def ban_redirect():
+    if session['log_in']==True:
+        _id= session['uuid']
+        if User.is_admin(_id):
+            banned_user=request.args['id']
+            User.update(banned_user,'banned',True)
+        else:
+            User.update(_id,'banned',True)
+    return redirect(url_for('index'))
+@app.route('/administration/editreport',methods=['GET'])
+def evaluate_report():
+    if session['log_in']==True:
+        _id= session['uuid']
+        if User.is_admin(_id):
+            edit_report=request.args['id']
+            report=Report.get_report(edit_report)
+            return view.render_template(view='admin_report.html',report=report)
+        else:
+            User.update(_id,'banned',True)
+    return redirect(url_for('index'))
 @app.route('/administration',methods=['GET','POST'])
 def administration():
     if session['log_in']==True:
         _id = session['uuid']
+        if User.is_admin(_id):
         # counting reports and users
-        countReports = Report.get_all_reports_count()
-        countUsers = User.count_users()
-        # count waiting submissions
-        pendingReportsCount = Report.get_pending_reports_count()
-        acceptedReportsCount = Report.get_accepted_reports_count()
-        rejectedReportsCount = Report.get_rejected_reports_count()
-        acceptedReportsRatio = round(acceptedReportsCount * 100 / countReports)
-        currentDate=datetime.datetime.now()
-        # this section gonna deal with the users management view in the admin dashboard
-        allUsers=User.get_all_users()
+            countReports = Report.get_all_reports_count()
+            countUsers = User.count_users()
+            # count waiting submissions
+            pendingReportsCount = Report.get_pending_reports_count()
+            acceptedReportsCount = Report.get_accepted_reports_count()
+            rejectedReportsCount = Report.get_rejected_reports_count()
+            acceptedReportsRatio = round(acceptedReportsCount * 100 / countReports)
+            currentDate=datetime.datetime.now()
+            # this section gonna deal with the users management view in the admin dashboard
+            allUsers=User.get_all_users()
 
-        # this section gonna deal with the reports management view in the admin dashboard
-        allReports = Report.get_all_reports()
-        allPending = Report.get_all_pending_reports()
-        allAccepted = Report.get_all_accepted_reports()
-        allRejected = Report.get_all_rejected_reports()
-        return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
-            allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate)
-    else:
-        return redirect(url_for('index'))
+            # this section gonna deal with the reports management view in the admin dashboard
+            allReports = Report.get_all_reports()
+            allPending = Report.get_all_pending_reports()
+            allAccepted = Report.get_all_accepted_reports()
+            allRejected = Report.get_all_rejected_reports()
+            return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
+                allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate)
+    return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])
 def settings():
     if session['log_in']==True:

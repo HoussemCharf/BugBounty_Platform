@@ -278,23 +278,52 @@
               <!-- Userboard section -->
               <section id="content2" class="content" style="display: none;">
                 <div class="box-body">
-                  
+                  {{user}}
                   <ul class="todo-list">
                     {% for user in allUsers %}
                       <li>
                             <!-- todo text -->
                             <span class="text">{{user['username']}}</span>
                             <!-- Emphasis label -->
-                            {% if user['banned'] == true %}
+                            <!--{% if user['banned'] %}
                             <small class="label label-danger"><i class="fa fa-clock-o"></i>Banned</small>
                             {% else %}
                             <small class="label label-success"><i class="fa fa-clock-o"></i>Actif</smal>
-                            {% endif %}
+                            {% endif %}-->
                             <!-- General tools such as edit or delete-->
                             <div class="tools">
-                                <i class="fa fa-edit"></i>
-                                <i class="fa fa-trash-o"></i>
+                              {% if user['banned'] == False and user['admin'] == False %}
+                                <a href="/administration/ban?id={{user['_id']}}" ><i class="fa fa-ban"></i></a>
+                                {% endif %}
+                                <a><i class="fa fa-info" data-toggle="collapse" href="#{{user['username']}}_collapse" role="button" aria-expanded="false" aria-controls="{{user['username']}}_collapse"></i></a>
                             </div>
+
+                            <div class="collapse" id="{{user['username']}}_collapse">
+                              <div class="card card-body">
+                                <br>
+                                <p>Email: {{user['email']}}</p><p>         Registered On:{{user['registeredOn'].strftime("%H:%M")}}</p><p>             Banned:{{user['banned']}}</p>
+                                <div>
+                                      <table>
+                                        <thead>
+                                          <tr>
+                                            <th>Team Members</th>
+                                          </tr>
+                                        </thead>
+                                        <tr>
+                                          <td>1</td>
+                                          <td class="pull-right">{{user['firstpartner']}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>2</td>
+                                          <td class="pull-right">{{user['secondpartner']}}</td>
+                                        </tr>
+                                       <tr>
+                                          <td>3</td>
+                                          <td class="pull-right">{{user['thirdpartner']}}</td>
+                                        </tr>
+                                      </table>
+                                </div>
+                              </div>
                       </li>
                     {% endfor %}
                   </ul>
@@ -303,7 +332,52 @@
               <!-- End Userboard section -->
               <!-- reportboard section -->
               <section id="content3" class="content" style="display: none;">
+                    <table id="reportList"class="table table-striped">
+        <thead>
+          <tr>
+            <th>Report name</th>
+            <th>Report Description</th>
+            <th>Vector</th>
+            <th>Type</th>
+            <th>Attachment</th>
+            <th>Submission time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for post in allReports %}
 
+            <tr>
+                <td>{{ post['reportName'] }}</td>
+                <td>{{ post['reportDescription'] }}</td>
+                <td>{{post['AttackVector']}}</td>
+                <td>{{post['reportType']}}</td>
+                {% if post['reportFile'] == None %}
+                    <td>No File Attached</td>
+                  {% else %}
+                    <td> {{post['reportFile']}}</td>
+                {% endif %}
+
+
+                <td>{{post['reportDate'].strftime("%H:%M:%S")}}</td>
+                  {% if post['status']== 0 %}
+                    <td><span class="label label-warning">Pending</span></td>
+                  {% elif post['status']==1 %}
+                    <td><span class="label label-success">Accepted</span></td>
+                  {% elif post['status']==-1%}
+                    <td><span class="label label-danger">Rejected</span></td>
+                  {% else %}
+                    <td><span class="label label-default">Error</span></td>
+                  {% endif %}
+                <td><div class="tools">
+                                <a href="/administration/editreport?id={{post['_id']}}" ><i class="fa fa-edit"></i></a>
+
+                                <a href="/administration/deletereport?id={{post['_id']}}"><i class="fa fa-trash"></i></a>
+                    </div></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
               </section>
               <!-- End reportboard section -->
     </div>

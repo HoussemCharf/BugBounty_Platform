@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
+<link href="{{ url_for('static', filename='css/report/report.css') }}" rel="stylesheet">
+<section id="content">
+<article>
+<div class="container">
+    <div class="page-header">
+  <h1 align="center"> Evaluate Report </h1>  
+    </div>
+    <div class="row">
+                {% if error!=None %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                {% endif %}
+                {% if success!=None %}
+                    <div class="alert alert-success" role="alert">{{success}}</div>
+                {% endif %}
+</div>
+<div class="row">
+    {{report}}
+          <form method=POST action="{{ url_for('evaluate_report') }}">
+            <div class="row" id="firstrow">
+                <div class="col-md-5 col-md-offset-1" >
+                    <label for="InputbugName">Bug name </label>
+                    <label>{{report['reportName']}}</label>
+                </div>
+            
+                <div class="col-md-2">
+                    <label for="InputbugType">Bug type </label>
+                    <label>{{report['reportType']}}</label>
+                </div>
+                <div class="col-md-2" id="reportLevel">
+                    <label for="InputthreatLevel">{{report['reportLevel']}}</label>
+                    <label></label>
+                </div>
+            </div>        
+            
+            <div class="row" ><br>
+                <div id="textdescription" class="col-md-7 col-md-offset-1">
+                    <strong> Description</strong>
+                    <br>
+                    <textarea placeholder="Description field must contain information" name="reportDescription"
+                     class="form-control" id="textarea1" rows="11"  disabled>{{report['reportDescription']}}</textarea>
+                </div>
+                 
+                   <div id="AttackVector1" class="col-md-2" style="margin-top:5px">    
+                    <label for="AttackVector2"> Attack Vector(AV)</label>
+                    <label>{{report['AttackVector']}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div id="AttackComplexity1" class="col-md-2 col-md-offset-8">
+                    <label id="AttackComplexity2">  Attack Complexity(AC)</label>
+                    <label>{{report['AttackComplexity']}}</label>
+                </div>
+            </div>
+            <div class="row">
+                 <div id="getprivilege1" class="col-md-2 col-md-offset-8">
+                    <label id="getprivilege2">PriviligesRequired(PR)</label>
+                    <label>{{report['getprivilege']}}</label>
+                 </div> 
+            </div>             
+            <div class="row" id=reportContent>
+                <div class="cold-md-7 col-md-offset-1">
+                    <label for="reportContent"></label>
+                    <a href=""><span>{{report['reportFile']}}</span></a>
+                </div>
+                <div id="" class="col-md-2">
+                    <input type="text" class="form-control" name="score" placeholder="Score..." required="Please score!">
+                    </div>
+                <br>
+                    <button type="submit" class="btn btn-danger">Score</button>
+                
+                </div>
+            </div>
+        </form>
+</div><br>
+<br>
+</div>
+</article>
+</section>
+</div>
+{% endblock %}

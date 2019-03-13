@@ -99,7 +99,7 @@ class User(object):
 			return list(data)
 	@classmethod
 	def update(self,_id,field,value):
-		self.updatemongo(self.update_json(_id,field,vlaue))
+		Database.update("users",{"_id":_id},{"$set":{field:value}})
 	def json(self):
 		return {
 		"username":self.username,
@@ -113,13 +113,6 @@ class User(object):
 		"secondpartner" : self.secondpartner,
 		"thirdpartner" : self.thirdpartner
 		}
-	def update_json(self,_id,field,value):
-		return {"_id":_id},{
-				"$set":{
-					field:value
-				}
-			}
 	def savemongo(self):
 		Database.insert("users",self.json())
-	def updatemongo(self,query):
-		Database.update("users",query)
+

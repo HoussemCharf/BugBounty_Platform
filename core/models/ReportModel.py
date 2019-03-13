@@ -2,7 +2,7 @@ from datetime import datetime
 import uuid
 from flask import session
 from utils.Database import Database as base
-
+from bson.objectid import ObjectId
 class Report(object):
 	def __init__ (self,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportDate=None,reportId=None,reportScore=0,report_status=0,locked=False):
 		self.reportId = uuid.uuid4().hex if reportId is None else reportId
@@ -43,9 +43,9 @@ class Report(object):
 			return data['reportLevel']
 	@classmethod
 	def get_report(cls,reportId):
-		data = base.find_one("reports",{"reportId":reportId})
+		data = base.find("reports",{"reportId":ObjectId(str(reportId))})
 		if data is not None:
-			return cls(**data)
+			return list(data)
 	@classmethod
 	def find_reports_by_owner_id(cls,owner_id):
 		return [post for post in base.find(collection="reports",query={"reportOwner":owner_id})]
