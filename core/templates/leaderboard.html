@@ -18,7 +18,9 @@
                          </tr>
                     </thead>
                     <tbody>
-                        <tr><td>test</td><td>test</td><td>test</td></tr>
+                        {% for i in range(length) %}
+                        <tr><td>{{i+1}}</td><td>{{ranking[i][0]}}</td><td>{{ranking[i][1]}}</td></tr>
+                        {% endfor %}
                     </tbody>
                     </table>
         </div>

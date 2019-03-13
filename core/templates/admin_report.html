@@ -17,57 +17,50 @@
                 {% endif %}
 </div>
 <div class="row">
-    {{report}}
-          <form method=POST action="{{ url_for('evaluate_report') }}">
+
+          <form method=POST action="{{ url_for('score_report') }}">
             <div class="row" id="firstrow">
-                <div class="col-md-5 col-md-offset-1" >
-                    <label for="InputbugName">Bug name </label>
-                    <label>{{report['reportName']}}</label>
-                </div>
-            
-                <div class="col-md-2">
-                    <label for="InputbugType">Bug type </label>
-                    <label>{{report['reportType']}}</label>
-                </div>
-                <div class="col-md-2" id="reportLevel">
-                    <label for="InputthreatLevel">{{report['reportLevel']}}</label>
-                    <label></label>
-                </div>
-            </div>        
-            
-            <div class="row" ><br>
-                <div id="textdescription" class="col-md-7 col-md-offset-1">
-                    <strong> Description</strong>
+                <table class="table table-striped">
+                    <thead>
+                    <th>Bug name: </th>
+                    
+                    <th>Bug type: </th>
+                    
+                    <th>Report Level</th>
+                    
+                    <th> Description:</th>
                     <br>
-                    <textarea placeholder="Description field must contain information" name="reportDescription"
-                     class="form-control" id="textarea1" rows="11"  disabled>{{report['reportDescription']}}</textarea>
-                </div>
-                 
-                   <div id="AttackVector1" class="col-md-2" style="margin-top:5px">    
-                    <label for="AttackVector2"> Attack Vector(AV)</label>
-                    <label>{{report['AttackVector']}}</label>
-                </div>
+                    
+                    <th> Attack Vector(AV):</th>
+                    
+                    <th>  Attack Complexity(AC):</th>
+                    
+                    <th>PriviligesRequired(PR):</th>
+                    
+                    <th>File</th>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>{{report['reportName']}}</td>
+                    <td>{{report['reportType']}}</td>
+                    <td>{{report['reportLevel']}}</td>
+                     <td>{{report['reportDescription']}}</td>
+                    <td>{{report['AttackVector']}}</td>
+                   
+                    <td>{{report['AttackComplexity']}}</td>
+                    <td>{{report['getprivilege']}}</td>
+                    {% if report['reportFile'] != None %}
+                    <td><a href="/uprep1/{{report['reportFile']}}"><span>{{report['reportFile']}}</span></a></td></tr>
+                    {% else %}
+                    <td><span>No File</span></td></tr>
+                    {% endif %}
+                    </tbody>
+                </table>
             </div>
-            <div class="row">
-                <div id="AttackComplexity1" class="col-md-2 col-md-offset-8">
-                    <label id="AttackComplexity2">  Attack Complexity(AC)</label>
-                    <label>{{report['AttackComplexity']}}</label>
-                </div>
-            </div>
-            <div class="row">
-                 <div id="getprivilege1" class="col-md-2 col-md-offset-8">
-                    <label id="getprivilege2">PriviligesRequired(PR)</label>
-                    <label>{{report['getprivilege']}}</label>
-                 </div> 
-            </div>             
-            <div class="row" id=reportContent>
-                <div class="cold-md-7 col-md-offset-1">
-                    <label for="reportContent"></label>
-                    <a href=""><span>{{report['reportFile']}}</span></a>
-                </div>
-                <div id="" class="col-md-2">
+                <div class="col-md-2">
                     <input type="text" class="form-control" name="score" placeholder="Score..." required="Please score!">
                     </div>
+                    <input type="hidden" name="id" value="{{report['reportId']}}">
                 <br>
                     <button type="submit" class="btn btn-danger">Score</button>
                 

@@ -60,6 +60,23 @@ def ban_redirect():
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
+@app.route('/administration/scorerep',methods=['POST'])
+def score_report():
+    if session['log_in']==True:
+        _id= session['uuid']
+        if User.is_admin(_id):
+            edit_report=request.form['id']
+            score=request.form['score']
+            res=Report.set_score(edit_report,score)
+            if res:
+                success="scored successfully!"
+                return view.render_template(view='/admin/admin.html',success=success)
+            else:
+                error="Ops, something went wrong!"
+                return view.render_template(view='/admin/admin.html',error=error)
+        else:
+            User.update(_id,'banned',True)
+    return redirect(url_for('index'))
 @app.route('/administration/editreport',methods=['GET'])
 def evaluate_report():
     if session['log_in']==True:
@@ -67,7 +84,11 @@ def evaluate_report():
         if User.is_admin(_id):
             edit_report=request.args['id']
             report=Report.get_report(edit_report)
-            return view.render_template(view='admin_report.html',report=report)
+            if report['locked']== False:
+                return view.render_template(view='admin_report.html',report=report)
+            else:
+                error="Another admin is currently evaluating!"
+                return view.render_template(view='/admin/admin.html',error=error)
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
@@ -93,8 +114,15 @@ def administration():
             allPending = Report.get_all_pending_reports()
             allAccepted = Report.get_all_accepted_reports()
             allRejected = Report.get_all_rejected_reports()
+            # this section gonna handle the mini leaderboard in the admin panel
+            Ranking=[]
+            for user in allUsers:
+                Ranking.append(calculate_score_for_user(user))
+            sorted(Ranking,key=lambda l:l[1])
+            length=len(Ranking)
             return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
-                allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate)
+                allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
+                ,length=length,ranking=Ranking)
     return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])
 def settings():
@@ -181,8 +209,18 @@ def found_you():
     return(ready_to_get_banned())
 @app.route('/leaderboard')
 def leaderboard():
-    if session['log_in'] == True:
-        return view.render_template(view='leaderboard.html')
+        # add lock here from admin settings
+    allUsers=User.get_all_users()
+    Ranking=[]
+    for user in allUsers:
+        if user['admin']==True:
+            pass
+        else:
+            Ranking.append(calculate_score_for_user(user))
+    sorted(Ranking,key=lambda l:l[1])
+    length=len(Ranking)
+    return view.render_template(view='leaderboard.html',ranking=Ranking,length=length)
+
 @app.errorhandler(404)
 def not_found(error):
     return view.render_template(view='error.html'), 404

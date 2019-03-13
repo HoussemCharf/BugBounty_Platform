@@ -43,9 +43,9 @@ class Report(object):
 			return data['reportLevel']
 	@classmethod
 	def get_report(cls,reportId):
-		data = base.find("reports",{"reportId":ObjectId(str(reportId))})
+		data = base.find_one("reports",{"reportId":reportId})
 		if data is not None:
-			return list(data)
+			return data
 	@classmethod
 	def find_reports_by_owner_id(cls,owner_id):
 		return [post for post in base.find(collection="reports",query={"reportOwner":owner_id})]
@@ -53,7 +53,8 @@ class Report(object):
 	def set_score(cls,reportId,score):
 		data = base.find_one("reports",{"reportId":reportId})
 		if data is not None:
-			base.update_one("reports",reportId,"score",score)
+			query={"reportId":reportId},{"$set":{"reportScore":score}}
+			base.update("reports",query)
 			return True
 		else:
 			return False

@@ -2,6 +2,7 @@ import re
 from flask import session
 from flask import request,redirect,url_for
 from models.Usermodel import User
+from models.ReportModel import Report
 from werkzeug.utils import secure_filename
 import random
 import string
@@ -16,7 +17,14 @@ def check_form_empty(form,ignore=None):
 	return False
 #Lambda expression MAN I AM in love <3
 secure_string = lambda n: ''.join([random.choice(string.ascii_lowercase) for i in range(n)])
-
+def calculate_score_for_user(user):
+	score=0
+	if user['banned']==False:
+		allUserReports=Report.find_reports_by_owner_id(user['_id'])
+		for report in allUserReports:
+			score+=report['reportScore']
+	return[user['username'],score]
+	# tobecontinued
 def secure_file_name(filename):
 	_id = session['uuid']
 	dotexploded=filename.split('.')
