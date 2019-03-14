@@ -135,14 +135,12 @@ def administration():
             # this section gonna handle the mini leaderboard in the admin panel
             Ranking=[]
             for user in allUsers:
-                print(user)
                 if user['admin'] == True:
                     pass
                 else:
                     Ranking.append(calculate_score_for_user(user))
             sorted(Ranking,key=lambda l:l[1])
             length=len(Ranking)
-            print(length)
             return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
                 allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
                 ,length=length,ranking=Ranking)
