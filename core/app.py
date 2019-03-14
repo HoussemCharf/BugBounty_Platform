@@ -197,12 +197,12 @@ def new_report():
                         if allowed_file(reportFile):
                             reportFile = secure_file_name(file.filename)
                             file.save(os.path.join(os.getcwd()+conf.UPLOAD_FOLDER,reportFile))
-                            report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
-                            success = 'Reported submitted successfully!'
-                            return view.render_template(view='add.html',success=success)
                         else:
-                            error="File is not allowed, inc BAN"
+                            error="File not allowed, INC ban"
                             return view.render_template(view='add.html',error=error)
+                    report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
+                    success = 'Reported submitted successfully!'
+                    return view.render_template(view='add.html',success=success)
                 else:
                     error='Due to flooding threat every user is limited to only '+str(conf.REPORT_LIMIT)+' reports in pending queue, Sorry for the inconvenience.'
                     return view.render_template(view='add.html',error=error)
