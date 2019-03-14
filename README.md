@@ -1,6 +1,6 @@
 # BugBounty Platform
 
-BugBounty platform is platform made under the suporvision of Mr.Ahmed Chabchoub, Mr.Mostfa Hamza for the purpose of Isetcom security event.
+BugBounty platform is platform made under the supervision of Mr.Ahmed Chabchoub, Mr.Mostfa Hamza for the purpose of Isetcom security event as a start.
 the platform is bug reporting interface for contesters to report vunerabilities and proof of concept 
 
 ## Getting Started
@@ -43,7 +43,6 @@ mongo
 
 use iset_bugbounty;
 
-db.inset({})
 ```
 
 ### Coding style
@@ -86,13 +85,12 @@ For the versions available, see the [tags on this repository](https://github.com
 ## Authors
 
 * **Houssem Charfeddine** - *BBP* - [HoussemCharf](https://github.com/HoussemCharf)
-
+* **Souheil Barhoumi** - *BBP* - [harloNzz](https://github.com/harloNzz)
 
 
 ## Acknowledgments
-
+this platform is a property of Calynga Startup and it's copyrights goes for the authors. 
 Many thanks for the following people because they made this Happen:
 
 * Mr.Ahmed Chabchoub
 * Mr.Mostfa Hamza
-
