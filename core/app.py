@@ -121,7 +121,11 @@ def administration():
             # this section gonna handle the mini leaderboard in the admin panel
             Ranking=[]
             for user in allUsers:
-                Ranking.append(calculate_score_for_user(user))
+                print(user)
+                if user['admin'] == True:
+                    pass
+                else:
+                    Ranking.append(calculate_score_for_user(user))
             sorted(Ranking,key=lambda l:l[1])
             length=len(Ranking)
             print(length)
@@ -180,8 +184,12 @@ def new_report():
                     error='Due to flooding threat every user is limited to only '+str(conf.REPORT_LIMIT)+' reports in pending queue, Sorry for the inconvenience.'
                     return view.render_template(view='add.html',error=error)
         elif request.method == 'GET':
-            reports = User.get_reports(_id)
-            return view.render_template(view='add.html',reports=reports)
+            user = User.get_by_id(_id)
+            error = None
+            if user['banned'] == True:
+                error = "You are not allowed, to add a report because you are banned!"
+                return view.render_template(view='banned.html',error=error)
+            return view.render_template(view='add.html',error=error)
     return redirect(url_for('index'))
 @app.route('/register', methods=['POST','GET'])
 def register():
@@ -216,7 +224,7 @@ def leaderboard():
     allUsers=User.get_all_users()
     Ranking=[]
     for user in allUsers:
-        if user['admin']== True:
+        if user['admin']== True or user['banned'] == True:
             pass
         else:
             Ranking.append(calculate_score_for_user(user))
