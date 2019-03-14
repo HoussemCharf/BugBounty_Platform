@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, session, redirect
-from config import Development_Config as conf
+from config import BaseConfig as conf
 from config import StaticVars as static_vars
 from utils.Database import Database as base
 from utils.sanatize import *
@@ -216,7 +216,7 @@ def leaderboard():
     allUsers=User.get_all_users()
     Ranking=[]
     for user in allUsers:
-        if user['admin']==True:
+        if user['admin']== True:
             pass
         else:
             Ranking.append(calculate_score_for_user(user))

@@ -337,8 +337,6 @@
                   {% else %}
                     <td> {{post['reportFile']}}</td>
                 {% endif %}
-
-
                 <td>{{post['reportDate'].strftime("%H:%M:%S")}}</td>
                   {% if post['status']== 0 %}
                     <td><span class="label label-warning">Pending</span></td>

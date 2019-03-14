@@ -119,6 +119,7 @@ class Report(object):
 	def get_all_pending_reports():
 		data = base.find("reports",{"status":{"$eq":0}})
 		if data is not None:
+			print(list(data))
 			return list(data)
 	@staticmethod
 	def get_all_accepted_reports():
