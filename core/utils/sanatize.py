@@ -17,14 +17,7 @@ def check_form_empty(form,ignore=None):
 			return True
 	return False
 #Lambda expression MAN I AM in love <3
-secure_string = lambda n: ''.join([random.choice(string.ascii_lowercase) for i in range(n)])
-def calculate_score_for_user(user):
-	score=0
-	if user['banned']==False:
-		allUserReports=Report.find_reports_by_owner_id(user['_id'])
-		for report in allUserReports:
-			score+=report['reportScore']
-	return[user['username'],score]
+
 	# tobecontinued
 def secure_file_name(filename):
 	_id = session['uuid']
@@ -40,12 +33,6 @@ def general_check(str1,borninf,bornsup):
 	if not re.match("^[\w]{"+str(borninf)+","+str(bornsup)+"}$",str1):
 		return False
 	return True
-def compare_strings(str1,str2):
-	return str1 == str2
-def password_check(currentpassword,basePassword):
-	return bcrypt.checkpw(currentpassword.encode("utf-8"),basePassword)
-def hashpass(password):
-	return bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
 def ready_to_get_banned():
 		#no proxy involved
 	if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
