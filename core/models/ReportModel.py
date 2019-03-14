@@ -131,6 +131,9 @@ class Report(object):
 		data = base.find("reports",{"status":{"$eq":-1}})
 		if data is not None:
 			return list(data)
+	@staticmethod
+	def update(self,_id,field,value):
+		Database.update("reports",{"filter":{"_id":_id},"update":{"$set":{field:value}}})
 	def json(self):
 		return{
 		"reportName":self.reportName,

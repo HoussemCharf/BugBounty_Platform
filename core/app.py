@@ -4,7 +4,8 @@ from config import StaticVars as static_vars
 from utils.Database import Database as base
 from utils.sanatize import *
 from models.Usermodel import User
-from models.ReportModel import Report 
+from models.ReportModel import Report
+from models.notification import notification as Noti
 from view.viewer import view
 import os
 import datetime
@@ -65,6 +66,17 @@ def ban_redirect():
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
+@app.route('/administration/unban',methods=['GET'])
+def ban_redirect():
+    if session['log_in']==True:
+        _id= session['uuid']
+        if User.is_admin(_id):
+            banned_user=request.args['id']
+            User.update(banned_user,'banned',False)
+            return redirect(url_for('administration'))
+        else:
+            User.update(_id,'banned',True)
+    return redirect(url_for('index'))
 @app.route('/administration/scorerep',methods=['POST'])
 def score_report():
     if session['log_in']==True:
@@ -90,6 +102,7 @@ def evaluate_report():
             edit_report=request.args['id']
             report=Report.get_report(edit_report)
             if report['locked']== False:
+                Report.update(report['reportId'],'locked',True)
                 return view.render_template(view='admin_report.html',report=report)
             else:
                 error="Another admin is currently evaluating!"
