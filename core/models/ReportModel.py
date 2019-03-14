@@ -53,7 +53,7 @@ class Report(object):
 	def set_score(cls,reportId,score):
 		data = base.find_one("reports",{"reportId":reportId})
 		if data is not None:
-			query={"reportId":reportId},{"$set":{"reportScore":score}}
+			query={"filter":{"reportId":reportId},"update":{"$set":{"reportScore":score}}}
 			base.update("reports",query)
 			return True
 		else:

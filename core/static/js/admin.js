@@ -2,7 +2,7 @@ function ban_user(){
 	// toggle between badge banned and active
 }
 $('#switch').bootstrapSwitch();
-  function toggle_tabs(target){
+function toggle_tabs(target){
     var dashboard,userboard,reportboard,title;
     title= document.getElementById('Tab');
     dashboard = document.getElementById('content1');

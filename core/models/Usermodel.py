@@ -99,7 +99,7 @@ class User(object):
 			return list(data)
 	@classmethod
 	def update(self,_id,field,value):
-		Database.update("users",{"_id":_id},{"$set":{field:value}})
+		Database.update("users",{"filter":{"_id":_id},"update":{"$set":{field:value}}})
 	def json(self):
 		return {
 		"username":self.username,

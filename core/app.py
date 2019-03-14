@@ -60,6 +60,7 @@ def ban_redirect():
         if User.is_admin(_id):
             banned_user=request.args['id']
             User.update(banned_user,'banned',True)
+            return redirect(url_for('administration'))
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
@@ -123,6 +124,7 @@ def administration():
                 Ranking.append(calculate_score_for_user(user))
             sorted(Ranking,key=lambda l:l[1])
             length=len(Ranking)
+            print(length)
             return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
                 allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
                 ,length=length,ranking=Ranking)

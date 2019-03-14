@@ -19,4 +19,4 @@ class Database(object):
 		return Database.DATABASE[collection].find_one(query)
 	@staticmethod
 	def update(collection,query):
-		return Database.DATABASE[collection].update_one(query)
+		return Database.DATABASE[collection].update_one(query['filter'],query['update'])
