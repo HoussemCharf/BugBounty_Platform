@@ -19,7 +19,8 @@ class Notification(object):
 	@classmethod
 	def get_notifications_by_owner_id(cls,notiOwner):
 		data = base.find("notification",{"notiOwner":notiOwner})
-		if data is
+		if data is not None:
+			return list(data)
 	def json(self):
 		return {
 		"notiId":self.notiId,
