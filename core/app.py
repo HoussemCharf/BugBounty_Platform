@@ -5,7 +5,7 @@ from utils.Database import Database as base
 from utils.sanatize import *
 from models.Usermodel import User
 from models.ReportModel import Report
-from models.notification import notification as Noti
+from models.notification import Notification as Noti
 from view.viewer import view
 import os
 import datetime
