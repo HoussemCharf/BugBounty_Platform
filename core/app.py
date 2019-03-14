@@ -67,7 +67,7 @@ def ban_redirect():
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
 @app.route('/administration/unban',methods=['GET'])
-def ban_redirect():
+def unban_redirect():
     if session['log_in']==True:
         _id= session['uuid']
         if User.is_admin(_id):
