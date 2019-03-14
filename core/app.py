@@ -170,6 +170,7 @@ def settings():
 @app.route('/addreport',methods=['GET','POST'])
 def new_report():
     if session['log_in'] == True:
+        error=None
         _id = session['uuid']
         if request.method == 'POST':
             if check_form_empty(request.form,ignore='reportContent'):
@@ -192,11 +193,16 @@ def new_report():
                 reportFile = None
                 if Report.get_reports_queue(_id)<=conf.REPORT_LIMIT:
                     if file:
-                        reportFile = secure_file_name(file.filename)
-                        file.save(os.path.join(os.getcwd()+conf.UPLOAD_FOLDER,reportFile))
-                    report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
-                    success = 'Reported submitted successfully!'
-                    return view.render_template(view='add.html',success=success)
+                        reportFile = file.filename
+                        if allowed_file(reportFile):
+                            reportFile = secure_file_name(file.filename)
+                            file.save(os.path.join(os.getcwd()+conf.UPLOAD_FOLDER,reportFile))
+                            report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
+                            success = 'Reported submitted successfully!'
+                            return view.render_template(view='add.html',success=success)
+                        else:
+                            error="File is not allowed, inc BAN"
+                            return view.render_template(view='add.html',error=error)
                 else:
                     error='Due to flooding threat every user is limited to only '+str(conf.REPORT_LIMIT)+' reports in pending queue, Sorry for the inconvenience.'
                     return view.render_template(view='add.html',error=error)

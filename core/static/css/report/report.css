@@ -60,3 +60,14 @@ progress[value]::-webkit-progress-bar {
 #getprivilege1{
   margin-top:-120px
 }
+#payattention {
+  position:relative;
+  left: 220px;
+  top :-20px;
+  color:red;
+}
+#report {
+  position:absolute;
+  margin-left:180px;
+  margin-top:20px;
+}

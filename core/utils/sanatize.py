@@ -7,6 +7,9 @@ from werkzeug.utils import secure_filename
 import random
 import string
 import bcrypt
+ALLOWED_EXTENSIONS = set(['pdf'])
+
+secure_string = lambda n: ''.join([random.choice(string.ascii_lowercase) for i in range(n)])
 def check_form_empty(form,ignore=None):
 	values = form.keys()
 	if form.get(ignore) is not None:
@@ -41,3 +44,6 @@ def ready_to_get_banned():
 	else:
 		return(request.environ['HTTP_X_FORWARDED_FOR'])
 	return ('you have no connected IPs')
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

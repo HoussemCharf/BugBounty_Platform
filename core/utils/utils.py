@@ -8,7 +8,7 @@ import random
 import string
 import bcrypt
 
-secure_string = lambda n: ''.join([random.choice(string.ascii_lowercase) for i in range(n)])
+
 def calculate_score_for_user(user):
 	score=0
 	if user['banned']==False:
