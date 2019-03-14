@@ -137,7 +137,7 @@ def settings():
         if request.method=='POST':
             _id = session['uuid']
             Newpassword = request.form['password']
-            elif check_password(Newpassword) and Newpassword!=None:
+            if check_password(Newpassword) and Newpassword!=None:
                 User.update(_id,"password",Newpassword)
                 success = "Password changed successfully!"
             else:
@@ -198,7 +198,8 @@ def register():
             user = User.register(username,email,password,firstpartner,secondpartner,thirdpartner)
             if user:
                 return redirect(url_for('index'))
-            return 'Account already exists!'
+            error= 'Account already exists!'
+            return view.render_template(view='register.html',error=error)
         else:
             error = 'Invalid input, please verify again'
     if session.get('log_in') != None :
