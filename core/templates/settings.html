@@ -5,10 +5,24 @@
         <div class="col-md-4 col-md-offset-4">
             <form method=POST action="{{ url_for('settings') }}">
             	<p><font size="3">Change your account's credentials</font> </p>
+                 <div class="form-group">
+                    <label for="InputcurrentPassword"> Current Password</label>
+                    <input type="password" class="form-control" name="currentpassword" placeholder="current password" required="please enter your current password">
+                </div>
                 <div class="form-group">
                     <label for="InputNewPassword"> New Password</label>
                     <input type="password" class="form-control" name="password" placeholder="New password" required="Please make sure you've entered a password!">
                 </div>
+                <div class="form-group">
+                    <label for="InputConfirmPassword"> Confirm password</label>
+                    <input type="password" class="form-control" name="newpassword" placeholder="Confirm password " required="Please make sure you've entered the same password!">
+                </div>
+                {% if error!=None %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                {% endif %}
+                {% if success!=None %}
+                    <div class="alert alert-success" role="alert">{{success}}</div>
+                {% endif %}
                 <br>
                 <button type="submit" class="btn btn-primary btn-block">Update</button>
             </form>                

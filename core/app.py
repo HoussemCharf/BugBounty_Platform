@@ -19,7 +19,7 @@ def index():
     # if user is logged in setting up vars to be used in rendering the index template
     if session.get('log_in') != None: 
         if session['log_in'] == True:
-            _id=session['uuid']
+            _id = session['uuid']
             return view.render_template(view='home.html')
     return view.render_template(view='home.html')
 @app.route('/auth',methods=['GET'])
@@ -31,14 +31,15 @@ def login():
         error = None
         email= request.form['email']
         password = request.form['password']
+        if general_check(password,7,20) and check_email(email):
         #TODO by Houssem 1- sanatize data passed from user
-        if User.valid_login(email,password):
+            if User.valid_login(email,password):
         # Hacky code here <.<
-            uuid = User.get_id_by_email(email)
-            User.login(uuid)
-            return redirect(url_for('index'))
-        else:
-            error ='Wrong credentials please verify your informations'
+                uuid = User.get_id_by_email(email)
+                User.login(uuid)
+                return redirect(url_for('index'))
+            else:
+                error ='Wrong credentials please verify your informations'
     return view.render_template(view='auth.html',error=error)
 @app.route('/reports',methods=['GET'])
 def reports():
@@ -140,13 +141,17 @@ def settings():
         error=None
         if request.method=='POST':
             _id = session['uuid']
+            currentpassword =request.form['currentpassword']
+            user = User.get_by_id(_id)
+            basePassword = user['password']
             Newpassword = request.form['password']
-            if check_password(Newpassword) and Newpassword!=None:
-                User.update(_id,"password",Newpassword)
+            ConfirmNewpassword = request.form['newpassword']
+            if general_check(Newpassword,7,20) and general_check(ConfirmNewpassword,7,20)and compare_strings(Newpassword,ConfirmNewpassword) and general_check(currentpassword,7,20) and password_check(currentpassword,basePassword):
+                User.update(_id,"password",hashpass(Newpassword))
                 success = "Password changed successfully!"
             else:
                 error = "Ops, Something wrong happened!"
-            return view.render_template(view='settings',success=success,error=error)
+            return view.render_template(view='settings.html',success=success,error=error)
         return view.render_template(view='settings.html')
     else:
         return redirect(url_for('settings'))
@@ -202,7 +207,7 @@ def register():
         secondpartner = request.form['secondpartner']
         thirdpartner = request.form['thirdpartner']
         #TODO by houssem 1- sanatize data passed from user
-        if  check_email(email) == True and check_password(password) == True  and check_username(username) == True and check_firstpartner(firstpartner) == True and check_secondpartner(secondpartner) == True and check_thirdpartner(thirdpartner) == True:            
+        if  check_email(email) == True and general_check(password,7,20) and general_check(username,4,20) and general_check(firstpartner,4,20) and general_check(secondpartner,0,20) and general_check(thirdpartner,0,20):         
             user = User.register(username,email,password,firstpartner,secondpartner,thirdpartner)
             if user:
                 return redirect(url_for('index'))
@@ -214,10 +219,6 @@ def register():
         if session['log_in'] == True and request.method== 'GET':
             return redirect(url_for('index'))       
     return view.render_template(view='register.html',error=error)
-@app.route('/gotcha', methods=['GET'])
-def found_you():
-    #just a route to check if ip return func is running ===> returns 127.0.0.1 with no proxy
-    return(ready_to_get_banned())
 @app.route('/leaderboard')
 def leaderboard():
         # add lock here from admin settings

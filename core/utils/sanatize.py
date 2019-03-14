@@ -6,6 +6,7 @@ from models.ReportModel import Report
 from werkzeug.utils import secure_filename
 import random
 import string
+import bcrypt
 def check_form_empty(form,ignore=None):
 	values = form.keys()
 	if form.get(ignore) is not None:
@@ -35,27 +36,16 @@ def check_email(email):
 	if not re.match("^\w+[.|\w]\w+@\w+[.]\w+[.|\w+]\w+$",email):
 		return False
 	return True
-def check_password(password):
-	  #regex is updatable to the needs"
-	if not re.match("^[\w]{7,20}$",password):
+def general_check(str1,borninf,bornsup):
+	if not re.match("^[\w]{"+str(borninf)+","+str(bornsup)+"}$",str1):
 		return False
 	return True
-def check_username(username):
-	if not re.match("^[\w]{4,20}$",username):
-		return False
-	return True
-def check_firstpartner(firstpartner):
-	if not re.match("^[\w]{4,20}$",firstpartner):
-		return False
-	return True
-def check_secondpartner(secondpartner):
-	if not re.match("^[\w]{0,20}$",secondpartner):
-		return False
-	return True
-def check_thirdpartner(thirdpartner):
-	if not re.match("^[\w]{0,20}$",thirdpartner):
-		return False
-	return True
+def compare_strings(str1,str2):
+	return str1 == str2
+def password_check(currentpassword,basePassword):
+	return bcrypt.checkpw(currentpassword.encode("utf-8"),basePassword)
+def hashpass(password):
+	return bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
 def ready_to_get_banned():
 		#no proxy involved
 	if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
