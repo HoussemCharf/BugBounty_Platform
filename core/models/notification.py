@@ -4,7 +4,7 @@ from flask import session
 from utils.Database import Database as base
 from bson.objectid import ObjectId
 class Notification(object):
-	def __init__ (self,notiId,notiTitle,notiDescription,notiDate,notiViewed=False,notiOwner):
+	def __init__ (self,notiId,notiTitle,notiDescription,notiDate,notiOwner,notiViewed=False):
 		self.notiId = uuid.uuid4().hex if reportId is None else reportId
 		self.notiTitle = notiTitle
 		self.notiDescription = notiDescription
