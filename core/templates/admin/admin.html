@@ -1,11 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-
+<script src="{{ url_for('static', filename='js/bootstrap-switch.js') }}"></script>
 <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
-<script src="{{url_for('static',filename='js/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 <link href="{{ url_for('static', filename='css/admin.css')  }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/bootstrap-switch.min.css')  }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/bootstrap-theme.css')  }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/skin.css')  }}" rel="stylesheet">
 <!-- Content Header (Page header) -->
@@ -179,14 +178,9 @@
                   <div class="box-header">
                     <i class="fa fa-comments-o"></i>
 
-                    <h3 class="box-title">Chat</h3>
+                    <h3 class="box-title">Chat (feature not fully implemented)</h3>
 
                     <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                      <div class="btn-group" data-toggle="btn-toggle">
-                        <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i>
-                        </button>
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
-                    </div>
                 </div>
               </div>
               <div class="box-body chat" id="chat-box">
@@ -201,7 +195,7 @@
                   </a>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
-              <div class="attachment">
+              <!--div class="attachment">
                 <h4>Attachments:</h4>
 
                 <p class="filename">
@@ -211,9 +205,9 @@
               <div class="pull-right">
                   <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
               </div>
-              </div>
+              </div-->
               <!-- /.attachment -->
-              </div>
+              <!--/div-->
               <!-- /.item -->
               <!-- chat item -->
               <div class="item">
@@ -326,7 +320,16 @@
               <!-- End Userboard section -->
               <!-- reportboard section -->
               <section id="content3" class="content" style="display: none;">
-                    <table id="reportList"class="table table-striped">
+                  
+
+        <div class="col-sm-6">
+        <div class="input-group">
+          <input type="text" id="searchField" class="form-control" placeholder="Search for..." onkeyup="filter()">
+          <span class="input-group-btn">
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-sm-6 -->
+        <table id="reportList"class="table table-striped">
         <thead>
           <tr>
             <th>Report name</th>
@@ -341,7 +344,7 @@
         <tbody>
         {% for post in allReports %}
 
-            <tr>
+            <tr class="reportsList">
                 <td>{{ post['reportName'] }}</td>
                 <td>{{ post['reportDescription'] }}</td>
                 <td>{{post['AttackVector']}}</td>
@@ -373,7 +376,7 @@
               </section>
               <section id="content4" class="content" style="display: none;">
                 <table>
-                  <tr><td>Leaderboard:</td><td><input id="switch" type="checkbox" checked data-size="small"></td></tr>
+                  <tr><td>Leaderboard:</td><td><input id="switch"  name="switch" type="checkbox" checked data-size="small"></td></tr>
 
                 </table>
               </section>

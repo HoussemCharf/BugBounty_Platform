@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="container">
+
     <div class="row">
+         <div class="col-md-4 col-md-offset-4">
+        <img width="400" height="200" src="{{url_for('static',filename='img/register.png')}}">
+        </div>
         <div class="col-md-4 col-md-offset-4">
             <span id="team"><h3 align="center">Team registration</h3></span>
             <form method=POST action="{{ url_for('register') }}">                

@@ -26,7 +26,10 @@ def index():
     return view.render_template(view='home.html')
 @app.route('/auth',methods=['GET'])
 def auth():
-    return view.render_template(view='auth.html') 
+    return view.render_template(view='auth.html')
+@app.route('/aboutus',methods=['GET'])
+def aboutus():
+    return view.render_template(view='aboutus.html')
 @app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
@@ -63,6 +66,17 @@ def ban_redirect():
         if User.is_admin(_id):
             banned_user=request.args['id']
             User.update(banned_user,'banned',True)
+            return redirect(url_for('administration'))
+        else:
+            User.update(_id,'banned',True)
+    return redirect(url_for('index'))
+@app.route('/administration/deletereport',methods=['GET'])
+def delete_report_redirect():
+    if session['log_in']==True:
+        _id= session['uuid']
+        if User.is_admin(_id):
+            deletereport=request.args['id']
+            Report.delete(deletereport)
             return redirect(url_for('administration'))
         else:
             User.update(_id,'banned',True)

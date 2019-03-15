@@ -119,7 +119,6 @@ class Report(object):
 	def get_all_pending_reports():
 		data = base.find("reports",{"status":{"$eq":0}})
 		if data is not None:
-			print(list(data))
 			return list(data)
 	@staticmethod
 	def get_all_accepted_reports():
@@ -132,8 +131,11 @@ class Report(object):
 		if data is not None:
 			return list(data)
 	@staticmethod
+	def delete(self,_id):
+		Database.delete("reports",{"reportId":_id})
+	@staticmethod
 	def update(self,_id,field,value):
-		Database.update("reports",{"filter":{"_id":_id},"update":{"$set":{field:value}}})
+		Database.update("reports",{"filter":{"reportId":_id},"update":{"$set":{field:value}}})
 	def json(self):
 		return{
 		"reportName":self.reportName,

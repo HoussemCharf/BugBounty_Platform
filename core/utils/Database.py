@@ -20,3 +20,6 @@ class Database(object):
 	@staticmethod
 	def update(collection,query):
 		return Database.DATABASE[collection].update_one(query['filter'],query['update'])
+	@staticmethod
+	def delete(collection,query):
+		return Database.DATABASE[collection].delete_one(query)
