@@ -130,12 +130,12 @@ class Report(object):
 		data = base.find("reports",{"status":{"$eq":-1}})
 		if data is not None:
 			return list(data)
-	@staticmethod
+	@classmethod
 	def delete(self,_id):
-		Database.delete("reports",{"reportId":_id})
-	@staticmethod
+		base.delete("reports",{"reportId":_id})
+	@classmethod
 	def update(self,_id,field,value):
-		Database.update("reports",{"filter":{"reportId":_id},"update":{"$set":{field:value}}})
+		base.update("reports",{"filter":{"reportId":_id},"update":{"$set":{field:value}}})
 	def json(self):
 		return{
 		"reportName":self.reportName,

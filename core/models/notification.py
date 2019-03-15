@@ -30,5 +30,15 @@ class Notification(object):
 		"notiView":self.notiViewed,
 		"notiOwner":self.notiOwner,
 		}
+	@classmethod
+	def register_noti(cls,notiId,notiTitle,notiDescription,notiDate,notiViewed,notiOwner):
+		#TODO fix report file saving	
+		unsavedNoti = cls(notiId,notiTitle,notiDescription,notiDate,notiViewed,notiOwner)	
+		if unsavedNoti is not None:
+			unsavedNoti.save_mongo()
+	@classmethod
+	def get_all_notification_of_user(cls,Owner):
+		data = base.find("notification",{"notiOwner":{"$eq":Owner}})
+		return list(data)
 	def savemongo(self):
 		Database.insert("notification",self.json())

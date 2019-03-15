@@ -14,7 +14,7 @@ def calculate_score_for_user(user):
 	if user['banned']==False:
 		allUserReports=Report.find_reports_by_owner_id(user['_id'])
 		for report in allUserReports:
-			score+=report['reportScore']
+			score+=int(report['reportScore'])
 	return[user['username'],score]
 def compare_strings(str1,str2):
 	return str1 == str2

@@ -45,6 +45,7 @@ def login():
                 return redirect(url_for('index'))
             else:
                 error ='Wrong credentials please verify your informations'
+        error='Invalid email or password format!'
     return view.render_template(view='auth.html',error=error)
 @app.route('/reports',methods=['GET'])
 def reports():
@@ -99,13 +100,10 @@ def score_report():
         if User.is_admin(_id):
             edit_report=request.form['id']
             score=request.form['score']
-            res=Report.set_score(edit_report,score)
-            if res:
-                success="scored successfully!"
-                return view.render_template(view='/admin/admin.html',success=success)
-            else:
-                error="Ops, something went wrong!"
-                return view.render_template(view='/admin/admin.html',error=error)
+            Report.update(edit_report,'reportScore',int(score))
+            Report.update(edit_report,'locked',False)
+            Report.update(edit_report,'status',1)
+            return redirect(url_for('administration'))
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
@@ -118,11 +116,10 @@ def evaluate_report():
             report=Report.get_report(edit_report)
             if report['locked']== False:
                 Report.update(report['reportId'],'locked',True)
-                Report.update(report['reportId'],'status',1)
                 return view.render_template(view='admin_report.html',report=report)
             else:
                 error="Another admin is currently evaluating!"
-                return view.render_template(view='/admin/admin.html',error=error)
+                return redirect(url_for('administration'))
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
@@ -138,7 +135,11 @@ def administration():
             pendingReportsCount = Report.get_pending_reports_count()
             acceptedReportsCount = Report.get_accepted_reports_count()
             rejectedReportsCount = Report.get_rejected_reports_count()
-            acceptedReportsRatio = round(acceptedReportsCount * 100 / countReports)
+            # this line is an anti protection against division by zero
+            if countReports==0:
+                acceptedReportsRatio = 0
+            else:
+                acceptedReportsRatio = round(acceptedReportsCount * 100 / countReports)
             currentDate=datetime.datetime.now()
             # this section gonna deal with the users management view in the admin dashboard
             allUsers=User.get_all_users()
@@ -155,8 +156,11 @@ def administration():
                     pass
                 else:
                     Ranking.append(calculate_score_for_user(user))
-            sorted(Ranking,key=lambda l:l[1])
+            Ranking=sorted(Ranking,key=lambda l:l[1],reverse=True)
             length=len(Ranking)
+            # to avoid the bug of displaying rank in leaderboard
+            if length is None:
+                length = 0
             return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
                 allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
                 ,length=length,ranking=Ranking)
@@ -254,7 +258,7 @@ def register():
     return view.render_template(view='register.html',error=error)
 @app.route('/leaderboard')
 def leaderboard():
-        # add lock here from admin settings
+    # add lock here from admin settings
     allUsers=User.get_all_users()
     Ranking=[]
     for user in allUsers:
@@ -262,7 +266,7 @@ def leaderboard():
             pass
         else:
             Ranking.append(calculate_score_for_user(user))
-    sorted(Ranking,key=lambda l:l[1])
+    Ranking=sorted(Ranking,key=lambda l:l[1],reverse=True)
     length=len(Ranking)
     return view.render_template(view='leaderboard.html',ranking=Ranking,length=length)
 
