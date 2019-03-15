@@ -118,6 +118,7 @@ def evaluate_report():
             report=Report.get_report(edit_report)
             if report['locked']== False:
                 Report.update(report['reportId'],'locked',True)
+                Report.update(report['reportId'],'status',1)
                 return view.render_template(view='admin_report.html',report=report)
             else:
                 error="Another admin is currently evaluating!"
