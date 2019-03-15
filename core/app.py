@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, send_from_directory
 from config import BaseConfig as conf
 from config import StaticVars as static_vars
 from utils.Database import Database as base
@@ -120,6 +120,16 @@ def evaluate_report():
             else:
                 error="Another admin is currently evaluating!"
                 return redirect(url_for('administration'))
+        else:
+            User.update(_id,'banned',True)
+    return redirect(url_for('index'))
+
+@app.route('/uploads/<path:filename>')
+def download_file(filename):
+    if session['log_in']==True:
+        _id = session['uuid']
+        if User.is_admin(_id):
+            return send_from_directory('uprep1',filename, as_attachment=True)
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))

@@ -352,7 +352,7 @@
                 {% if post['reportFile'] == None %}
                     <td>No File Attached</td>
                   {% else %}
-                    <td> {{post['reportFile']}}</td>
+                    <td> <a href="/uploads/{{post['reportFile']}}">{{post['reportFile']}}</a></td>
                 {% endif %}
                 <td>{{post['reportDate'].strftime("%H:%M:%S")}}</td>
                   {% if post['status']== 0 %}
