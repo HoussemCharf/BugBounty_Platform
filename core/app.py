@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, session, redirect, send_from_directory
+from flask import Flask, render_template, url_for, request, session, redirect, send_from_directory,flash
 from config import BaseConfig as conf
 from config import StaticVars as static_vars
 from utils.Database import Database as base
@@ -100,15 +100,22 @@ def score_report():
         if User.is_admin(_id):
             edit_report=request.form['id']
             score=request.form['score']
-            Report.update(edit_report,'reportScore',int(score))
-            Report.update(edit_report,'locked',False)
-            Report.update(edit_report,'status',1)
-            return redirect(url_for('administration'))
+            if int(score)!=0:
+                Report.update(edit_report,'reportScore',int(score))
+                Report.update(edit_report,'locked',False)
+                Report.update(edit_report,'status',1)
+                return redirect(url_for('administration'))
+            else:
+                Report.update(edit_report,'reportScore',int(score))
+                Report.update(edit_report,'status',-1)
+                Report.update(edit_report,'locked',False)
+                return redirect(url_for('administration'))
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
 @app.route('/administration/editreport',methods=['GET'])
 def evaluate_report():
+    error=None
     if session['log_in']==True:
         _id= session['uuid']
         if User.is_admin(_id):
@@ -118,12 +125,11 @@ def evaluate_report():
                 Report.update(report['reportId'],'locked',True)
                 return view.render_template(view='admin_report.html',report=report)
             else:
-                error="Another admin is currently evaluating!"
+                flash("Another admin is currently evaluating!")
                 return redirect(url_for('administration'))
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
-
 @app.route('/uploads/<path:filename>')
 def download_file(filename):
     if session['log_in']==True:
@@ -206,6 +212,8 @@ def new_report():
                 error='Please fill all the form before submiting!'
                 return view.render_template(view='add.html',error=error)
             else:
+                user=User.get_by_id(_id)
+                reporter = user['username']
                 reportOwner =_id
                 reportName =request.form['reportName']
                 reportType =request.form['reportType']
@@ -229,7 +237,7 @@ def new_report():
                         else:
                             error="File not allowed, INC ban"
                             return view.render_template(view='add.html',error=error)
-                    report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
+                    report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reporter)
                     success = 'Reported submitted successfully!'
                     return view.render_template(view='add.html',success=success)
                 else:
@@ -279,10 +287,22 @@ def leaderboard():
     Ranking=sorted(Ranking,key=lambda l:l[1],reverse=True)
     length=len(Ranking)
     return view.render_template(view='leaderboard.html',ranking=Ranking,length=length)
+@app.route('/administration/unlockreport',methods=['GET'])
+def unlock_report():
+    if session['log_in'] == True:
+        _id = session['uuid']
+        if User.is_admin(_id):
+            unlock_report=request.args['id']
+            unlocked_report=Report.get_report(unlock_report)
+            if unlocked_report['locked'] == True:
+                Report.update(unlocked_report['reportId'],'locked',False)
+                return redirect(url_for('administration'))        
+        else:
+            User.update(_id,'banned',True)
 
 @app.errorhandler(404)
 def not_found(error):
     return view.render_template(view='error.html'), 404
 if __name__ == '__main__':
     app.secret_key = conf.SECRET_KEY
-app.run(ssl_context='adhoc',port=5000,debug=conf.DEBUG)
+app.run(host="192.168.1.7",port=5000,debug=conf.DEBUG)

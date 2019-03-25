@@ -332,19 +332,22 @@
         <table id="reportList"class="table table-striped">
         <thead>
           <tr>
+            <th>Reporter's Name</th>
             <th>Report name</th>
             <th>Report Description</th>
             <th>Vector</th>
             <th>Type</th>
             <th>Attachment</th>
             <th>Submission time</th>
+            <th> Score</th>
             <th>Status</th>
+            <th>Availibility</th>
           </tr>
         </thead>
         <tbody>
         {% for post in allReports %}
-
             <tr class="reportsList">
+                <td>{{ post['reporter'] }}</td>
                 <td>{{ post['reportName'] }}</td>
                 <td>{{ post['reportDescription'] }}</td>
                 <td>{{post['AttackVector']}}</td>
@@ -355,6 +358,7 @@
                     <td> <a href="/uploads/{{post['reportFile']}}">{{post['reportFile']}}</a></td>
                 {% endif %}
                 <td>{{post['reportDate'].strftime("%H:%M:%S")}}</td>
+                <td>{{post['reportScore']}}</td>
                   {% if post['status']== 0 %}
                     <td><span class="label label-warning">Pending</span></td>
                   {% elif post['status']==1 %}
@@ -364,13 +368,18 @@
                   {% else %}
                     <td><span class="label label-default">Error</span></td>
                   {% endif %}
+                  {% if post['locked']==True %}
+                    <td><span class="label label-danger">Locked</span></td>
+                  {% else%}
+                    <td><span class="label label-success">Available</span></td>
+                  {% endif %}
                 <td><div class="tools">
-                                <a href="/administration/editreport?id={{post['reportId']}}" ><i class="fa fa-edit"></i></a>
-
-                                <a href="/administration/deletereport?id={{post['reportId']}}"><i class="fa fa-trash"></i></a>
+                            <a href="/administration/editreport?id={{post['reportId']}}" ><i class="fa fa-edit"></i></a>
+                              <a href="/administration/deletereport?id={{post['reportId']}}"><i class="fa fa-trash"></i></a>
+                            <a href="/administration/unlockreport?id={{post['reportId']}}" ><i class="fa fa-unlock"></i></a>
                     </div></td>
             </tr>
-        {% endfor %}
+              {% endfor %}
         </tbody>
     </table>
               </section>
