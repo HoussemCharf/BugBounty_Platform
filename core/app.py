@@ -309,9 +309,8 @@ def contact_us():
             _id = session['uuid']
             user = User.get_by_id(_id)
             messageOwner = user['_id']
-            messageOwnerName = user['username']
             messageContent = request.form['messageContent']
-            newmessage = Chat.register_message(messageOwnerName,messageContent)
+            newmessage = Chat.register_message(messageOwner,messageContent)
             return redirect(url_for('inbox'))
         return view.render_template('chat.html')
 @app.route('/inbox', methods=['GET'])
