@@ -166,8 +166,6 @@ def administration():
             allPending = Report.get_all_pending_reports()
             allAccepted = Report.get_all_accepted_reports()
             allRejected = Report.get_all_rejected_reports()
-            #getting all Messages thrown into db
-            Messages = Chat.get_all_messages()
             # this section gonna handle the mini leaderboard in the admin panel
             Ranking=[]
             for user in allUsers:
@@ -182,7 +180,7 @@ def administration():
                 length = 0
             return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
                 allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
-                ,length=length,ranking=Ranking,Messages=Messages)
+                ,length=length,ranking=Ranking)
     return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])
 def settings():
