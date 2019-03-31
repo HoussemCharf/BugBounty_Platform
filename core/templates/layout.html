@@ -11,9 +11,6 @@
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css')  }}" rel="stylesheet">
     <link href="{{url_for('static',filename='css/font-awesome.min.css')}}" rel="stylesheet">
-    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
 </head>
 
 <body>
@@ -37,6 +34,9 @@
                 <ul class="nav navbar-nav navbar-right">
                   {% if session['log_in'] == True %}
                   <li><a class="notification">
+                    {% if admin == False %}
+                    <li><a href="/contactus">Contact Us</a></li>
+                    {% endif %}
                         <i class="fa fa-bell"></i>
                         <!--span class="badge">#</span-->
                   </a></li>
@@ -48,6 +48,7 @@
                                 {% endif%}
                                 <li><a href="/reports">Reports</a></li>
                                 <li><a href="/settings">Settings</a></li>
+                                <li><a href="/inbox">Inbox</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/logout">Sign out</a></li>
                             </ul>
@@ -65,8 +66,11 @@
 <br />
 <br />
 
-    {% block body %}{% endblock %}
 
+    {% block body %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
 
 </body>
     {% extends "footer.html" %}

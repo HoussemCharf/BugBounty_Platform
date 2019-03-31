@@ -4,15 +4,14 @@ class BaseConfig:
 	"""base config"""
 	SECRET_KEY = 'bugsbunny@bounty'
 	MONGO_URI='mongodb://localhost:27017/iset_bugbounty'
-	DEBUG= False
+	DEBUG= True
 	database_name= 'iset_bugbounty'
 	UPLOAD_FOLDER='/core/uprep1'
-	ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 	REPORT_LIMIT=5
 
 class StaticVars:
 	""" global vars to be passed"""
-	SITE_NAME= 'Pen@Party:~$'
+	SITE_NAME= 'Bug Bounty Platform'
 	SITE_URL= 'https://127.0.0.1:5000'
 class Development_Config(BaseConfig):
 	"""development config for me and souheil"""

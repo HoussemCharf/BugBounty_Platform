@@ -3,6 +3,7 @@ from config import BaseConfig as conf
 from config import StaticVars as static_vars
 from utils.Database import Database as base
 from utils.sanatize import *
+from models.ChatModel import Chat
 from models.Usermodel import User
 from models.ReportModel import Report
 from models.notification import Notification as Noti
@@ -165,6 +166,8 @@ def administration():
             allPending = Report.get_all_pending_reports()
             allAccepted = Report.get_all_accepted_reports()
             allRejected = Report.get_all_rejected_reports()
+            #getting all Messages thrown into db
+            Messages = Chat.get_all_messages()
             # this section gonna handle the mini leaderboard in the admin panel
             Ranking=[]
             for user in allUsers:
@@ -179,7 +182,7 @@ def administration():
                 length = 0
             return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
                 allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
-                ,length=length,ranking=Ranking)
+                ,length=length,ranking=Ranking,Messages=Messages)
     return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])
 def settings():
@@ -253,7 +256,7 @@ def new_report():
     return redirect(url_for('index'))
 @app.route('/register', methods=['POST','GET'])
 def register():
-    error = None
+    error=None
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -299,10 +302,28 @@ def unlock_report():
                 return redirect(url_for('administration'))        
         else:
             User.update(_id,'banned',True)
+    return redirect(url_for('index'))
 
+@app.route('/contactus',methods=['GET', 'POST'])
+def contact_us():
+    if session['log_in'] == True:
+        if request.method == 'POST':
+            _id = session['uuid']
+            user = User.get_by_id(_id)
+            messageOwner = user['_id']
+            messageOwnerName = user['username']
+            messageContent = request.form['messageContent']
+            newmessage = Chat.register_message(messageOwnerName,messageContent)
+            return redirect(url_for('inbox'))
+        return view.render_template('chat.html')
+@app.route('/inbox', methods=['GET'])
+def inbox():
+    if session['log_in'] == True:
+        pass
+        return view.render_template(view='inbox.html')
 @app.errorhandler(404)
 def not_found(error):
     return view.render_template(view='error.html'), 404
 if __name__ == '__main__':
     app.secret_key = conf.SECRET_KEY
-app.run(host="192.168.1.7",port=5000,debug=conf.DEBUG)
+app.run(ssl_context='adhoc',port=5000,debug=conf.DEBUG)
