@@ -47,3 +47,10 @@ def ready_to_get_banned():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def get_username(report):
+	user = report['reportOwner']
+	if user is not None:
+		username = User.get_by_id(user)
+		return username['username']
+
+

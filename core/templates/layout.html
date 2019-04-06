@@ -32,11 +32,11 @@
                     <li><a href="/aboutus">About Us</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                  {% if session['log_in'] == True %}
-                  <li><a class="notification">
-                    {% if admin == False %}
+                     {% if admin == False and session['log_in'] == True %}
                     <li><a href="/contactus">Contact Us</a></li>
                     {% endif %}
+                  {% if session['log_in'] == True %}
+                  <li><a class="notification">
                         <i class="fa fa-bell"></i>
                         <!--span class="badge">#</span-->
                   </a></li>

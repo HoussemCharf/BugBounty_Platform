@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block body %}
-<script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
 <link href="{{ url_for('static', filename='css/report/report.css') }}" rel="stylesheet">
 <section id="content">
 <article>
@@ -17,11 +16,11 @@
                 {% endif %}
 </div>
 <div class="row">
-
           <form method=POST action="{{ url_for('score_report') }}">
             <div class="row" id="firstrow">
                 <table class="table table-striped">
                     <thead>
+                    <th> Username </th>
                     <th>Bug name: </th>
                     
                     <th>Bug type: </th>
@@ -41,7 +40,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                    <td>{{report['reportName']}}</td>
+                    <td>{{usernames}}</td>
                     <td>{{report['reportType']}}</td>
                     <td>{{report['reportLevel']}}</td>
                      <td>{{report['reportDescription']}}</td>
@@ -62,8 +61,7 @@
                     </div>
                     <input type="hidden" name="id" value="{{report['reportId']}}">
                 <br>
-                    <button type="submit" class="btn btn-danger">Score</button>
-                
+                    <a href="javascript:void(0)" onclick="window.location.href='admin/admin.html#content3'"><button type="submit" class="btn btn-danger">Score</button></a>             
                 </div>
             </div>
         </form>

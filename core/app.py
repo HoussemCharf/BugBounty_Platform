@@ -105,12 +105,12 @@ def score_report():
                 Report.update(edit_report,'reportScore',int(score))
                 Report.update(edit_report,'locked',False)
                 Report.update(edit_report,'status',1)
-                return redirect(url_for('administration'))
+             
             else:
                 Report.update(edit_report,'reportScore',int(score))
                 Report.update(edit_report,'status',-1)
                 Report.update(edit_report,'locked',False)
-                return redirect(url_for('administration'))
+
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
@@ -123,8 +123,9 @@ def evaluate_report():
             edit_report=request.args['id']
             report=Report.get_report(edit_report)
             if report['locked']== False:
+                usernames = get_username(report)
                 Report.update(report['reportId'],'locked',True)
-                return view.render_template(view='admin_report.html',report=report)
+                return view.render_template(view='admin_report.html',report=report,usernames=usernames)
             else:
                 flash("Another admin is currently evaluating!")
                 return redirect(url_for('administration'))
@@ -160,6 +161,7 @@ def administration():
             currentDate=datetime.datetime.now()
             # this section gonna deal with the users management view in the admin dashboard
             allUsers=User.get_all_users()
+            messages = Chat.get_allusers_messages()
 
             # this section gonna deal with the reports management view in the admin dashboard
             allReports = Report.get_all_reports()
@@ -180,7 +182,7 @@ def administration():
                 length = 0
             return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
                 allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
-                ,length=length,ranking=Ranking)
+                ,length=length,ranking=Ranking,messages=messages)
     return redirect(url_for('index'))
 @app.route('/settings', methods=['GET','POST'])
 def settings():
@@ -213,8 +215,6 @@ def new_report():
                 error='Please fill all the form before submiting!'
                 return view.render_template(view='add.html',error=error)
             else:
-                user=User.get_by_id(_id)
-                reporter = user['username']
                 reportOwner =_id
                 reportName =request.form['reportName']
                 reportType =request.form['reportType']
@@ -238,7 +238,7 @@ def new_report():
                         else:
                             error="File not allowed, INC ban"
                             return view.render_template(view='add.html',error=error)
-                    report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reporter)
+                    report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
                     success = 'Reported submitted successfully!'
                     return view.render_template(view='add.html',success=success)
                 else:
@@ -318,6 +318,28 @@ def inbox():
     if session['log_in'] == True:
         pass
         return view.render_template(view='inbox.html')
+@app.route('/administration/instantmessages',methods=['GET','POST'])
+def instantmessages():
+    if session['log_in'] == True:
+        _id = session['uuid']
+        if User.is_admin(_id):
+            reply = request.args['id']
+            message = Chat.get_message(reply)
+            return view.render_template(view="response.html",message=message)
+@app.route('/administration/reply',methods=['POST'])
+def reply():
+    if session['log_in'] == True:
+        _id =session['uuid']
+        if User.is_admin(_id):
+            messageOwner = _id
+            messageContent = request.form['reply']
+            reply = request.form['id']
+            Adminreply  = Chat.register_message(messageOwner,messageContent)
+            if Adminreply:# chat instance doesnt get update before being saved.
+                Chat.update(Adminreply['messageId'],"instantMessage",1)
+                Chat.update(Adminreply['messageId'],"replymessageId",reply)
+                return redirect(url_for('administration'))
+        return redirect(url_for('index'))
 @app.errorhandler(404)
 def not_found(error):
     return view.render_template(view='error.html'), 404

@@ -29,6 +29,16 @@ class Chat(object):
 	def get_instant_messages():
 		data = Database.find("chat",{"instantMessage" : {"$eq": 1}})
 		if data is not None:
+			return list(data)
+	@staticmethod
+	def get_allusers_messages():
+		data = Database.find("chat",{"instantMessage" : {"$eq": 0}})
+		if data is not None:
+			return list(data)
+	@classmethod
+	def get_message(cls,messageId):
+		data = Database.find_one("chat",{"messageId":messageId})
+		if data is not None:
 			return data		
 	@classmethod
 	def register_message(cls,messageOwner,messageContent):
@@ -37,7 +47,7 @@ class Chat(object):
 			unsavedmessage.save()
 	@classmethod
 	def update(self,_id,field,value):
-		base.update("chat",{"filter":{"messageOwner":_id},"update":{"$set":{field:value}}})
+		Database.update("chat",{"filter":{"messageId":_id},"update":{"$set":{field:value}}})
 	def json(self):
 		return{
 		"messageId":self.messageId,
