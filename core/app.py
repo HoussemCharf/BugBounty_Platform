@@ -310,7 +310,9 @@ def contact_us():
             user = User.get_by_id(_id)
             messageOwner = user['_id']
             messageContent = request.form['messageContent']
-            newmessage = Chat.register_message(messageOwner,messageContent)
+            replymessageId = None
+            instantMessage = 0
+            newmessage = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage)
             return redirect(url_for('inbox'))
         return view.render_template('chat.html')
 @app.route('/inbox', methods=['GET'])
@@ -334,11 +336,10 @@ def reply():
             messageOwner = _id
             messageContent = request.form['reply']
             reply = request.form['id']
-            Adminreply  = Chat.register_message(messageOwner,messageContent)
-            if Adminreply:# chat instance doesnt get update before being saved.
-                Chat.update(Adminreply['messageId'],"instantMessage",1)
-                Chat.update(Adminreply['messageId'],"replymessageId",reply)
-                return redirect(url_for('administration'))
+            replymessageId = reply
+            instantMessage = 1
+            Adminreply  = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage)    
+            return redirect(url_for('administration'))
         return redirect(url_for('index'))
 @app.errorhandler(404)
 def not_found(error):

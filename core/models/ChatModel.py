@@ -3,7 +3,7 @@ import uuid
 from flask import session
 from utils.Database import Database
 class Chat(object):
-	def __init__ (self,messageOwner,messageContent,replymessageId=None,messageDate=None,messageId=None,instantMessage=0):
+	def __init__ (self,messageOwner,messageContent,replymessageId,instantMessage,messageDate=None,messageId=None):
 		self.messageId = uuid.uuid4().hex if messageId is None else messageId
 		self.messageOwner = messageOwner
 		self.messageDate = datetime.now()
@@ -41,8 +41,8 @@ class Chat(object):
 		if data is not None:
 			return data		
 	@classmethod
-	def register_message(cls,messageOwner,messageContent):
-		unsavedmessage =cls(messageOwner,messageContent)
+	def register_message(cls,messageOwner,messageContent,replymessageId,instantMessage):
+		unsavedmessage =cls(messageOwner,messageContent,replymessageId,instantMessage)
 		if unsavedmessage is not None:
 			unsavedmessage.save()
 	@classmethod
