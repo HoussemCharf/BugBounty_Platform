@@ -239,6 +239,7 @@ def new_report():
                             error="File not allowed, INC ban"
                             return view.render_template(view='add.html',error=error)
                     report = Report.register_report(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)
+                    # this has being changed before
                     success = 'Reported submitted successfully!'
                     return view.render_template(view='add.html',success=success)
                 else:

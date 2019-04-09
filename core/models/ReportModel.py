@@ -4,7 +4,7 @@ from flask import session
 from utils.Database import Database as base
 from bson.objectid import ObjectId
 class Report(object):
-	def __init__ (self,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reporter,reportDate=None,reportId=None,reportScore=0,report_status=0,locked=False):
+	def __init__ (self,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reportDate=None,reportId=None,reportScore=0,report_status=0,locked=False):
 		self.reportId = uuid.uuid4().hex if reportId is None else reportId
 		self.reportName = reportName
 		self.reportType = reportType
@@ -21,7 +21,7 @@ class Report(object):
 		self.report_status = report_status
 		# this field gonna be reserved for locking purposes regarding admin review
 		self.locked = locked
-		self.reporter = reporter
+		'''i have changed this  please check one more time'''
 	@classmethod
 	def get_report_name(cls,reportId):
 		data = base.find_one("reports",{"reportId":reportId})
@@ -60,9 +60,9 @@ class Report(object):
 		else:
 			return False
 	@classmethod
-	def register_report(cls,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reporter):
+	def register_report(cls,reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile):
 		#TODO fix report file saving	
-		unsavedReport = cls(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile,reporter)	
+		unsavedReport = cls(reportOwner,reportName,reportType,reportDescription,reportLevel,AttackComplexity,AttackVector,getprivilege,reportFile)	
 		if unsavedReport is not None:
 			unsavedReport.save_mongo()
 
@@ -152,7 +152,6 @@ class Report(object):
 		"reportFile" : self.reportFile,
 		"reportDescription" : self.reportDescription,
 		"status":self.report_status,
-		"locked":self.locked,
-		"reporter" : self.reporter}
+		"locked":self.locked}
 	def save_mongo(self):
 		base.insert("reports",self.json())
