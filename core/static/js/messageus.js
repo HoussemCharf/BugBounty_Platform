@@ -13,6 +13,7 @@
     .done(function(data) {
 
       if (data.success) {
+        $('#form1').trigger("reset");
         $('#successAlert').text(data.success).fadeIn();
         setTimeout(function(){  
         $('#successAlert').fadeOut("Slow");  
