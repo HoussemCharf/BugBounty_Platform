@@ -29,12 +29,8 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
                     <li><a href="leaderboard">Leaderboard</a></li>
-                    <li><a href="/aboutus">About Us</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                     {% if admin == False and session['log_in'] == True %}
-                    <li><a href="/contactus">Contact Us</a></li>
-                    {% endif %}
                   {% if session['log_in'] == True %}
                   <li><a class="notification">
                         <i class="fa fa-bell"></i>
@@ -47,8 +43,7 @@
                                 <li><a href="/administration">Admin area</a></li>
                                 {% endif%}
                                 <li><a href="/reports">Reports</a></li>
-                                <li><a href="/settings">Settings</a></li>
-                                <li><a href="/inbox">Inbox</a></li>
+                                <li><a href="/userdashboard">My Space</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/logout">Sign out</a></li>
                             </ul>
@@ -71,7 +66,8 @@
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/messageus.js') }}"></script>
 
 </body>
-    {% extends "footer.html" %}
+{% include "footer.html" %}
 </html>

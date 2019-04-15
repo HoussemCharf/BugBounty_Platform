@@ -52,5 +52,10 @@ def get_username(report):
 	if user is not None:
 		username = User.get_by_id(user)
 		return username['username']
+def get_username_from_message(message):
+	user = message['messageOwner']
+	if user is not None:
+		username = User.get_by_id(user)
+		return username['username']
 
 

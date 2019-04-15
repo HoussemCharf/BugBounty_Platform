@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, session, redirect, send_from_directory,flash
+from flask import Flask, render_template, url_for, request, session, redirect, send_from_directory,flash,jsonify
 from config import BaseConfig as conf
 from config import StaticVars as static_vars
 from utils.Database import Database as base
@@ -105,12 +105,12 @@ def score_report():
                 Report.update(edit_report,'reportScore',int(score))
                 Report.update(edit_report,'locked',False)
                 Report.update(edit_report,'status',1)
-             
+                return redirect(url_for('administration'))
             else:
                 Report.update(edit_report,'reportScore',int(score))
                 Report.update(edit_report,'status',-1)
                 Report.update(edit_report,'locked',False)
-
+                return redirect(url_for('administration'))
         else:
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
@@ -161,7 +161,7 @@ def administration():
             currentDate=datetime.datetime.now()
             # this section gonna deal with the users management view in the admin dashboard
             allUsers=User.get_all_users()
-            messages = Chat.get_allusers_messages()
+            messages = Chat.get_unviewed_messages()
 
             # this section gonna deal with the reports management view in the admin dashboard
             allReports = Report.get_all_reports()
@@ -184,27 +184,25 @@ def administration():
                 allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
                 ,length=length,ranking=Ranking,messages=messages)
     return redirect(url_for('index'))
-@app.route('/settings', methods=['GET','POST'])
+@app.route('/settings', methods=['POST'])
 def settings():
     if session['log_in']==True:
         success=None
         error=None
         if request.method=='POST':
             _id = session['uuid']
-            currentpassword =request.form['currentpassword']
             user = User.get_by_id(_id)
+            currentpassword =request.form['currentpassword']
             basePassword = user['password']
             Newpassword = request.form['password']
             ConfirmNewpassword = request.form['newpassword']
             if general_check(Newpassword,7,20) and general_check(ConfirmNewpassword,7,20)and compare_strings(Newpassword,ConfirmNewpassword) and general_check(currentpassword,7,20) and password_check(currentpassword,basePassword):
                 User.update(_id,"password",hashpass(Newpassword))
                 success = "Password changed successfully!"
+                return view.render_template(view="userdashboard.html",success=success)
             else:
                 error = "Ops, Something wrong happened!"
-            return view.render_template(view='settings.html',success=success,error=error)
-        return view.render_template(view='settings.html')
-    else:
-        return redirect(url_for('settings'))
+                return view.render_template(view="userdashboard.html",error=error)       
 @app.route('/addreport',methods=['GET','POST'])
 def new_report():
     if session['log_in'] == True:
@@ -303,24 +301,21 @@ def unlock_report():
             User.update(_id,'banned',True)
     return redirect(url_for('index'))
 
-@app.route('/contactus',methods=['GET', 'POST'])
-def contact_us():
+@app.route('/contactus',methods=['POST'])
+def contactus():
     if session['log_in'] == True:
-        if request.method == 'POST':
-            _id = session['uuid']
-            user = User.get_by_id(_id)
-            messageOwner = user['_id']
-            messageContent = request.form['messageContent']
-            replymessageId = None
-            instantMessage = 0
-            newmessage = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage)
-            return redirect(url_for('inbox'))
-        return view.render_template('chat.html')
-@app.route('/inbox', methods=['GET'])
-def inbox():
-    if session['log_in'] == True:
-        pass
-        return view.render_template(view='inbox.html')
+        _id = session['uuid']
+        user = User.get_by_id(_id)
+        messageOwner = user['_id']
+        messageContent = request.form['messageContent']
+        replymessageId = None
+        instantMessage = 0
+        viewed = 0
+        if messageContent:
+            newmessage = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage,viewed)
+            return jsonify({'success' : 'message has been sent'})
+        else:
+            return jsonify({'error': 'message has not been delivred'})
 @app.route('/administration/instantmessages',methods=['GET','POST'])
 def instantmessages():
     if session['log_in'] == True:
@@ -328,7 +323,8 @@ def instantmessages():
         if User.is_admin(_id):
             reply = request.args['id']
             message = Chat.get_message(reply)
-            return view.render_template(view="response.html",message=message)
+            user = get_username_from_message(message)
+            return view.render_template(view="response.html",message=message,user=user)
 @app.route('/administration/reply',methods=['POST'])
 def reply():
     if session['log_in'] == True:
@@ -337,11 +333,19 @@ def reply():
             messageOwner = _id
             messageContent = request.form['reply']
             reply = request.form['id']
+            Chat.update(reply,'viewed',1)
             replymessageId = reply
             instantMessage = 1
-            Adminreply  = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage)    
+            viewed = -1
+            Adminreply  = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage,viewed)    
             return redirect(url_for('administration'))
         return redirect(url_for('index'))
+@app.route('/userdashboard')
+def userdashboard():
+    if session['log_in'] == True:
+        _id = session['uuid']
+        return view.render_template(view='userdashboard.html')
+    return redirect(url_for('index'))
 @app.errorhandler(404)
 def not_found(error):
     return view.render_template(view='error.html'), 404

@@ -1,0 +1,198 @@
+{% extends "layout.html" %}
+{% block body %}
+<style>
+.sidenav {
+  height: 100%;
+  width: 190px; 
+  position: fixed; 
+  z-index: 1; 
+  top: 0;
+  left: 0;
+  box-shadow: 2px 2px 2px #888888;
+  background-color:  #f7f7f7;
+  overflow-x: hidden; 
+  padding-top: 50px;
+}
+.sidenav a:hover {
+  color: black;
+}
+
+.main {
+  margin-left: 190px; 
+  padding: 0px 50px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+.avatar-large .avatar-placeholder {
+    display: inline-block;
+    text-transform: uppercase;
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+  }
+  .avatar-placeholder {
+    background-color: #BDCAD3;
+    color: white;
+    font-size:25px;
+    line-height: 70px;
+    text-align: center;
+    position:relative;
+    margin-left :8px;
+    margin-top:50px;
+  }
+  .nickname{
+    position:relative;
+    margin-left:10px;
+    margin-top:-15px;
+  }
+  .user-status{
+    margin-top:-90px;
+  }
+  .user-status .fa {
+    color:green;
+    position:relative;
+    margin-left:10px;
+    margin-top:80px;
+  }
+  .nav-item{
+    width:25%;
+  }
+  .settings-wrapper{
+    width:30%;
+    margin-top:30px;
+  }
+  .updatebutton{
+    width:50%;
+  }
+  .hint {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 20px;
+  }
+  .btn:hover {
+  background-color: white; 
+  color: black;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }
+  .btn{
+    background-color: gray;
+    border:1px solid black;
+    margin-left:30px;
+    color:white;
+    width:150px;
+    font-size :20px;
+    font-family: Times New Roman;
+  }
+  #contz{
+    font-size:20px;
+
+  }
+
+  #ContentInput{
+   resize: none;
+   margin-top:2px;
+}
+  #sendbutton{
+    position:relative;
+    margin-left:20px;
+    margin-top:20px;
+    font-family: Times New Roman;
+  }
+  .msg{
+    font-size:30px;
+    position:relative;
+    margin-top:10px;
+  }
+  .alert{
+    width:20%;
+    margin-top:30px;
+    margin-left:25px;
+  }
+
+  </style>
+<div class="sidenav">
+  <section class="profile-section">
+    <div class="avatar-large" id="avatar">
+      <span class="avatar-placeholder">{{connecteduser}}</span>
+      </div>
+      <div class="nickname"><h3>{{username}}</h3></div>
+      <div class="user-status">
+      <span> <i class="fa fa-circle"></i>
+            <span>Online</span>
+          </span>
+          </div> 
+  </section>
+ 
+</div>
+<div class="main">
+    <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a href="#ChangePassword" class="nav-link active " role="tab" data-toggle="tab">Change Password</a>
+            </li>
+            <li class="nav-item">
+              <a href="#Msgus" class="nav-link" role="tab" data-toggle="tab">Message us</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="#Inbox" class="nav-link" role="tab" data-toggle="tab">Inbox</a>
+            </li>
+            <li class="nav-item">
+              <a href="#Activity" class="nav-link" role="tab" data-toggle="tab">Activity</a>
+            </li>
+            </ul>
+
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade" id="Activity">2</div>
+            <div role="tabpanel" class="tab-pane fade" id="Msgus">
+              <div class="container">
+                <div class="row" id="secondRow">
+                  <p class="msg"> New Message</p>
+                  <form id="form1">
+                    <div class="form-group">
+                  <textarea placeholder="message here"  id="ContentInput" cols="50" rows="5"></textarea></div>
+                  <div>
+                  <button type="submit" class="btn btn-primary" id="sendbutton">Send</button></div>
+                  </form>
+                  <div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+                  <div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>
+                 </div>
+                </div>
+               </div>
+          <div role="tabpanel" class="tab-pane fade" id="Inbox">3</div>
+            <div role="tabpanel" class="tab-pane fade in active" id="ChangePassword">
+              <div class="container">
+              <div class="row">
+                <div class="settings-wrapper">
+                <form method=POST action="{{ url_for('settings') }}" id="form2">
+                 <div class="form-group">
+                    <label for="InputcurrentPassword"> Current Password</label>
+                    <input type="password" class="form-control" name="currentpassword" placeholder="current password" required="please enter your current password">
+                </div>
+                <div class="form-group">
+                    <label for="InputNewPassword"> New Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="New password" required="Please make sure you've entered a password!">
+                    <span class="hint">Password Settings, min 7,max 20 etc.</span>
+                </div>
+                <div class="form-group">
+                    <label for="InputConfirmPassword"> Confirm password</label>
+                    <input type="password" class="form-control" name="newpassword" placeholder="Confirm password " required="Please make sure you've entered the same password!">
+                </div>
+                {% if error!=None %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                {% endif %}
+                {% if success!=None %}
+                    <div class="alert alert-success" role="alert">{{success}}</div>
+                {% endif %}
+                <br>
+                <div class="updatebutton"><button type="submit" class="btn btn-submit">Update</button></div>
+            </form> 
+            </div>
+            </div>
+            </div>
+            </div>
+         
+</div>
+</div>
+{% endblock %}

@@ -5,40 +5,32 @@
 <article>
 <div class="container">
     <div class="page-header">
-  <h1 align="center"> Response Message </h1>  
-<div class="row">
+  <h1 align="center"> Response Interface </h1>  
           <form method=POST action="{{ url_for('reply') }}">
             <div class="row">
-                <table class="table table-striped">
+                <div class="col-md-9 col-md-offset-2">
+                <table class="table">
                     <thead>
-                    <th>User</th>  
-                    <th>Message Content </th></thead>
+                    <th>Username</th>  
+                    <th>Message Content </th>
+                    <th> Response</th></thead>
                 <tbody>
                     <tr>
-                    <td> User </td>
+                    <td> {{user}} </td>
                     <td >{{message['messageContent']}}</td>
+                    <td>  <textarea placeholder="Reply here" name="reply"
+                     class="form-control" required></textarea>
+                    </td>
                     </tr>
                     </tbody>
                 </table>
+                <input type="hidden" name="id" value="{{message['messageId']}}">
+                <button type="submit" class="btn btn-danger" id="respond">Reply</button>
             </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <p><strong> Reply Back</strong> </p>
-                    <textarea placeholder="Reply here" name="reply"
-                     class="form-control" required></textarea>
-                    </div>
-                    <input type="hidden" name="id" value="{{message['messageId']}}">
-                    <br>
-                <div class="col-md-offset-1">
-                    <button type="submit" class="btn btn-success">Reply</button>
-                </div>
-                </div>
             </div>
-        </form>
-</div><br>
-<br>
+                </form>
+                </div>
 </div>
 </article>
 </section>
-</div>
 {% endblock %}

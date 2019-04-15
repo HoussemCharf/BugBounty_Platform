@@ -22,15 +22,17 @@ function filter(){
       }
     }
 function toggle_tabs(target){
-    var dashboard,userboard,reportboard,title;
+    var contactboard,dashboard,userboard,reportboard,title;
     title= document.getElementById('Tab');
     dashboard = document.getElementById('content1');
     userboard = document.getElementById('content2');
     reportboard = document.getElementById('content3');
     settings = document.getElementById('content4');
+    contactboard = document.getElementById('content5');
     if (target=="user"){
       title.textContent="Users";
       dashboard.style.display="none";
+      contactboard.style.display="none";
       reportboard.style.display="none";
       userboard.style.display="";
       settings.style.display="none";
@@ -38,6 +40,7 @@ function toggle_tabs(target){
     else if (target=="dash"){
       title.textContent="Dashboard";
       dashboard.style.display="";
+      contactboard.style.display="none";
       reportboard.style.display="none";
       userboard.style.display="none";
       settings.style.display="none";
@@ -46,16 +49,27 @@ function toggle_tabs(target){
     else if (target=='settings'){
       title.textContent="Settings";
       dashboard.style.display="none";
+      contactboard.style.display="none";
       reportboard.style.display="none";
       userboard.style.display="none";
       settings.style.display="";
     }
-    else{
+    else if(target =='reports') {
       title.textContent="Reports"
       dashboard.style.display="none";
+      contactboard.style.display="none";
       reportboard.style.display="";
       userboard.style.display="none";
       settings.style.display="none";
+    }
+    else {
+      title.textContent= "Contacts";
+      dashboard.style.display ="none";
+      contactboard.style.display="";
+      reportboard.style.display="none";
+      userboard.style.display="none";
+      settings.style.display="none";
+
     }
   }
 
