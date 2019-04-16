@@ -11,6 +11,10 @@
  */
 
  /* cyrillic-ext */
+#btnPending{
+  position:relative;
+  margin-left:30px;
+}
 
 #chat li{
   display:inline-block;
