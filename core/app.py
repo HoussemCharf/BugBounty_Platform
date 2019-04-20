@@ -187,22 +187,17 @@ def administration():
 @app.route('/settings', methods=['POST'])
 def settings():
     if session['log_in']==True:
-        success=None
-        error=None
-        if request.method=='POST':
-            _id = session['uuid']
-            user = User.get_by_id(_id)
-            currentpassword =request.form['currentpassword']
-            basePassword = user['password']
-            Newpassword = request.form['password']
-            ConfirmNewpassword = request.form['newpassword']
-            if general_check(Newpassword,7,20) and general_check(ConfirmNewpassword,7,20)and compare_strings(Newpassword,ConfirmNewpassword) and general_check(currentpassword,7,20) and password_check(currentpassword,basePassword):
-                User.update(_id,"password",hashpass(Newpassword))
-                success = "Password changed successfully!"
-                return view.render_template(view="userdashboard.html",success=success)
-            else:
-                error = "Ops, Something wrong happened!"
-                return view.render_template(view="userdashboard.html",error=error)       
+        _id = session['uuid']
+        user = User.get_by_id(_id)
+        currentpassword =request.form['currentpassword']
+        basePassword = user['password']
+        Newpassword = request.form['Newpassword']
+        ConfirmNewpassword = request.form['ConfirmNewpassword']
+        if general_check(Newpassword,7,20) and general_check(ConfirmNewpassword,7,20)and compare_strings(Newpassword,ConfirmNewpassword) and general_check(currentpassword,7,20) and password_check(currentpassword,basePassword):
+            User.update(_id,"password",hashpass(Newpassword))
+            return jsonify ({'success' : 'password successfully changed !'})
+        else:
+            return jsonify({'error' : 'Ops, Something wrong happened!'})    
 @app.route('/addreport',methods=['GET','POST'])
 def new_report():
     if session['log_in'] == True:
@@ -315,7 +310,7 @@ def contactus():
             newmessage = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage,viewed)
             return jsonify({'success' : 'message has been sent'})
         else:
-            return jsonify({'error': 'message has not been delivred'})
+            return jsonify({'error': 'field must not be empty on Submit!'})
 @app.route('/administration/instantmessages',methods=['GET','POST'])
 def instantmessages():
     if session['log_in'] == True:
@@ -325,6 +320,7 @@ def instantmessages():
             message = Chat.get_message(reply)
             user = get_username_from_message(message)
             return view.render_template(view="response.html",message=message,user=user)
+        return redirect(url_for('index'))
 @app.route('/administration/reply',methods=['POST'])
 def reply():
     if session['log_in'] == True:
@@ -344,7 +340,11 @@ def reply():
 def userdashboard():
     if session['log_in'] == True:
         _id = session['uuid']
-        return view.render_template(view='userdashboard.html')
+        pending = Report.get_report_status_per_user(_id,0)
+        accepted = Report.get_report_status_per_user(_id,1)
+        rejected = Report.get_report_status_per_user(_id,-1)
+        reportCount = get_reports_per_user_count(_id)
+        return view.render_template(view='userdashboard.html',pending=pending,accepted=accepted,rejected=rejected,reportCount=reportCount)
     return redirect(url_for('index'))
 @app.errorhandler(404)
 def not_found(error):

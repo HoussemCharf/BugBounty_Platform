@@ -2,7 +2,7 @@ $(document).ready(function() {
     $('#btnPending').click(function() {
         $("#myTable tr td").each(function() {
             var cell = $(this).text();
-            if ($.trim(cell) == 'Pending') {
+            if ($.trim(cell) == 'Pending' ||$.trim(cell) == 'Rejected' ) {
                 $(this).parent().hide();
             }
         });
@@ -10,7 +10,15 @@ $(document).ready(function() {
     $('#btnAccepted').click(function() {
         $("#myTable tr td").each(function() {
             var cell = $(this).text();
-            if ($.trim(cell) == 'Accepted') {
+            if ($.trim(cell) == 'Accepted' || $.trim(cell) == 'Rejected') {
+                $(this).parent().hide();
+            }
+        });
+    });
+    $('#btnRejected').click(function() {
+        $("#myTable tr td").each(function() {
+            var cell = $(this).text();
+            if ($.trim(cell) == 'Accepted' || $.trim(cell)== 'Pending') {
                 $(this).parent().hide();
             }
         });

@@ -1,117 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
-<style>
-.sidenav {
-  height: 100%;
-  width: 190px; 
-  position: fixed; 
-  z-index: 1; 
-  top: 0;
-  left: 0;
-  box-shadow: 2px 2px 2px #888888;
-  background-color:  #f7f7f7;
-  overflow-x: hidden; 
-  padding-top: 50px;
-}
-.sidenav a:hover {
-  color: black;
-}
-
-.main {
-  margin-left: 190px; 
-  padding: 0px 50px;
-}
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-.avatar-large .avatar-placeholder {
-    display: inline-block;
-    text-transform: uppercase;
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-  }
-  .avatar-placeholder {
-    background-color: #BDCAD3;
-    color: white;
-    font-size:25px;
-    line-height: 70px;
-    text-align: center;
-    position:relative;
-    margin-left :8px;
-    margin-top:50px;
-  }
-  .nickname{
-    position:relative;
-    margin-left:10px;
-    margin-top:-15px;
-  }
-  .user-status{
-    margin-top:-90px;
-  }
-  .user-status .fa {
-    color:green;
-    position:relative;
-    margin-left:10px;
-    margin-top:80px;
-  }
-  .nav-item{
-    width:25%;
-  }
-  .settings-wrapper{
-    width:30%;
-    margin-top:30px;
-  }
-  .updatebutton{
-    width:50%;
-  }
-  .hint {
-    display: inline-block;
-    font-size: 12px;
-    line-height: 20px;
-  }
-  .btn:hover {
-  background-color: white; 
-  color: black;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-  }
-  .btn{
-    background-color: gray;
-    border:1px solid black;
-    margin-left:30px;
-    color:white;
-    width:150px;
-    font-size :20px;
-    font-family: Times New Roman;
-  }
-  #contz{
-    font-size:20px;
-
-  }
-
-  #ContentInput{
-   resize: none;
-   margin-top:2px;
-}
-  #sendbutton{
-    position:relative;
-    margin-left:20px;
-    margin-top:20px;
-    font-family: Times New Roman;
-  }
-  .msg{
-    font-size:30px;
-    position:relative;
-    margin-top:10px;
-  }
-  .alert{
-    width:20%;
-    margin-top:30px;
-    margin-left:25px;
-  }
-
-  </style>
+<link href="{{ url_for('static', filename='css/userdashboard.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/messageus.js') }}"></script>
+<script src="{{ url_for('static', filename='js/changesettings.js') }}"></script>
 <div class="sidenav">
   <section class="profile-section">
     <div class="avatar-large" id="avatar">
@@ -124,7 +15,6 @@
           </span>
           </div> 
   </section>
- 
 </div>
 <div class="main">
     <ul class="nav nav-tabs">
@@ -144,7 +34,49 @@
             </ul>
 
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade" id="Activity">2</div>
+            <div role="tabpanel" class="tab-pane fade" id="Activity">
+              <header class="header-dash">
+                <h1> User Activity</h1>
+              </header>
+              <div class="flex-wrap">
+                <div class="column-main">
+                  <section class="section">
+                    <div class="welcome">
+                      <h1> welcome </h1>
+                      <p> To submit a bug go to <a href="/reports">Report</a> And start Your research</p>
+                    </div>
+                  </section>
+                  <section class="section">
+                    <h2 class="Report-summ">
+                      <i class="fa fa-bug"></i>
+                      Reports
+                    </h2>
+                    <table class="table-flat">
+                      <tbody>
+                        <tr class="tr-flat">
+                          <td class="td-flat">
+                          <span class="trivial">Total amount</span>
+                          <span class="total">{{reportCount}}</span></td>
+                          <td class="td-flat">
+                            <span class="trivial">Accepted</span>
+                            <span class="total">{{accepted}}</span>
+                          </td>
+                          <td class="td-flat">
+                            <span class="trivial">Pending</span>
+                            <span class="total">{{pending}}</span>
+                          </td>
+                          <td class="td-flat">
+                            <span class="trivial">Rejected</span>
+                            <span class="total">{{rejected}}</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </section>
+              </div>
+              </div>              
+            </div>
             <div role="tabpanel" class="tab-pane fade" id="Msgus">
               <div class="container">
                 <div class="row" id="secondRow">
@@ -163,31 +95,26 @@
           <div role="tabpanel" class="tab-pane fade" id="Inbox">3</div>
             <div role="tabpanel" class="tab-pane fade in active" id="ChangePassword">
               <div class="container">
-              <div class="row">
+              <div class="row" id="thirdRow">
                 <div class="settings-wrapper">
-                <form method=POST action="{{ url_for('settings') }}" id="form2">
+                <form id="form2">
                  <div class="form-group">
                     <label for="InputcurrentPassword"> Current Password</label>
-                    <input type="password" class="form-control" name="currentpassword" placeholder="current password" required="please enter your current password">
+                    <input type="password" class="form-control" id="InputcurrentPassword" placeholder="current password">
                 </div>
                 <div class="form-group">
                     <label for="InputNewPassword"> New Password</label>
-                    <input type="password" class="form-control" name="password" placeholder="New password" required="Please make sure you've entered a password!">
+                    <input type="password" class="form-control"  id="InputNewPassword" placeholder="New password" >
                     <span class="hint">Password Settings, min 7,max 20 etc.</span>
                 </div>
                 <div class="form-group">
                     <label for="InputConfirmPassword"> Confirm password</label>
-                    <input type="password" class="form-control" name="newpassword" placeholder="Confirm password " required="Please make sure you've entered the same password!">
-                </div>
-                {% if error!=None %}
-                    <div class="alert alert-danger" role="alert">{{error}}</div>
-                {% endif %}
-                {% if success!=None %}
-                    <div class="alert alert-success" role="alert">{{success}}</div>
-                {% endif %}
+                    <input type="password" class="form-control" id="InputConfirmPassword" placeholder="Confirm password "> </div>
                 <br>
                 <div class="updatebutton"><button type="submit" class="btn btn-submit">Update</button></div>
             </form> 
+                  <div id="successAlert1" class="alert alert-success" role="alert" style="display:none;"></div>
+                  <div id="errorAlert1" class="alert alert-danger" role="alert" style="display:none;"></div>
             </div>
             </div>
             </div>

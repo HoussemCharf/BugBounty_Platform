@@ -137,6 +137,11 @@ class Report(object):
 	@classmethod
 	def update(self,_id,field,value):
 		base.update("reports",{"filter":{"reportId":_id},"update":{"$set":{field:value}}})
+	@classmethod
+	def get_report_status_per_user(cls,reportOwner,state):
+		data = base.find("reports",{"reportOwner":{"$eq":reportOwner},"status":{"$eq":state}})
+		if data is not None:
+			return data.count()
 	def json(self):
 		return{
 		"reportName":self.reportName,

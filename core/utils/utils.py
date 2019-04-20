@@ -22,3 +22,17 @@ def password_check(currentpassword,basePassword):
 	return bcrypt.checkpw(currentpassword.encode("utf-8"),basePassword)
 def hashpass(password):
 	return bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
+def get_username(report):
+	user = report['reportOwner']
+	if user is not None:
+		username = User.get_by_id(user)
+		return username['username']
+def get_username_from_message(message):
+	user = message['messageOwner']
+	if user is not None:
+		username = User.get_by_id(user)
+		return username['username']
+def get_reports_per_user_count(_id):
+	post = Report.find_reports_by_owner_id(_id)
+	if post is not None:
+		return len(post)
