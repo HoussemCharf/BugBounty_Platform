@@ -3,6 +3,7 @@ from flask import session
 from flask import request,redirect,url_for
 from models.Usermodel import User
 from models.ReportModel import Report
+from models.ChatModel import Chat
 from werkzeug.utils import secure_filename
 import random
 import string
@@ -36,3 +37,25 @@ def get_reports_per_user_count(_id):
 	post = Report.find_reports_by_owner_id(_id)
 	if post is not None:
 		return len(post)
+def get_chat_messages(_id):
+	#i cri everytim
+	legacy = []
+	data = Chat.get_user_initial_messages(_id)
+	if data:
+		message = list(data)
+		for x in range(0,len(message)):
+			new_data = message[x]['messageId']
+			content_data = message[x]
+			legacy.append(content_data)
+			admin_message = Chat.get_user_message_by_replymessageId(new_data)
+			if admin_message:
+				legacy.append(admin_message)
+		return legacy
+def get_username_from_messages(data):
+	names = []
+	if data is not None:
+		for x in range(len(data)):
+			messageOwners = data[x]['messageOwner']
+			name = User.get_username(messageOwners)
+			names.append(name)
+		return names

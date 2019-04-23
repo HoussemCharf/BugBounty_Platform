@@ -58,6 +58,16 @@ class Chat(object):
 	@classmethod
 	def delete(self,messageId):
 		Database.delete("chat",{"messageId":messageId})
+	@classmethod
+	def get_user_initial_messages(cls,messageOwner):
+		data = Database.find("chat",{"messageOwner":{"$eq":messageOwner},"replymessageId":{"$eq":None}})
+		if data is not None:
+			return data
+	@classmethod
+	def get_user_message_by_replymessageId(cls,messageId):
+		data = Database.find_one("chat",{"replymessageId":messageId})
+		if data is not None:
+			return data
 	def json(self):
 		return{
 		"messageId":self.messageId,

@@ -161,7 +161,10 @@ def administration():
             currentDate=datetime.datetime.now()
             # this section gonna deal with the users management view in the admin dashboard
             allUsers=User.get_all_users()
+            #handles the message display
             messages = Chat.get_unviewed_messages()
+            usernames = get_username_from_messages(messages)
+            len2 = len(usernames)
 
             # this section gonna deal with the reports management view in the admin dashboard
             allReports = Report.get_all_reports()
@@ -182,7 +185,7 @@ def administration():
                 length = 0
             return view.render_template(view='admin/admin.html',countReports=countReports,countUsers=countUsers,pendingReportsCount=pendingReportsCount,acceptedReportsCount=acceptedReportsCount,rejectedReportsCount=rejectedReportsCount,ratio=acceptedReportsRatio,
                 allReports=allReports,allUsers=allUsers,allPending=allPending,allAccepted=allAccepted,allRejected=allRejected,currenttime=currentDate
-                ,length=length,ranking=Ranking,messages=messages)
+                ,length=length,ranking=Ranking,messages=messages,usernames=usernames,len2=len2)
     return redirect(url_for('index'))
 @app.route('/settings', methods=['POST'])
 def settings():
@@ -344,7 +347,10 @@ def userdashboard():
         accepted = Report.get_report_status_per_user(_id,1)
         rejected = Report.get_report_status_per_user(_id,-1)
         reportCount = get_reports_per_user_count(_id)
-        return view.render_template(view='userdashboard.html',pending=pending,accepted=accepted,rejected=rejected,reportCount=reportCount)
+        history = get_chat_messages(_id)
+        usernames = get_username_from_messages(history)
+        length = len(history)
+        return view.render_template(view='userdashboard.html',pending=pending,accepted=accepted,rejected=rejected,reportCount=reportCount,history=history,usernames=usernames,length=length)
     return redirect(url_for('index'))
 @app.errorhandler(404)
 def not_found(error):

@@ -92,7 +92,16 @@
                  </div>
                 </div>
                </div>
-          <div role="tabpanel" class="tab-pane fade" id="Inbox">3</div>
+          <div role="tabpanel" class="tab-pane fade" id="Inbox">
+            <ul>{% if history|length > 0 %}
+            {% for i in range(length) %}
+            <li>{{usernames[i]}} : {{history[i]['messageContent']}}</li>
+            {% endfor %}          
+             </ul>
+            {% else %}
+          <h3> No message history </h3>
+          {% endif %}
+          </div>
             <div role="tabpanel" class="tab-pane fade in active" id="ChangePassword">
               <div class="container">
               <div class="row" id="thirdRow">
