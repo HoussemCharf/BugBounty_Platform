@@ -3,7 +3,8 @@
 <link href="{{ url_for('static', filename='css/userdashboard.css') }}" rel="stylesheet">
 <script src="{{ url_for('static', filename='js/messageus.js') }}"></script>
 <script src="{{ url_for('static', filename='js/changesettings.js') }}"></script>
-<div class="sidenav">
+<script src="{{ url_for('static', filename='js/refreshchat.js') }}"></script>
+<div class="user-container">
   <section class="profile-section">
     <div class="avatar-large" id="avatar">
       <span class="avatar-placeholder">{{connecteduser}}</span>
@@ -16,25 +17,25 @@
           </div> 
   </section>
 </div>
-<div class="main">
+  <div class="tab-container">
     <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a href="#ChangePassword" class="nav-link active " role="tab" data-toggle="tab">Change Password</a>
+              <a href="#Activity" class="nav-link active" role="tab" data-toggle="tab">Activity</a>
             </li>
             <li class="nav-item">
-              <a href="#Msgus" class="nav-link" role="tab" data-toggle="tab">Message us</a>
+              <a href="#Msgus" class="nav-link" role="tab" data-toggle="tab">Contact</a>
             </li>
 
             <li class="nav-item">
               <a href="#Inbox" class="nav-link" role="tab" data-toggle="tab">Inbox</a>
             </li>
-            <li class="nav-item">
-              <a href="#Activity" class="nav-link" role="tab" data-toggle="tab">Activity</a>
+            <li class="nav-item" id="changepw">
+              <a href="#ChangePassword" class="nav-link" role="tab" data-toggle="tab">Change Password</a>
             </li>
             </ul>
-
+      </div>
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade" id="Activity">
+            <div role="tabpanel" class="tab-pane fade in active" id="Activity">
               <header class="header-dash">
                 <h1> User Activity</h1>
               </header>
@@ -78,12 +79,12 @@
               </div>              
             </div>
             <div role="tabpanel" class="tab-pane fade" id="Msgus">
-              <div class="container">
+              <div class="container-one">
                 <div class="row" id="secondRow">
                   <p class="msg"> New Message</p>
                   <form id="form1">
                     <div class="form-group">
-                  <textarea placeholder="message here"  id="ContentInput" cols="50" rows="5"></textarea></div>
+                  <textarea placeholder="message here"  id="ContentInput" cols="50" rows="6"></textarea></div>
                   <div>
                   <button type="submit" class="btn btn-primary" id="sendbutton">Send</button></div>
                   </form>
@@ -93,17 +94,32 @@
                 </div>
                </div>
           <div role="tabpanel" class="tab-pane fade" id="Inbox">
-            <ul>{% if history|length > 0 %}
-            {% for i in range(length) %}
-            <li>{{usernames[i]}} : {{history[i]['messageContent']}}</li>
-            {% endfor %}          
+            <div id="reloadChat">
+            {% if history[0] and history[1]|length > 0 %}
+            <h2 class="chatTtile">Chat History</h2>
+            <ul>
+              {% for i in range(length) %}
+            <li class="hideme">
+              <div class="chat"><strong>{{username}}</strong> : {{history[0][i]['messageContent']}}</div>
+              <div class="time">{{history[0][i]['messageDate'].strftime("%H:%M")}}</div>
+              <div class="reply" id="hisreply">{{history[1][i]['messageContent']}}</div>
+            </li> 
+            {% endfor %}         
+             </ul>
+            {% elif history[0]| length > 0 %}
+            <h2 class="chatTtile">Chat History</h2>
+            <ul>
+              {% for i in range(length) %}
+            <li class="hideme"><div class="chat">{{history[0][i]['messageContent']}}</div><div class="time">{{history[0][i]['messageDate'].strftime("%H:%M")}}</div></li>
+            {% endfor %}         
              </ul>
             {% else %}
-          <h3> No message history </h3>
+          <h3 class="nomsg"> No message history </h3>
           {% endif %}
           </div>
-            <div role="tabpanel" class="tab-pane fade in active" id="ChangePassword">
-              <div class="container">
+        </div>
+            <div role="tabpanel" class="tab-pane fade" id="ChangePassword">
+              <div class="container-two">
               <div class="row" id="thirdRow">
                 <div class="settings-wrapper">
                 <form id="form2">
@@ -120,7 +136,7 @@
                     <label for="InputConfirmPassword"> Confirm password</label>
                     <input type="password" class="form-control" id="InputConfirmPassword" placeholder="Confirm password "> </div>
                 <br>
-                <div class="updatebutton"><button type="submit" class="btn btn-submit">Update</button></div>
+                <button type="submit" class="btn btn-primary" id="updatesettings">Update</button>
             </form> 
                   <div id="successAlert1" class="alert alert-success" role="alert" style="display:none;"></div>
                   <div id="errorAlert1" class="alert alert-danger" role="alert" style="display:none;"></div>
@@ -128,7 +144,5 @@
             </div>
             </div>
             </div>
-         
-</div>
 </div>
 {% endblock %}

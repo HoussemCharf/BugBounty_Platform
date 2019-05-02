@@ -410,14 +410,14 @@
   </li>
 </ul>
 <div class="tab-content" id="myTabContentJust">
-  <div class="tab-pane fade in active" id="registredContacts-just" role="tabpanel" aria-labelledby="registredContacts-tab-just"> 
+  <div class="tab-pane fade in active" id="registredContacts-just" role="tabpanel" aria-labelledby="registredContacts-tab-just">
       <h3> All pending Messages </h3>
     <ul id="chat">
       {% for i in range(len2) %}
- <li class="harlon">#{{usernames[i]}} : {{ messages[i]['messageContent']}}<a href="/administration/instantmessages?id={{messages[i]['messageId']}}" id="messagehref"><i class="fa fa-comment" aria-hidden="true" id="pending"></i></a>
+ <li class="harlon"><p class="replymessage">#{{usernames[i]}} : {{ messages[i]['messageContent']}}</p><a href="/administration/instantmessages?id={{messages[i]['messageId']}}" id="messagehref"><i class="fa fa-comment" aria-hidden="true" id="pending"></i></a>
  </li>{% endfor %}
-</ul> 
-</div>
+</ul>
+</div> 
   <div class="tab-pane fade" id="Users-just" role="tabpanel" aria-labelledby="Users-tab-just">
   </div>
 </div>

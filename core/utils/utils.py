@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from flask import session
 from flask import request,redirect,url_for
 from models.Usermodel import User
@@ -39,18 +40,21 @@ def get_reports_per_user_count(_id):
 		return len(post)
 def get_chat_messages(_id):
 	#i cri everytim
-	legacy = []
+	user_messages = []
+	admin_replies = []
 	data = Chat.get_user_initial_messages(_id)
 	if data:
 		message = list(data)
 		for x in range(0,len(message)):
 			new_data = message[x]['messageId']
 			content_data = message[x]
-			legacy.append(content_data)
+			user_messages.append(content_data)
 			admin_message = Chat.get_user_message_by_replymessageId(new_data)
 			if admin_message:
-				legacy.append(admin_message)
-		return legacy
+				admin_replies.append(admin_message)
+			else:
+				admin_replies.append({'messageContent':'', 'messageDate' : ''})
+		return [user_messages,admin_replies]
 def get_username_from_messages(data):
 	names = []
 	if data is not None:

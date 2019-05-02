@@ -304,16 +304,17 @@ def contactus():
     if session['log_in'] == True:
         _id = session['uuid']
         user = User.get_by_id(_id)
-        messageOwner = user['_id']
-        messageContent = request.form['messageContent']
-        replymessageId = None
-        instantMessage = 0
-        viewed = 0
-        if messageContent:
-            newmessage = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage,viewed)
-            return jsonify({'success' : 'message has been sent'})
-        else:
-            return jsonify({'error': 'field must not be empty on Submit!'})
+        if user['admin'] == False:
+            messageOwner = user['_id']
+            messageContent = request.form['messageContent']
+            replymessageId = None
+            instantMessage = 0
+            viewed = 0
+            if messageContent:
+                newmessage = Chat.register_message(messageOwner,messageContent,replymessageId,instantMessage,viewed)
+                return jsonify({'success' : 'message has been sent'})
+            else:
+                return jsonify({'error': 'field must not be empty on Submit!'})
 @app.route('/administration/instantmessages',methods=['GET','POST'])
 def instantmessages():
     if session['log_in'] == True:
@@ -348,8 +349,8 @@ def userdashboard():
         rejected = Report.get_report_status_per_user(_id,-1)
         reportCount = get_reports_per_user_count(_id)
         history = get_chat_messages(_id)
-        usernames = get_username_from_messages(history)
-        length = len(history)
+        usernames = get_username_from_messages(history[0])
+        length = len(history[0])
         return view.render_template(view='userdashboard.html',pending=pending,accepted=accepted,rejected=rejected,reportCount=reportCount,history=history,usernames=usernames,length=length)
     return redirect(url_for('index'))
 @app.errorhandler(404)

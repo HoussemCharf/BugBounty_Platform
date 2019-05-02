@@ -1,36 +1,105 @@
 {% extends "layout.html" %}
 {% block body %}
+<style>
+.container-glue{max-width:1500px;margin-top:80px;margin-left:150px;
+max-height:1500px;}
+img{ max-width:100%;}
+.inbox_msg {
+  border: 1px solid #c4c4c4;
+  clear: both;
+  overflow: hidden;
+}
+.incoming_msg_img {
+  display: inline-block;
+  width: 6%;
+}
+.received_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+ }
+ .received_withd_msg li {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 5px;
+  max-height:1500px;
+  margin-top:0px;
+  color: black;
+  font-size: 15px;
+  width: 100%;
+}
+.time_date {
+  color: #747474;
+  font-size: 12px;
+  margin-top:20px;
+}
+.received_withd_msg { max-width: 90%;}
+.mesgs {
+  float: left;
+  padding: 30px 15px 0 25px;
+  width: 65%;
+}
+.input_msg_write input {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #4c4c4c;
+  font-size: 15px;
+}
+
+.type_msg {border-top: 1px solid #c4c4c4;position: relative;
+margin-top:150px;}
+.msg_send_btn {
+  background: #05728f none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  position: absolute;
+  right: 0;
+  top: 11px;
+  width: 33px;
+}
+.messaging {
+    width:100%
+}
+.user_msg{
+  max-height:1500px;
+  width:150%;
+}
+.write_msg{
+    height:80px;
+    width:100%;
+}
+</style>
 <link href="{{ url_for('static', filename='css/report/report.css') }}" rel="stylesheet">
-<section id="content">
-<article>
-<div class="container">
-    <div class="page-header">
-  <h1 align="center"> Response Interface </h1>  
-          <form method=POST action="{{ url_for('reply') }}">
-            <div class="row">
-                <div class="col-md-9 col-md-offset-2">
-                <table class="table">
-                    <thead>
-                    <th>Username</th>  
-                    <th>Message Content </th>
-                    <th> Response</th></thead>
-                <tbody>
-                    <tr>
-                    <td> {{user}} </td>
-                    <td >{{message['messageContent']}}</td>
-                    <td>  <textarea placeholder="Reply here" name="reply"
-                     class="form-control" required></textarea>
-                    </td>
-                    </tr>
-                    </tbody>
-                </table>
+<div class="container-glue">
+    <h1>Response Interface</h1>
+    <div class="messaging">
+      <div class="inbox_msg">
+        <div class="mesgs">
+          <div class="user_msg">
+              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+
+                <h3 class="username">{{user}}</h3>
+                <li>{{message['messageContent']}}</li>
+                  <span class="time_date">{{message['messageDate'].strftime("%H:%M")}}</span></div>
+              </div>
+          <div class="type_msg">
+            <div class="input_msg_write">
+             <form method=POST action="{{ url_for('reply') }}">
                 <input type="hidden" name="id" value="{{message['messageId']}}">
-                <button type="submit" class="btn btn-danger" id="respond">Reply</button>
+              <input type="text" class="write_msg" name="reply" placeholder="Type a message" />
+              <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+          </form>
             </div>
-            </div>
-                </form>
-                </div>
+          </div>
+        </div>
+    </div>
 </div>
-</article>
-</section>
+</div>
+</div>
 {% endblock %}
