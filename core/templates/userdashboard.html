@@ -94,15 +94,15 @@
                 </div>
                </div>
           <div role="tabpanel" class="tab-pane fade" id="Inbox">
-            <div id="reloadChat">
+            <div  class="chatdiv" id="reloadChat">
             {% if history[0] and history[1]|length > 0 %}
-            <h2 class="chatTtile">Chat History</h2>
+            <div class="chatTtile"><h2>Chat History</h2></div>
             <ul>
               {% for i in range(length) %}
             <li class="hideme">
               <div class="chat"><strong>{{username}}</strong> : {{history[0][i]['messageContent']}}</div>
               <div class="time">{{history[0][i]['messageDate'].strftime("%H:%M")}}</div>
-              <div class="reply" id="hisreply">{{history[1][i]['messageContent']}}</div>
+              <div class="reply">{{history[1][i]['messageContent']}}</div>
             </li> 
             {% endfor %}         
              </ul>

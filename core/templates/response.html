@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
 <style>
-.container-glue{max-width:1500px;margin-top:80px;margin-left:150px;
-max-height:1500px;}
+.container-glue{max-width:800px;margin-top:80px;margin-left:30%;
+max-height:800px;margin-right:30%;}
 img{ max-width:100%;}
 .inbox_msg {
   border: 1px solid #c4c4c4;
@@ -26,12 +26,15 @@ img{ max-width:100%;}
   margin-top:0px;
   color: black;
   font-size: 15px;
-  width: 100%;
+  display:inline-block;
+  max-width:100%;
+  padding:2px;
 }
 .time_date {
   color: #747474;
   font-size: 12px;
   margin-top:20px;
+  margin-left:40px;
 }
 .received_withd_msg { max-width: 90%;}
 .mesgs {
@@ -39,11 +42,13 @@ img{ max-width:100%;}
   padding: 30px 15px 0 25px;
   width: 65%;
 }
-.input_msg_write input {
+.input_msg_write textarea {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
   color: #4c4c4c;
   font-size: 15px;
+  width:100%;
+  resize:none;
 }
 
 .type_msg {border-top: 1px solid #c4c4c4;position: relative;
@@ -75,7 +80,7 @@ margin-top:150px;}
 </style>
 <link href="{{ url_for('static', filename='css/report/report.css') }}" rel="stylesheet">
 <div class="container-glue">
-    <h1>Response Interface</h1>
+    <h1><center>Response Interface</center></h1>
     <div class="messaging">
       <div class="inbox_msg">
         <div class="mesgs">
@@ -83,16 +88,17 @@ margin-top:150px;}
               <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
               <div class="received_msg">
                 <div class="received_withd_msg">
-
+                <ul>
                 <h3 class="username">{{user}}</h3>
                 <li>{{message['messageContent']}}</li>
+              </ul>
                   <span class="time_date">{{message['messageDate'].strftime("%H:%M")}}</span></div>
               </div>
           <div class="type_msg">
             <div class="input_msg_write">
              <form method=POST action="{{ url_for('reply') }}">
                 <input type="hidden" name="id" value="{{message['messageId']}}">
-              <input type="text" class="write_msg" name="reply" placeholder="Type a message" />
+                <textarea placeholder="Type a message!!" name="reply"></textarea>
               <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           </form>
             </div>
