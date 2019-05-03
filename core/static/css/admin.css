@@ -18,9 +18,8 @@
 
 #chat li{
   display:inline-block;
-  clear: both;
   padding: 20px;
-  border-radius: 30px;
+  border-radius: 10px;
   margin-bottom: 2px;
   margin-left:-30px;
   font-family: Helvetica, Arial, sans-serif;
@@ -31,9 +30,7 @@
   color:black;
 }
 #pending{
-  margin-left:15px;
-  color:red;
-  border-radius:10px;  
+  color:red; 
 }
 @font-face {
   font-family: 'Source Sans Pro';
