@@ -1,20 +1,23 @@
 {% extends "layout.html" %}
 {% block body %}
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Banned</title>
-</head>
-<body>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>What are you looking for?</title>
-</head>
-<body>
-<center><img src="{{ url_for('static', filename='img/user1-128x128.jpg') }}"><br><p>{{error}}</p></center>
-</body>
-</html>
-</body>
-</html>
+<style>
+.container.py-5 {
+	margin-top:100px;
+}
+#errorcode{
+	margin-top:25px;
+}
+</style>
+<div class="container py-5 col-md-offset-4">
+          <div class="row">
+               <div class="col-md-2 text-center" id="errorcode">
+                    <p><i class="fa fa-exclamation-triangle fa-5x"></i><br/>Status Code: 403</p>
+               </div>
+               <div class="col-md-10">
+                    <h3>Sorry...</h3>
+                    <p>{{error}}</p>
+                    <a class="btn btn-danger" href="{{url_for('userdashboard')}}">Contact admin</a>
+               </div>
+          </div>
+     </div>
 {% endblock %}
