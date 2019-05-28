@@ -97,9 +97,6 @@
     margin-top:30px;
     margin-left:25px;
   }
-  #passfail{
-  	width:70%;
-  }
   #passsuccess{
   	width:70%;
   }
@@ -197,7 +194,7 @@
   #changepw {
     width:180px;
   }
-  .container-one {
+  .container-uno{
     margin-left:30px;
   }
   .container-two {
@@ -210,4 +207,4 @@
   }
   .nomsg {
     margin-left:35%;
-  }ch
+  }
