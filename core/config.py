@@ -13,8 +13,9 @@ class StaticVars:
 	""" global vars to be passed"""
 	SITE_NAME= 'BugBountyTN'
 	SITE_URL= 'https://127.0.0.1:5000'
+
+
 class Development_Config(BaseConfig):
-	"""development config for me and souheil"""
 	DEBUG = True
 	BCRYPT_LOG_ROUNDS=4
 	

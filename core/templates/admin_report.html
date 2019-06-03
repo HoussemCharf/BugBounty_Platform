@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
 <link href="{{ url_for('static', filename='css/report/report.css') }}" rel="stylesheet">
-<section id="content">
-<article>
 <div class="container">
     <div class="page-header">
   <h1 align="center"> Evaluate Report </h1>  
@@ -17,15 +15,13 @@
 </div>
 <div class="row">
           <form method=POST action="{{ url_for('score_report') }}">
-            <div class="row" id="firstrow">
+            <div class="col-md-12">
                 <table class="table table-striped">
                     <thead>
-                    <th> Username </th>
-                    <th>Bug name: </th>
-                    
-                    <th>Bug type: </th>
-                    
-                    <th>Report Level</th>
+                    <th> Reporter Name </th>
+                    <th>Bug name </th>
+                    <th>Bug type </th>
+                    <th>Threat Level</th>
                     
                     <th> Description:</th>
                     <br>
@@ -36,39 +32,36 @@
                     
                     <th>PriviligesRequired(PR):</th>
                     
-                    <th>File</th>
+                    <th>Filename</th>
                 </thead>
                 <tbody>
                     <tr>
                     <td>{{usernames}}</td>
+                    <td> {{report['reportName']}}</td>
                     <td>{{report['reportType']}}</td>
                     <td>{{report['reportLevel']}}</td>
-                     <td>{{report['reportDescription']}}</td>
+                    <td >{{report['reportDescription']}}</td>
                     <td>{{report['AttackVector']}}</td>
                    
                     <td>{{report['AttackComplexity']}}</td>
                     <td>{{report['getprivilege']}}</td>
                     {% if report['reportFile'] != None %}
-                    <td><a href="/uprep1/{{report['reportFile']}}"><span>{{report['reportFile']}}</span></a></td></tr>
+                    <td>{{report['reportFile']}}</td>
                     {% else %}
-                    <td><span>No File</span></td></tr>
+                    <td><span>No File</span></td>
+                </tr>
                     {% endif %}
                     </tbody>
                 </table>
             </div>
+
                 <div class="col-md-2">
                     <input type="text" class="form-control" name="score" placeholder="Score..." required="Please score!">
                     </div>
                     <input type="hidden" name="id" value="{{report['reportId']}}">
                 <br>
-                    <button type="submit" class="btn btn-danger">Score</button>             
-                </div>
-            </div>
+                    <button type="submit" class="btn btn-danger" style="margin-top:2px">Score</button>             
         </form>
-</div><br>
-<br>
 </div>
-</article>
-</section>
 </div>
 {% endblock %}

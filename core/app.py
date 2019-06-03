@@ -38,9 +38,7 @@ def login():
         email= request.form['email']
         password = request.form['password']
         if general_check(password,7,20) and check_email(email):
-        #TODO by Houssem 1- sanatize data passed from user
             if User.valid_login(email,password):
-        # Hacky code here <.<
                 uuid = User.get_id_by_email(email)
                 User.login(uuid)
                 return redirect(url_for('index'))
@@ -245,7 +243,7 @@ def new_report():
             user = User.get_by_id(_id)
             error = None
             if user['banned'] == True:
-                error = "You are not allowed, to add a report because you are banned!"
+                error = "You are not allowed to add a report because you are banned!"
                 return view.render_template(view='banned.html',error=error)
             return view.render_template(view='add.html',error=error)
     return redirect(url_for('index'))
@@ -256,12 +254,8 @@ def register():
         email = request.form['email']
         password = request.form['password']
         username = request.form['name']
-        firstpartner = request.form['firstpartner']
-        secondpartner = request.form['secondpartner']
-        thirdpartner = request.form['thirdpartner']
-        #TODO by houssem 1- sanatize data passed from user
-        if  check_email(email) == True and general_check(password,7,20) and general_check(username,4,20) and general_check(firstpartner,4,20) and general_check(secondpartner,0,20) and general_check(thirdpartner,0,20):         
-            user = User.register(username,email,password,firstpartner,secondpartner,thirdpartner)
+        if  check_email(email) == True and general_check(password,7,20) and general_check(username,4,20):      
+            user = User.register(username,email,password)
             if user:
                 return redirect(url_for('index'))
             error= 'Account already exists!'

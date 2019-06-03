@@ -37,7 +37,7 @@
               <section class="content-header">
                   <h1>
                     <span id="Tab">Dashboard</span>
-                    <small>PenParty Control panel</small>
+                    <small>BugBountyTN Control panel</small>
                 </h1>
               </section>
         <!-- Dashboard section -->
@@ -333,7 +333,7 @@
 
             <tr>
                 <td>{{ post['reportName'] }}</td>
-                <td>{{ post['reportDescription'] }}</td>
+                <td style="max-width:100px">{{ post['reportDescription'] }}</td>
                 <td>{{post['AttackVector']}}</td>
                 <td>{{post['reportType']}}</td>
                 {% if post['reportFile'] == None %}

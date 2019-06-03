@@ -43,7 +43,9 @@
                                 <li><a href="/administration">Admin area</a></li>
                                 {% endif%}
                                 <li><a href="/userdashboard">My Space</a></li>
+                                {% if admin == False %}
                                 <li><a href="/reports">Reports</a></li>
+                                {% endif %}
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/logout">Sign out</a></li>
                             </ul>
