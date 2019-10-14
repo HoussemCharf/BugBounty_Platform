@@ -2,7 +2,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 class BaseConfig:
 	"""base config"""
-	SECRET_KEY = 'bugsbunny@bounty'
+	SECRET_KEY = ''
 	MONGO_URI='mongodb://localhost:27017/iset_bugbounty'
 	DEBUG= True
 	database_name= 'iset_bugbounty'
