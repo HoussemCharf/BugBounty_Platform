@@ -1,7 +1,7 @@
 # BugBounty Platform
 
-BugBounty platform is platform made under the supervision of Mr.Ahmed Chabchoub, Mr.Mostfa Hamza for the purpose of Isetcom security event as a start.
-the platform is bug reporting interface for contesters to report vunerabilities and proof of concept 
+bug bounty platform is a platform made under the supervision of Mr.Ahmed Chabchoub, Mr.Mostfa Hamza for the Isetcom security event as a start.
+the platform is a bug reporting interface for contesters to report vulnerabilities and proof of concept.
 
 ## Getting Started
 
@@ -14,12 +14,12 @@ What things you need to install the software and how to install them
 ```
 Python3
 Flask
-mongodb
+MongoDB
 ```
 
 ### Installing
 
-Please follow these steps to successfully deploy the webapp in your local enviroment.
+Please follow these steps to successfully deploy the web app in your local environment.
 
 
 Step1: cloning the repository in your machine.
@@ -31,7 +31,7 @@ Step2: start bin
 ```
 source env/bin/activate
 ```
-Step3: start mongodb service
+Step3: start MongoDB service
 
 ```
 service mongod start
@@ -89,8 +89,8 @@ For the versions available, see the [tags on this repository](https://github.com
 
 
 ## Acknowledgments
-this platform is a property of Calynga Startup and it's copyrights goes for the authors. 
-Many thanks for the following people because they made this Happen:
+this platform is a property of Calynga Startup and its copyrights go for the authors. 
+Many thanks for the following people because they made this happen:
 
 * Mr.Ahmed Chabchoub
 * Mr.Mostfa Hamza
